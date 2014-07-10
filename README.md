@@ -146,17 +146,20 @@ There are two main uses of apiclient.py
 
 The most basic call you can make is a GET request to an endpoint that requires no parameters:
 
-        `python apiclient.py --api /help/capabilities --method GET`
-    
+```
+python apiclient.py --api /help/capabilities --method GET`
+```    
+
 Arguments for basic calls:
 
-    `--api /api_name/endpoint` 
+**`--api /api_name/endpoint`** 
+
 
 This is the path to your api endpoint. It is the part of the url that 
 you would append to `http://<server_ip>/restapi/api`. For example 
         `http://<server_ip>/restapi/api/referencedata/sets`.
-
-    `--method METHOD`
+        
+**`--method METHOD`**
 
 This determines whether your api request will be a GET, POST, or 
 DELETE. To know what method an endpoint needs, check the output of `--print_api`.
@@ -171,59 +174,63 @@ you must place the name of the set in the path to the endpoint you specify
 in `--api`. For example, to retrieve a reference set identified by the name 
 'exampleset'. You would call:
 
-`python apiclient.py --api /referencedata/sets/exampleset --method GET`
+```
+python apiclient.py --api /referencedata/sets/exampleset --method GET
+```
 
 Any path parameters will correspond to some place in endpoint portion in 
 the url.
 
 ### Calls with query parameters
 
-    If you have any query parameters they must be entered with the syntax 
-    --<param_name>="<param_value>". For example, to get all version 0.1 API 
-    endpoints that make use of httpMethod POST you can call 
-    /help/capabilities and supply the query parameters 'httpMethods' and 
-    'version'. httpMethods asks for a JSON object. We can create one 
-    using single quotes, squares brackets, and commas.
+If you have any query parameters they must be entered with the syntax 
+`--<param_name>="<param_value>"`. For example, to get all version 0.1 API 
+endpoints that make use of httpMethod POST you can call 
+`/help/capabilities` and supply the query parameters 'httpMethods' and 
+'version'. httpMethods asks for a JSON object. We can create one 
+using single quotes, squares brackets, and commas.
 
-        python apiclient.py --api /help/capabilities --method GET 
-        --httpMethods="['POST']" --version="0.1" 
-
-    Once again check the output of --print_api to determine which parameters 
-    are query parameters and which are body parameters.
+```
+python apiclient.py --api /help/capabilities --method GET --httpMethods="['POST']" --version="0.1" 
+```
+    
+Once again check the output of `--print_api` to determine which parameters 
+are query parameters and which are body parameters.
 
 ### Calls with body parameters
 
-    Body parameters are entered in the command line the same way as query 
-    parameters (--<param_name>="<param_value>"), except you must specify the 
-    content type of the body you are sending with the --content_type TYPE 
-    argument. For example, to bulkload data to an existing set of element type 
-    ALN named 'exampleset':
+Body parameters are entered in the command line the same way as query parameters `--<param_name>="<param_value>"`, except you must specify the 
+content type of the body you are sending with the `--content_type TYPE` 
+argument. For example, to bulkload data to an existing set of element type ALN named 'exampleset':
 
-        python apiclient.py --api /referencedata/sets/bulkLoad/exampleset
-            --method POST --content_type="application/json"
-            --data="['value1','value2','value3']"
+```
+python apiclient.py --api /referencedata/sets/bulkLoad/exampleset
+                    --method POST --content_type="application/json"
+                    --data="['value1','value2','value3']"
+```
 
-    The --content_type argument needs to be specified or the body will be sent 
-    as a query parameter and the API call will fail.
+The `--content_type` argument needs to be specified or the body will be sent 
+as a query parameter and the API call will fail.
 
 ### Miscellaneous command line arguments
 
-    --output OUTPUT
+**`--output OUTPUT`**
 
-        This sets the 'Accept' header of the request object, determining the 
-        Content-type of the response object. The default is 'application/json'. 
-        If the endpoint does not support 'application/json' you will get an 
-        error 406 with the message:
-            "MIME pattern 'application/json' does not match any content types 
-            returned by this endpoint. This endpoint supports <content-type>" 
-        This means you must set your --output argument to one of the supported 
-        types.
+This sets the 'Accept' header of the request object, determining the 
+Content-type of the response object. The default is `application/json`. 
+If the endpoint does not support `application/json` you will get an 
+error 406 with the message:
 
-    --ver VER
+>"MIME pattern application/json' does not match any content types 
+>returned by this endpoint. This endpoint supports <content-type>" 
+        
+This means you must set your `--output` argument to one of the supported types.
 
-        This tells the system which version of the endpoint you are calling. 
-        If the endpoint does not have that exact version it will round down to
-        the closest available version number.
+**`--ver VER`**
+
+This tells the system which version of the endpoint you are calling. 
+If the endpoint does not have that exact version it will round down to
+the closest available version number.
 
 
 ### Modifying the config.ini file 
@@ -234,15 +241,19 @@ password.
 
 Template config.ini #1: With authorization token
 
+```
 [DEFAULT]
 server_ip = {IP ADDRESS}
 auth_token = {AUTH TOKEN}
+```
 
 Template config.ini #2: With username and password.
 
+```
 [DEFAULT]
 server_ip = {IP ADDRESS}
 username = {USERNAME}
 password = {PASSWORD}
+```
 
 Nothing else needs to be specified in the config.ini file.
