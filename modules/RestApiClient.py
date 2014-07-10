@@ -1,0 +1,93 @@
+import ReadConfig
+import MakeConfig
+import http.cookiejar
+import http.cookies
+import urllib.request
+from urllib.request import Request
+from urllib.request import urlopen 
+from urllib.error import HTTPError
+
+
+
+# This is a simple HTTP client that can be used to access the REST API
+class RestApiClient:
+
+    # Constructor for the RestApiClient Class
+    def __init__(self, settings=None, config_file='../config.ini', config_section='DEFAULT'):
+        
+        # Gets configuration information from config.ini. See ReadConfig
+        # for more details.
+        if not settings:
+            settings = ReadConfig.main(config_section=config_section, file_name=config_file)
+        if not settings:
+            MakeConfig.main()
+            settings = ReadConfig.main(config_section=config_section, file_name=config_file)
+
+        # Set up the default HTTP request headers
+        self.headers = {b'Accept': settings['accept'] }
+        if settings['version']:
+            self.headers['Version'] = settings['version']
+
+        # Set up the security credentials. We can use either an encoded
+        # username and password or a security token
+        if 'auth_token' in settings:
+            self.auth = {'SEC': settings['auth_token']}
+        else:
+            self.auth = {'Authorization': settings['authorization']}
+
+        self.headers.update(self.auth)
+        
+        # Set up the server's ip address and the base URI that will be used for
+        # all requests
+        self.server_ip = settings['server_ip']
+        self.base_uri = '/restapi/api/'
+        
+        # Send an initial GET request so that we can obtain the required
+        # session cookie.
+        self.cookies = http.cookiejar.CookieJar()
+        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(self.cookies))
+        urllib.request.install_opener(opener)
+        self.call_api('help/capabilities?categories=["help"]', 'GET')
+
+
+    # This method is used to set up an HTTP request and send it to the server
+    def call_api(self, endpoint, method, headers=None, params=[], data=None):
+
+        path = self.parse_path(endpoint, params)
+
+        # If custom headers are not specified we can use the default headers
+        if not headers:
+            headers = self.headers
+
+        # Send the request and receive the response
+        request = Request(
+            'https://'+self.server_ip+self.base_uri+path, headers=headers)
+        request.get_method = lambda: method
+        try:
+            #returns response object for opening url.
+            return urlopen(request, data)
+        except HTTPError as e:
+            #an object which contains information similar to a request object
+            return e
+
+    # This method constructs the query string
+    def parse_path(self, endpoint, params):
+
+        path = endpoint + '?'
+
+        for kv in params:
+            if kv[1]:
+                path += kv[0]+'='+kv[1]+'&'
+        # removes last '&' or hanging '?' if no params.
+        return path[:len(path)-1]
+    
+    
+    # Simple getters that can be used to inspect the state of this client.
+    def get_headers(self):
+        return self.headers
+    
+    def get_server_ip(self):
+        return self.server_ip
+    
+    def get_base_uri(self):
+        return self.base_uri
