@@ -135,51 +135,46 @@ on modifying config.ini files can be found at the end of this document.
 
 ## USING apiclient.py
 
-There are two main uses of apiclient.py:
+There are two main uses of apiclient.py
 
 1. Print API endpoints.
-
-    'python apiclient.py --print_api' will print all endpoints and information
+    `python apiclient.py --print_api` will print all endpoints and information
     needed to make calls against that endpoint.
-
 2. Make requests to an API endpoint.
 
 ### Basic api calls
 
-    The most basic call you can make is a GET request to an endpoint that 
-    requires no parameters:
+The most basic call you can make is a GET request to an endpoint that requires no parameters:
 
-        python apiclient.py --api /help/capabilities --method GET
+        `python apiclient.py --api /help/capabilities --method GET`
+    
+Arguments for basic calls:
 
-    Arguments for basic calls:
+    `--api /api_name/endpoint` 
 
-    --api /api_name/endpoint 
+This is the path to your api endpoint. It is the part of the url that 
+you would append to `http://<server_ip>/restapi/api`. For example 
+        `http://<server_ip>/restapi/api/referencedata/sets`.
 
-        This is the path to your api endpoint. It is the part of the url that 
-        you would append to "http://<server_ip>/restapi/api". For example 
-        "http://<server_ip>/restapi/api/referencedata/sets".
+    `--method METHOD`
 
-    --method METHOD
-
-        This determines whether your api request will be a GET, POST, or 
-        DELETE. To know what method an endpoint needs, check the output of 
-        --print_api.
+This determines whether your api request will be a GET, POST, or 
+DELETE. To know what method an endpoint needs, check the output of `--print_api`.
 
 ### Calls with path parameters
 
-    There are three types of parameters: path, query, and body parameters. 
-    Path parameters are those that modify the endpoint you are calling. For 
-    example, name is a parameter of the version 0.1 endpoint 
-    /referencedata/sets/{name}. This means that to call this endpoint
-    you must place the name of the set in the path to the endpoint you specify
-    in --api. For example, to retrieve a reference set identified by the name 
-    'exampleset'. You would call:
+There are three types of parameters: path, query, and body parameters. 
+Path parameters are those that modify the endpoint you are calling. For 
+example, name is a parameter of the version 0.1 endpoint 
+`/referencedata/sets/{name}`. This means that to call this endpoint
+you must place the name of the set in the path to the endpoint you specify
+in `--api`. For example, to retrieve a reference set identified by the name 
+'exampleset'. You would call:
 
-        python apiclient.py --api /referencedata/sets/exampleset --method 
-        GET
+`python apiclient.py --api /referencedata/sets/exampleset --method GET`
 
-    Any path parameters will correspond to some place in endpoint portion in 
-    the url.
+Any path parameters will correspond to some place in endpoint portion in 
+the url.
 
 ### Calls with query parameters
 
