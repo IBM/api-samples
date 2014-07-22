@@ -1,12 +1,13 @@
 import ReadConfig
 import MakeConfig
-import http.cookiejar
-import http.cookies
-import urllib.request
-from urllib.request import Request
-from urllib.request import urlopen 
-from urllib.error import HTTPError
-
+try:
+    from urllib.request import Request
+    from urllib.request import urlopen 
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib2 import Request
+    from urllib2 import urlopen
+    from urllib2 import HTTPError
 
 
 # This is a simple HTTP client that can be used to access the REST API
@@ -41,13 +42,6 @@ class RestApiClient:
         # all requests
         self.server_ip = settings['server_ip']
         self.base_uri = '/restapi/api/'
-        
-        # Send an initial GET request so that we can obtain the required
-        # session cookie.
-        self.cookies = http.cookiejar.CookieJar()
-        opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(self.cookies))
-        urllib.request.install_opener(opener)
-        self.call_api('help/capabilities?categories=["help"]', 'GET')
 
 
     # This method is used to set up an HTTP request and send it to the server

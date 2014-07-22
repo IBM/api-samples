@@ -28,7 +28,7 @@ import sys, os
 sys.path.append(os.path.realpath('../modules'))
 import json
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
@@ -75,7 +75,7 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'referencedata/maps?name=rest_api_samples_current_admin_shift&elementType=ALN&maxElements=20', 'POST')
+    SampleUtilities.data_setup(client, 'referencedata/maps?name=rest_api_samples_current_admin_shift&elementType=ALN', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/maps/rest_api_samples_current_admin_shift?key=7.34.87.23&value=sven', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/maps/rest_api_samples_current_admin_shift?key=7.34.85.10&value=sven', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/maps/rest_api_samples_current_admin_shift?key=7.34.123.8&value=jill', 'POST')

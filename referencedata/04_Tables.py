@@ -32,7 +32,7 @@ sys.path.append(os.path.realpath('../modules'))
 import json
 import time
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 import urllib.parse
 import Cleanup
 
@@ -99,7 +99,7 @@ def setup_data(client):
     current_time = int(time.time() *1000)
     
     key_name_types = urllib.parse.quote( "[{\"elementType\": \"IP\", \"keyName\": \"Authorization_Server_IP_Secure\"}, {\"elementType\": \"PORT\", \"keyName\": \"Authorization_Server_PORT_Secure\"}, {\"elementType\": \"DATE\", \"keyName\": \"Last_Secure_Login\"}, {\"elementType\": \"IP\", \"keyName\": \"Authorization_Server_IP_General\"}]")
-    SampleUtilities.data_setup(client, 'referencedata/tables?name=rest_api_samples_server_access&elementType=ALN&maxElements=20&keyNameTypes=' + key_name_types, 'POST')
+    SampleUtilities.data_setup(client, 'referencedata/tables?name=rest_api_samples_server_access&elementType=ALN&keyNameTypes=' + key_name_types, 'POST')
 
     SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=calvin&innerKey=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=calvin&innerKey=Authorization_Server_PORT_Secure&value=443', 'POST')

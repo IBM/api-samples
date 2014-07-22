@@ -9,7 +9,7 @@
 import sys, os
 sys.path.append(os.path.realpath('../modules'))
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 import Cleanup
 
 def main():
@@ -25,9 +25,9 @@ def main():
     # If an endpoint accepts query parameters they are passed after a '?' as
     # part of the URL. Each parameter has a name and a value separated by a '='.
     # Several parameters can be passed separated by '&' characters.
-    SampleUtilities.pretty_print_request(client, 'referencedata/sets?name=rest_api_samples_testset&elementType=ALN&maxElements=20', 'POST')
+    SampleUtilities.pretty_print_request(client, 'referencedata/sets?name=rest_api_samples_testset&elementType=ALN', 'POST')
     
-    response = client.call_api('referencedata/sets?name=rest_api_samples_testset&elementType=ALN&maxElements=20', 'POST')
+    response = client.call_api('referencedata/sets?name=rest_api_samples_testset&elementType=ALN', 'POST')
     
     # The response code for successfully creating a set is 201.
     if (response.code == 201):

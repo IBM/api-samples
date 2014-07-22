@@ -28,7 +28,7 @@ import sys, os
 sys.path.append(os.path.realpath('../modules'))
 import json
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
@@ -86,12 +86,12 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'referencedata/sets?name=rest_api_samples_suspect_ips&elementType=IP&maxElements=20', 'POST')
+    SampleUtilities.data_setup(client, 'referencedata/sets?name=rest_api_samples_suspect_ips&elementType=IP', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/sets/rest_api_samples_suspect_ips?value=8.7.6.5', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/sets/rest_api_samples_suspect_ips?value=10.7.6.5', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/sets/rest_api_samples_suspect_ips?value=13.7.6.5', 'POST')
     
-    SampleUtilities.data_setup(client, 'referencedata/sets?name=rest_api_samples_blocked_ips&elementType=IP&maxElements=20', 'POST')
+    SampleUtilities.data_setup(client, 'referencedata/sets?name=rest_api_samples_blocked_ips&elementType=IP', 'POST')
 
 
 # This function represents logic performed by a legacy system.

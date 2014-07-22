@@ -9,7 +9,7 @@
 import sys, os
 sys.path.append(os.path.realpath('../modules'))
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 
 
 def main():
@@ -48,7 +48,7 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'referencedata/sets?name=rest_api_samples_testset&elementType=ALN&maxElements=20', 'POST')
+    SampleUtilities.data_setup(client, 'referencedata/sets?name=rest_api_samples_testset&elementType=ALN', 'POST')
 
 
 if __name__ == "__main__":

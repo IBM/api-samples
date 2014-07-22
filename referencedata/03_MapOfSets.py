@@ -24,7 +24,7 @@ sys.path.append(os.path.realpath('../modules'))
 import json
 import time
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 
 
 def main():
@@ -68,7 +68,7 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'referencedata/mapOfSets?name=rest_api_samples_login_events&elementType=ALN&maxElements=20', 'POST')
+    SampleUtilities.data_setup(client, 'referencedata/mapOfSets?name=rest_api_samples_login_events&elementType=ALN', 'POST')
 
     SampleUtilities.data_setup(client, 'referencedata/mapOfSets/rest_api_samples_login_events?key=3.4.5.6&value=bob', 'POST')
     SampleUtilities.data_setup(client, 'referencedata/mapOfSets/rest_api_samples_login_events?key=3.4.5.6&value=frank', 'POST')

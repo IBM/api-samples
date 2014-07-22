@@ -13,8 +13,6 @@
 import sys, os
 sys.path.append(os.path.realpath('../modules'))
 import urllib.request
-import http.cookiejar
-import http.cookies
 import configparser
 import json
 import base64
@@ -64,22 +62,14 @@ def main():
         headers = {'Version': '1.0', 'Accept': 'application/json', 'SEC': auth_token}
         print(headers)   
         
+        
+        
             
     server_ip = config['DEFAULT']['server_ip']
 
     # REST API requests are made by sending an HTTPS request to specific URLs.
     url = 'https://' + server_ip + '/restapi/api/help/capabilities'
     print(url)
-    
-    # In 7.2.1 you need a session cookie to make API requests. The first request
-    # that you make to the API must be a GET request. The response will include
-    # a cookie that you must include with subsequent requests.
-    # This requirement is removed in 7.2.2.
-    # Here we are using Python's built in cookie handling to capture and store
-    # the cookie we will receive.
-    cookies = http.cookiejar.CookieJar()
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies))
-    urllib.request.install_opener(opener)
 
     # Here we are creating a GET request that will return a list of all
     # endpoints available to you on the system. This endpoint provides
@@ -107,11 +97,6 @@ def main():
     
     # Here we can see the headers of the response, including the session cookie.
     print(response.headers)
-    
-    # We can also look at the cookies we have saved that will be used to
-    # help authenticate future requests.
-    for cookie in cookies:
-        print (str(cookie))
 
 
 # This function invokes the interactive config file creator if no config file

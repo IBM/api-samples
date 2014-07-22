@@ -6,7 +6,7 @@ sys.path.append(os.path.realpath('../modules'))
 import argparse
 
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 
 def main():
     client = RestApiClient()

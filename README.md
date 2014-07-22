@@ -18,8 +18,7 @@ DELETE request. By linking together calls to these endpoints you can
 implement you own custom business processes or integrate QRadar data
 with external systems.
 
-This package is applicable to version 0.1 of the reference data API
-and 1.0 of the help endpoint. A version number of 1.0 is used by default by
+This package is applicable to version 0.1 of the reference data API, ariel API and 1.0 of the help endpoint. A version number of 1.0 is used by default by
 these samples since the API automatically selects the highest version less than
 or equal to the requested version.
 Endpoints released as 'Provisional' or 'Experimental' may change in future
@@ -40,18 +39,19 @@ the '/help/capabilities' endpoint.
 
 ## Package contents
 
- - An introduction package that shows how to use the API at a low level
- - A reference data package that demonstrates endpoints in the
+- An introduction package that shows how to use the API at a low level
+- A reference data package that demonstrates endpoints in the
     /referencedata category.
- - An API CLI client that can be used to access the API from the
+- An API CLI client that can be used to access the API from the
     command line.
- - A package containing shared modules.
+- An Ariel package that demonstrates endpoint in the /ariel category.
+- A package containing shared modules.
 
 
 ## Requirements
 
 - Python 3.3 or above
-- QRadar system 7.2.1 or higher
+- QRadar system 7.2.2 or higher
 
 
 ## Instructions

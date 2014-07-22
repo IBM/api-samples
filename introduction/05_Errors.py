@@ -11,7 +11,7 @@
 import sys, os
 sys.path.append(os.path.realpath('../modules'))
 from RestApiClient import RestApiClient
-import SampleUtilities
+import SampleUtilities as SampleUtilities
 
 
 def main():
