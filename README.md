@@ -1,4 +1,4 @@
-# QRadar API Samples 7.2.1
+# QRadar API Samples 7.2.2
 
 Code samples showing the usage of the QRadar REST API.
 
