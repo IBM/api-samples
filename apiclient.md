@@ -24,8 +24,8 @@ There are two main uses of apiclient.py:
 
 ## Basic api calls
 
-    The most basic call you can make is a GET request to an endpoint that 
-    requires no parameters:
+The most basic call you can make is a GET request to an endpoint that 
+requires no parameters:
 
 ```
         python apiclient.py --api /help/capabilities --method GET
@@ -35,8 +35,8 @@ There are two main uses of apiclient.py:
     --api /api_name/endpoint 
 
         This is the path to your api endpoint. It is the part of the url that 
-        you would append to "http://<server_ip>/restapi/api". For example 
-        "http://<server_ip>/restapi/api/referencedata/sets".
+        you would append to `http://<server_ip>/restapi/api`. For example 
+        `http://<server_ip>/restapi/api/referencedata/sets`.
 
     --method METHOD
 
@@ -44,54 +44,60 @@ There are two main uses of apiclient.py:
         DELETE. To know what method an endpoint needs, check the output of 
         --print_api.
 
-Calls with path parameters:
+## Calls with path parameters
 
-    There are three types of parameters. path, query, and body parameters. 
-    Path parameters are those that modify the endpoint you are calling. For 
-    example, name is a parameter of the ver 0.1 endpoint 
-    /referencedata/sets/{name}. This means, to call this endpoint, 
-    you must place the name of the set in the path to the endpoint you specify
-    in --api. For example, to retrieve a reference set identified by the name 
-    'exampleset'. You would call:
+There are three types of parameters. path, query, and body parameters. 
+Path parameters are those that modify the endpoint you are calling. For 
+example, name is a parameter of the ver 0.1 endpoint 
+/referencedata/sets/{name}. This means, to call this endpoint, 
+you must place the name of the set in the path to the endpoint you specify
+in --api. For example, to retrieve a reference set identified by the name 
+'exampleset'. You would call:
 
+```
         python apiclient.py --api /referencedata/sets/exampleset --method 
         GET
+```
 
-    Any path parameters will correspond to some place in endpoint portion in 
-    the url.
+Any path parameters will correspond to some place in endpoint portion in 
+the url.
 
-Calls with query parameters:
+## Calls with query parameters
 
-    If you have any query parameters, they must be entered with the syntax 
-    --params <param_name>="<param_value>". For example, to get all 
-    API endpoints of /help that make use of httpMethod GET, 
-    you can call /help/capabilities and supply the query parameters 
-    'httpMethods' and 'categories'. Since httpMethods asks for a JSON object, 
-    we can create one inside double quotes using single quotes, squares 
-    brackets, and commas.
+If you have any query parameters, they must be entered with the syntax 
+--params <param_name>="<param_value>". For example, to get all 
+API endpoints of /help that make use of httpMethod GET, 
+you can call /help/capabilities and supply the query parameters 
+'httpMethods' and 'categories'. Since httpMethods asks for a JSON object, 
+we can create one inside double quotes using single quotes, squares 
+brackets, and commas.
 
+```
         python apiclient.py --api /help/capabilities --method GET
             --params httpMethods="['GET']" categories="['/help']"
+```
 
-    Once again check the output of --print_api to determine which parameters 
-    are query, or body parameters.
+Once again check the output of --print_api to determine which parameters 
+are query, or body parameters.
 
-Calls with body parameters:
+## Calls with body parameters
 
-    Body parameters are entered in the command line the same way as query 
-    parameters (--<param_name>="<param_value>"), except you must specify the 
-    content type of the body you are sending with the --content_type TYPE 
-    argument. For example, to bulkload data to an existing set of element type 
-    ALN named 'exampleset':
+Body parameters are entered in the command line the same way as query 
+parameters (--<param_name>="<param_value>"), except you must specify the 
+content type of the body you are sending with the --content_type TYPE 
+argument. For example, to bulkload data to an existing set of element type 
+ALN named 'exampleset':
 
+```
         python apiclient.py --api /referencedata/sets/bulkLoad/exampleset
             --method POST --content_type="application/json"
             --params data="['value1','value2','value3']"
+```
 
-    The --request_format argument needs to be specified or the body will be sent 
-    as a query parameter, and the API call will fail.
+The --request_format argument needs to be specified or the body will be sent 
+as a query parameter, and the API call will fail.
 
-Miscellaneous command line arguments:
+## Miscellaneous command line arguments
 
     --response_format RESPONSE_FORMAT
 
@@ -111,23 +117,26 @@ Miscellaneous command line arguments:
         the closest available version number.
 
 
-Modifying the config.ini file: 
+## Modifying the config.ini file
 
 For the apiclient to run properly it requires a server_ip and proper 
 authorization. The authorization can either be an auth_token or a username and
 password. 
 
 Template config.ini #1: With authorization token
-
+```
 [DEFAULT]
 server_ip = {IP ADDRESS}
 auth_token = {AUTH TOKEN}
+```
 
 Template config.ini #2: With username and password.
 
+```
 [DEFAULT]
 server_ip = {IP ADDRESS}
 username = {USERNAME}
 password = {PASSWORD}
+```
 
 Nothing else needs to be specified in the config.ini file.
