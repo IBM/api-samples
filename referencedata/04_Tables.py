@@ -22,33 +22,33 @@
 
 # For a list of the endpoints that you can use along with the parameters that
 # they accept you can view the REST API interactive help page on your
-# deployment at https://<hostname>/restapi/doc
+# deployment at https://<hostname>/api_doc
 # You can also retrieve a list of available endpoints through the API itself
 # at the /api/help/capabilities endpoint.
 
 
-import sys, os
-sys.path.append(os.path.realpath('../modules'))
 import json
+import os
+import sys
 import time
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
 import urllib.parse
 import Cleanup
 
+sys.path.append(os.path.realpath('../modules'))
+from RestApiClient import RestApiClient
+import SampleUtilities as SampleUtilities
 
 
 def main():
     # Create our client and set up some sample data.
     client = RestApiClient()
     setup_data(client)
-    current_time = int(time.time() *1000)
 
     # First lets have a look at the data in the system.
-    response = client.call_api('referencedata/tables/rest_api_samples_server_access', 'GET')
+    response = client.call_api('reference_data/tables/rest_api_samples_server_access', 'GET')
     SampleUtilities.pretty_print_response(response)
 
-    response = client.call_api('referencedata/tables/rest_api_samples_server_access', 'GET')
+    response = client.call_api('reference_data/tables/rest_api_samples_server_access', 'GET')
     response_body = json.loads(response.read().decode('utf-8'))
     data = response_body['data']
 
@@ -57,107 +57,107 @@ def main():
     # reporting tool can put appropriate defaults for these cells into the
     # report.
     print_custom_report(data)
-    
+
     # Now our external system calculates which users should have their secure
     # access revoked.
     threshold = get_old_data_threshold(data)
-    
+
     # check to see which users should have their secure access expired.
     for user in data:
         if ('Last_Secure_Login' in data[user]):
-            if (data[user]['Last_Secure_Login']['lastSeen'] < threshold):
+            if (data[user]['Last_Secure_Login']['last_seen'] < threshold):
                 print ("User '" + user + "' has not logged in to the secure server recently. Revoking their access.")
                 outer_key = user
                 if ('Authorization_Server_IP_Secure' in data[user]):
                     inner_key = 'Authorization_Server_IP_Secure'
                     value = data[user]['Authorization_Server_IP_Secure']['value']
-                    response = client.call_api('referencedata/tables/rest_api_samples_server_access/' + outer_key + '/' + inner_key + '?value=' + value, 'DELETE')
+                    response = client.call_api('reference_data/tables/rest_api_samples_server_access/' + outer_key + '/' + inner_key + '?value=' + value, 'DELETE')
                 if ('Authorization_Server_PORT_Secure' in data[user]):
                     inner_key = 'Authorization_Server_PORT_Secure'
                     value = data[user]['Authorization_Server_PORT_Secure']['value']
-                    response = client.call_api('referencedata/tables/rest_api_samples_server_access/' + outer_key + '/' + inner_key + '?value=' + value, 'DELETE')
-    
-    
+                    response = client.call_api('reference_data/tables/rest_api_samples_server_access/' + outer_key + '/' + inner_key + '?value=' + value, 'DELETE')
+
+
     # now lets have a look at the data after we updated the table.
-    response = client.call_api('referencedata/tables/rest_api_samples_server_access', 'GET')
+    response = client.call_api('reference_data/tables/rest_api_samples_server_access', 'GET')
     SampleUtilities.pretty_print_response(response)
 
-    response = client.call_api('referencedata/tables/rest_api_samples_server_access', 'GET')
+    response = client.call_api('reference_data/tables/rest_api_samples_server_access', 'GET')
     response_body = json.loads(response.read().decode('utf-8'))
     data = response_body['data']
-    
+
     print_custom_report(data)
-    
-    
+
+
     # You can uncomment this line to have this script remove the data it
     # creates after it is done, or you can invoke the Cleanup script directly.
-    #Cleanup.cleanup_04_tables(client)
+    # Cleanup.cleanup_04_tables(client)
 
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    current_time = int(time.time() *1000)
-    
-    key_name_types = urllib.parse.quote( "[{\"elementType\": \"IP\", \"keyName\": \"Authorization_Server_IP_Secure\"}, {\"elementType\": \"PORT\", \"keyName\": \"Authorization_Server_PORT_Secure\"}, {\"elementType\": \"DATE\", \"keyName\": \"Last_Secure_Login\"}, {\"elementType\": \"IP\", \"keyName\": \"Authorization_Server_IP_General\"}]")
-    SampleUtilities.data_setup(client, 'referencedata/tables?name=rest_api_samples_server_access&elementType=ALN&keyNameTypes=' + key_name_types, 'POST')
+    current_time = int(time.time() * 1000)
 
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=calvin&innerKey=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=calvin&innerKey=Authorization_Server_PORT_Secure&value=443', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=calvin&innerKey=Authorization_Server_IP_General&value=7.12.15.12', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=calvin&innerKey=Last_Secure_Login&value=' + str(current_time), 'POST')
+    key_name_types = urllib.parse.quote("[{\"element_type\": \"IP\", \"key_name\": \"Authorization_Server_IP_Secure\"}, {\"element_type\": \"PORT\", \"key_name\": \"Authorization_Server_PORT_Secure\"}, {\"element_type\": \"DATE\", \"key_name\": \"Last_Secure_Login\"}, {\"element_type\": \"IP\", \"key_name\": \"Authorization_Server_IP_General\"}]")
+    SampleUtilities.data_setup(client, 'reference_data/tables?name=rest_api_samples_server_access&element_type=ALN&key_name_types=' + key_name_types, 'POST')
 
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=socrates&innerKey=Authorization_Server_IP_General&value=7.12.14.85', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=calvin&inner_key=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=calvin&inner_key=Authorization_Server_PORT_Secure&value=443', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=calvin&inner_key=Authorization_Server_IP_General&value=7.12.15.12', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=calvin&inner_key=Last_Secure_Login&value=' + str(current_time), 'POST')
+
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=socrates&inner_key=Authorization_Server_IP_General&value=7.12.14.85', 'POST')
     time.sleep(1)
-    
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=mill&innerKey=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=mill&innerKey=Authorization_Server_PORT_Secure&value=443', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=mill&innerKey=Last_Secure_Login&value=' + str(current_time), 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=mill&innerKey=Authorization_Server_IP_General&value=7.13.22.85', 'POST')
 
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=hobbes&innerKey=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=hobbes&innerKey=Authorization_Server_PORT_Secure&value=22', 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=hobbes&innerKey=Last_Secure_Login&value=' + str(current_time), 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=hobbes&innerKey=Authorization_Server_IP_General&value=7.12.19.125', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=mill&inner_key=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=mill&inner_key=Authorization_Server_PORT_Secure&value=443', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=mill&inner_key=Last_Secure_Login&value=' + str(current_time), 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=mill&inner_key=Authorization_Server_IP_General&value=7.13.22.85', 'POST')
 
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=aquinas&innerKey=Last_Secure_Login&value=' + str(current_time - 1000000), 'POST')
-    SampleUtilities.data_setup(client, 'referencedata/tables/rest_api_samples_server_access?outerKey=aquinas&innerKey=Authorization_Server_IP_General&value=7.12.15.12', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=hobbes&inner_key=Authorization_Server_IP_Secure&value=6.3.9.12', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=hobbes&inner_key=Authorization_Server_PORT_Secure&value=22', 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=hobbes&inner_key=Last_Secure_Login&value=' + str(current_time), 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=hobbes&inner_key=Authorization_Server_IP_General&value=7.12.19.125', 'POST')
+
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=aquinas&inner_key=Last_Secure_Login&value=' + str(current_time - 1000000), 'POST')
+    SampleUtilities.data_setup(client, 'reference_data/tables/rest_api_samples_server_access?outer_key=aquinas&inner_key=Authorization_Server_IP_General&value=7.12.15.12', 'POST')
 
 
 # This function represents work done by an external system to determine which
 # users should have their secure access revoked.
 def get_old_data_threshold(data):
-    total_time = 0;
-    counter = 0;
+    total_time = 0
+    counter = 0
     for outer_key in data:
         for inner_key in data[outer_key]:
             if(('Authorization_Server_IP_Secure' in data[outer_key]) and ('Last_Secure_Login' in data[outer_key])):
-                total_time += data[outer_key]['Last_Secure_Login']['lastSeen']
+                total_time += data[outer_key]['Last_Secure_Login']['last_seen']
                 counter += 1
 
-    return total_time/counter
+    return total_time / counter
 
 
 # This function represents work done by an external reporting tool.
 def print_custom_report(data):
-    
-    #print the table headers.
+
+    # print the table headers.
     usernames = data.keys()
     table_headers_dict = {}
     table_headers = []
     known_headers = ['Authorization_Server_IP_Secure', 'Authorization_Server_PORT_Secure', 'Authorization_Server_IP_General', 'Last_Secure_Login']
-    
-    #calculate the full list table headers, since not all columns will exist
+
+    # calculate the full list table headers, since not all columns will exist
     # in each row.
     for user in usernames:
         for header in data[user]:
             table_headers_dict[header] = ""
-    
+
     # Get the table headers into a list and sort them.
     for header in table_headers_dict:
         table_headers.append(header)
     table_headers.sort()
-    
-    #pretty print the table headers.
+
+    # pretty print the table headers.
     print('----------------------------------------'.ljust(40), end="")
     for header in table_headers:
         print('----------------------------------------'.ljust(40), end="")
@@ -168,12 +168,12 @@ def print_custom_report(data):
     print()
     print('----------------------------------------'.ljust(40), end="")
     for header in table_headers:
-         print('----------------------------------------'.ljust(40), end="")
-    
+        print('----------------------------------------'.ljust(40), end="")
+
     unsecure_users = {}
     secure_user = {}
     expired_users = {}
-     
+
     # sort the users into categories.
     for user in usernames:
         # if a user has a secure IP assigned, they are a secure user.
@@ -186,20 +186,20 @@ def print_custom_report(data):
         # otherwise they are a general user.
         else:
             unsecure_users[user] = data[user]
-        
-    
-    #pretty print the table rows.
+
+
+    # pretty print the table rows.
     print("\nUnsecure Users")
     for username in unsecure_users:
         print_row(username, unsecure_users[username], table_headers, known_headers, "N/A")
-    
+
     print("\nExpired Secure Users")
     for username in expired_users:
         print_row(username, expired_users[username], table_headers, known_headers, "Expired")
-    
+
     print("\nSecure Users")
     for username in secure_user:
-       print_row(username, secure_user[username], table_headers, known_headers, "Not Set")
+        print_row(username, secure_user[username], table_headers, known_headers, "Not Set")
 
 
 # This function prints a row of the custom report based on the information
@@ -211,11 +211,11 @@ def print_row(username, user, table_headers, known_headers, not_set_message):
             # Format the login information as a date.
             if (column == 'Last_Secure_Login'):
                 login_time = time.localtime(int(user[column]['value']) / 1000)
-                print( time.strftime('%Y-%m-%d %H:%M:%S', login_time).ljust(40), end="")
+                print(time.strftime('%Y-%m-%d %H:%M:%S', login_time).ljust(40), end="")
             else:
                 print(user[column]['value'].ljust(40), end="")
         # If this known column does not exist for this user, print the 'not set' message.
-        elif ( column in known_headers):
+        elif (column in known_headers):
             print(not_set_message.ljust(40), end="")
         # Leave unassigned custom columns (if any exist) blank.
         else:

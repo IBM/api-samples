@@ -1,31 +1,27 @@
-import ReadConfig
+from urllib.error import HTTPError
+from urllib.request import Request
+from urllib.request import urlopen
+
 import MakeConfig
-try:
-    from urllib.request import Request
-    from urllib.request import urlopen 
-    from urllib.error import HTTPError
-except ImportError:
-    from urllib2 import Request
-    from urllib2 import urlopen
-    from urllib2 import HTTPError
+import ReadConfig
 
 
 # This is a simple HTTP client that can be used to access the REST API
 class RestApiClient:
 
     # Constructor for the RestApiClient Class
-    def __init__(self, settings=None, config_file='../config.ini', config_section='DEFAULT'):
-        
+    def __init__(self, settings=None, config_section='DEFAULT'):
+
         # Gets configuration information from config.ini. See ReadConfig
         # for more details.
         if not settings:
-            settings = ReadConfig.main(config_section=config_section, file_name=config_file)
+            settings = ReadConfig.main(config_section=config_section)
         if not settings:
             MakeConfig.main()
-            settings = ReadConfig.main(config_section=config_section, file_name=config_file)
+            settings = ReadConfig.main(config_section=config_section)
 
         # Set up the default HTTP request headers
-        self.headers = {b'Accept': settings['accept'] }
+        self.headers = {b'Accept': settings['accept']}
         if settings['version']:
             self.headers['Version'] = settings['version']
 
@@ -37,11 +33,11 @@ class RestApiClient:
             self.auth = {'Authorization': settings['authorization']}
 
         self.headers.update(self.auth)
-        
+
         # Set up the server's ip address and the base URI that will be used for
         # all requests
         self.server_ip = settings['server_ip']
-        self.base_uri = '/restapi/api/'
+        self.base_uri = '/api/'
 
 
     # This method is used to set up an HTTP request and send it to the server
@@ -55,13 +51,13 @@ class RestApiClient:
 
         # Send the request and receive the response
         request = Request(
-            'https://'+self.server_ip+self.base_uri+path, headers=headers)
+            'https://' + self.server_ip + self.base_uri + path, headers=headers)
         request.get_method = lambda: method
         try:
-            #returns response object for opening url.
+            # returns response object for opening url.
             return urlopen(request, data)
         except HTTPError as e:
-            #an object which contains information similar to a request object
+            # an object which contains information similar to a request object
             return e
 
     # This method constructs the query string
@@ -69,19 +65,27 @@ class RestApiClient:
 
         path = endpoint + '?'
 
-        for kv in params:
-            if kv[1]:
-                path += kv[0]+'='+kv[1]+'&'
+        if isinstance(params, list):
+
+            for kv in params:
+                if kv[1]:
+                    path += kv[0]+'='+kv[1]+'&'
+            
+        else:
+            for k, v in params.items():
+                if params[k]:
+                    path += k+'='+v+'&'
+
         # removes last '&' or hanging '?' if no params.
         return path[:len(path)-1]
-    
-    
+
+
     # Simple getters that can be used to inspect the state of this client.
     def get_headers(self):
         return self.headers
-    
+
     def get_server_ip(self):
         return self.server_ip
-    
+
     def get_base_uri(self):
         return self.base_uri

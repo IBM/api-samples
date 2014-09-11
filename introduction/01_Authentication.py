@@ -6,17 +6,19 @@
 
 # For a list of the endpoints that you can use along with the parameters that
 # they accept you can view the REST API interactive help page on your
-# deployment at https://<hostname>/restapi/doc
+# deployment at https://<hostname>/api_doc
 # You can also retrieve a list of available endpoints through the API itself
 # at the /api/help/capabilities endpoint.
 
-import sys, os
-sys.path.append(os.path.realpath('../modules'))
-import urllib.request
+import base64
 import configparser
 import json
-import base64
+import sys
+import os
+import urllib.request
+sys.path.append(os.path.realpath('../modules'))
 import MakeConfig
+
 
 def main():
     
@@ -26,50 +28,41 @@ def main():
     create_config_file()
     config = configparser.ConfigParser()
     config.read('../config.ini')
-    
-    if 'username' in config['DEFAULT']:
-        username = config['DEFAULT']['username']
-        password = config['DEFAULT']['password']
 
-
-        # Credentials may be passed as the base 64 encoding of the string
-        # username:password.
-        userpass = username + ":" + password
-        encoded_credentials = b"Basic " + base64.b64encode(userpass.encode('ascii'))
-    
-        # Note that base 64 encoding is not a secure form of encoding. The security
-        # of the contents of requests relies on ssl encryption in the HTTPS
-        # protocol. You should ensure that connections made to the REST API are
-        # properly secured to ensure that sensitive information can not be
-        # intercepted.
-        print(encoded_credentials)
-    
-        # You must pass your credentials in the https request headers.
-        # You may also specify the version of the API you want to use and the format
-        # of the response you will receive. For the purpose of these samples,
-        # version 1.0 of the API will be used and responses will be in JSON.
-        # Note that if you pass a version number that does not exist, the API
-        # will select the highest matching version lower than the one you requested
-        # and use that version instead.
-        headers = {'Version': '1.0', 'Accept': 'application/json', 'Authorization': encoded_credentials}
-        print(headers)
-        
-    else:
-        # You can also use a security token for authentication.
-        # The format for passing a security token is "'SEC': token" instead of
-        # "'Authorization': 'Basic encoded_credentials'".
-        auth_token = config['DEFAULT']['auth_token']
-        headers = {'Version': '1.0', 'Accept': 'application/json', 'SEC': auth_token}
-        print(headers)   
-        
-        
-        
-            
+    username = config['DEFAULT']['username']
+    password = config['DEFAULT']['password']
     server_ip = config['DEFAULT']['server_ip']
 
+    # Credentials may be passed as the base 64 encoding of the string
+    # username:password.
+    userpass = username + ":" + password
+    encoded_credentials = b"Basic " + base64.b64encode(userpass.encode('ascii'))
+
+    # Note that base 64 encoding is not a secure form of encoding. The security
+    # of the contents of requests relies on ssl encryption in the HTTPS
+    # protocol. You should ensure that connections made to the REST API are
+    # properly secured to ensure that sensitive information can not be
+    # intercepted.
+    print(encoded_credentials)
+
+    # You must pass your credentials in the https request headers.
+    # You may also specify the version of the API you want to use and the format
+    # of the response you will receive. For the purpose of these samples,
+    # version 2.0 of the API will be used and responses will be in JSON.
+    # Note that if you pass a version number that does not exist, the API
+    # will select the highest matching version lower than the one you requested
+    # and use that version instead.
+    headers = {'Version': '2.0', 'Accept': 'application/json', 'Authorization': encoded_credentials}
+    print(headers)
+    # You can also use a security token for authentication.
+    # The format for passing a security token is "'SEC': token" instead of
+    # "'Authorization': 'Basic encoded_credentials'".
+
     # REST API requests are made by sending an HTTPS request to specific URLs.
-    url = 'https://' + server_ip + '/restapi/api/help/capabilities'
+    url = 'https://' + server_ip + '/api/help/capabilities'
     print(url)
+    # There are several base URL aliases that can be used to access the api.
+    # As of this release '/api' is the preferred alias.
 
     # Here we are creating a GET request that will return a list of all
     # endpoints available to you on the system. This endpoint provides

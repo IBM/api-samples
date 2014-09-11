@@ -1,53 +1,60 @@
 #This file contains a command line client that can be used to access the API.
 
-import sys, os
+import sys
+import os
 sys.path.append(os.path.realpath('modules'))
 import json
 from RestApiClient import RestApiClient
 import ReadConfig
 import MakeConfig
 from optparse import OptionParser
-from optparse import BadOptionError
-from optparse import AmbiguousOptionError
 import re
-try:
-    import urllib.parse as urlparse
-except ImportError:
-    import urllib as urlparse
+import urllib.parse as urlparse
 
-# This is to modify the behaviour of the OptParser to make it behave more like
-# argparse. Ignore.
-class PassThroughOptionParser(OptionParser):
-    """
-    An unknown option pass-through implementation of OptionParser.
 
-    When unknown arguments are encountered, bundle with largs and try again,
-    until rargs is depleted.  
+# This is to modify the behaviour of the OptParser to make it check arguments
+# more strictly
+class NonCorrectingOptionParser(OptionParser):
 
-    sys.exit(status) will still be called if a known argument is passed
-    incorrectly (e.g. missing arguments or bad argument types, etc.)        
-    """
-    def _process_args(self, largs, rargs, values):
-        while rargs:
-            try:
-                OptionParser._process_args(self,largs,rargs,values)
-            except (BadOptionError,AmbiguousOptionError) as e:
-                largs.append(e.opt_str)
+    def _match_long_opt(self, opt):
+        # Is there an exact match?
+        if opt in self._long_opt:
+            return opt
+        else:
+            self.error('"{0}" is not a valid command line option.'.format(opt))
 
 # This method return the parser to parse our command line arguments.
 
+USAGE_MESSAGE = "Type 'python apiclient.py --help' for usage."
+
+def get_params(option, opt_str, value, parser):
+    
+    args = []
+    next_opt = False
+    while parser.rargs and not next_opt:
+        if not parser.rargs[0].startswith('--'):
+            args.append(parser.rargs.pop(0))
+        else:
+            next_opt = True
+
+    setattr(parser.values, option.dest, args)
+    
+
+
 def get_parser():
 
-    parser = PassThroughOptionParser(add_help_option=False)
+    parser = NonCorrectingOptionParser(add_help_option=False)
+
     parser.add_option('-h', '--help', help='Show help message', action='store_true')
     parser.add_option('--print_api', help='Print all available endpoints of the API', action='store_true')
-    parser.add_option('--api', help='Path of the API to call. Required', action='store')
-    parser.add_option('--method', help='HTTP method to call the API using, either GET, POST, DELETE', action='store', choices=['GET', 'POST', 'DELETE'])
-    parser.add_option('--output', help='Output format, either application/json, application/xml, application/csv, or text/table. Defaults to json.', action='store', default='application/json')
-    parser.add_option('--content_type', help='Content-type of body parameter. Required only for endpoints that have \'body\' parameters.')
-    parser.add_option('--ver', help='The version of the endpoint you would like to use. Default is most recent version', action='store')
-    parser.add_option('--add_headers', help='For any headers you would like to pass. This is not required to use any endpoint. Must be in format "<name1>=<value1>+<name2>=<value2>"')
-    
+    parser.add_option('-a', '--api', help='Path of the API to call. Required', action='store')
+    parser.add_option('-m', '--method', help='HTTP method to call the API using, either GET, POST, DELETE', action='store', choices=['GET', 'POST', 'DELETE'])
+    parser.add_option('--response_format', help='Content-type of response, either application/json, application/xml, application/csv, or text/table. Defaults to json.', action='store', default='application/json')
+    parser.add_option('--request_format', help='Content-type of body parameter. Required only for endpoints that have \'body\' parameters.')
+    parser.add_option('-v','--version', help='The version of the endpoint you would like to use. Default is most recent version', action='store')
+    parser.add_option('--add_headers', help='For any headers you would like to pass. This is not required to use any endpoint. Must be in format "<name1>=<value1>+<name2>=<value2>"') 
+    parser.add_option('-p','--params', help='For any parameters you would like to pass. Individual parameters are separated by spaces.\nExample: --params <name1>="<value1>" <name2>="<value2>"', action='callback', callback=get_params, dest="params")
+
     return parser
 
 # This method takes the output of the /help/capabilities endpoint and prints it
@@ -105,20 +112,28 @@ def print_api(settings):
 
 def print_help(parser):
     print(parser.format_help().strip())
-    print("""  --<parameter_name>="<parameter_value>"
-                   Any query parameters must be in this format. 
-                   Ex. name="example"
+    print("""
 
-Example query: python apiclient.py --api /help/capabilities --method GET --httpMethods="['POST']" --version="0.1" 
+Example query: python apiclient.py --api /help/capabilities --method GET --params httpMethods="['GET']" categories="['/help']" 
 
 """)
+    
+def parse_params(args):
+
+    params = {}
+    if args:
+        for x in args:
+            key_value = x.split('=', 1)
+            pair = {key_value[0]: key_value[1]}
+            params.update(pair)
+    return params
 
 # This method calls the api for the user.
 
 def make_request(args, settings):
 
     # Gets endpoint from --api ENDPOINT argument
-    endpoint = args[0].api
+    endpoint = args.api
 
     # Strips endpoint of first forward slash, if it has one. Allows user to 
     # supply or omit forward slash from beginning of endpoint.
@@ -128,14 +143,11 @@ def make_request(args, settings):
     # Settings dict is copied so it can be modified.
     util_settings = settings.copy()
 
-    # Changes 'Accept' header to --output OUTPUT argument.
-    util_settings['accept'] = args[0].output
-    # Clears default version from settings dict.
-    util_settings['version'] = None
+    # Changes 'Accept' header to --response_format RESPONSE_FORMAT argument.
+    util_settings['accept'] = args.response_format
 
-    # Changes 'Version' header to --ver VER argument.
-    if args[0].ver:
-        util_settings['version'] = args[0].ver
+    # Changes 'Version' header to --version VERSION argument, or clears the version.
+    util_settings['version'] = args.version
 
     # Creates RestApiClient with user supplied settings. (So it doesn't fall 
     # to module defaults)
@@ -143,53 +155,65 @@ def make_request(args, settings):
 
     # This code snippet adds any extra headers you wish to send with your api 
     # call. Must be in name1=value1+name2=value2 form.
-    headers = api_client.headers
-
-    if args[0].add_headers:
-        header_pairs = args[0].add_headers.split("+")
-        for header_pair in header_pairs:
-            header_pair = header_pair.split("=")
-            headers[header_pair[0]] = header_pair[1]
+    if args.add_headers:
+        try:
+            header_pairs = args.add_headers.split("+")
+            for header_pair in header_pairs:
+                header_pair = header_pair.split("=", 1)
+                api_client.headers[header_pair[0]] = header_pair[1]
+        except IndexError as ex:
+            raise ParseError("Error: Parsing headers failed. Make sure headers are in format \"<name1>=<value1>+<name2>=<value2>\"", ex)
 
     # This adds any query/body params to the list of query/body params.
-    params = []
-    for x in range(1, len(args[1]), 2):
-        name_value = [args[1][x-1][2:], args[1][x]]
-        params.append(name_value)
- 
+    
+    params = parse_params(args.params)
+
     # Checks content_type to see if it should send params as body param, or 
     # query param.
     content_type = None
 
-    # Gets Content-type from --content_type CONTENT_TYPE argument.
-    if args[0].content_type:
-        headers['Content-type'] = args[0].content_type
-        content_type = args[0].content_type
+    # Gets Content-type from --request_format REQUEST_FORMAT argument.
+    if args.request_format:
+        api_client.headers['Content-type'] = args.request_format
+        content_type = args.request_format
 
     # If content_type is application/json, then it is sending a JSON object as
     # a body parameter.
     try:
         if content_type == 'application/json':
-            data = None
-            for name_value in params:
-                data = name_value[1].encode('utf-8')
-            return api_client.call_api(endpoint, 'POST', headers, data=data)
+            data = params['data'].encode('utf-8')
+            return api_client.call_api(endpoint, 'POST', data=data)
     # Else it sends all params as query parameters.
         else:
-            for name_value in params:
-                name_value[1] = urlparse.quote(name_value[1])
-            return api_client.call_api(endpoint, args[0].method, headers, params)
+            for key, value in params.items():
+                params[key] = urlparse.quote(value)
+            return api_client.call_api(endpoint, args.method, params=params)
               
     except IndexError:
-        raise Exception('Parameter parsing failed. Make sure any parameters follow the syntax --<paramname>="<paramvalue>"')
+        raise ParseError('Error: Parameter parsing failed. Make sure any parameters follow the syntax <paramname>="<paramvalue>"')
 
-    
+def handle_response_error(response, body):
 
-def main():
+    try:
+        response_json = json.loads(body)
+        if response.code == 401:
+            failed_auth()
+        elif response.code == 422 and response_json['code'] == 36:
+            print("\nFailed to parse Range header. The syntax of the --range parameter must follow 'x-y'.")
+            print("Example: --range 0-1\n")
+        return [response_json['code'], json.dumps(response_json, indent=2, separators=(',', ':'))]
+    except ValueError:
+        print("Failed to parse JSON of " + str(response.code) + " error response body")
+        print("Text of Response Body: \n")
+        return [None, body]
 
-    # Gets parser to parse args.
-    parser = get_parser()
-    args = parser.parse_args()
+def failed_auth():
+    print("AuthorizationError:")
+    print("\nToken, or user credentials failed to authorize api call. Please verify your token, or user credentials are correct.\n") 
+    print("Body returned by failed request:\n")
+
+
+def main(args):
 
     # Gets settings dict by reading config.ini.
     settings = ReadConfig.main(file_name='config.ini')
@@ -199,30 +223,40 @@ def main():
         MakeConfig.main(file_name='config.ini')
         settings = ReadConfig.main(file_name='config.ini')
 
-    # If -h, --help is true. Prints api help.
-    if args[0].help:
-        print_help(parser)
     # Then if --print_api is true, then apiclient prints output of /help/capabilities
     # endpoint.
-    elif args[0].print_api:
+    if args[0].print_api:
         print_api(settings)
     # Then if --api and --method both have values, apiclient will attempt an api request.
     elif args[0].api and args[0].method:
         # Gets response object from making api call.
-        response = make_request(args, settings)
+        response = make_request(args[0], settings)
         # Determines content type of response object (for printing).
         content_type = response.headers.get('Content-type')
         # Gleans body from response object.
+        print(response.headers)
         body = response.read().decode('utf-8')
-
+        output = body
+        if response.code >= 300:
+            #ERROR OCCURED, HANDLE ERROR
+            [error_code, output] = handle_response_error(response, body)
+        #SUCCESSFUL CALL
         # If JSON object, it pretty prints JSON
         # Else it merely prints the body of the response object.
-        if content_type == 'application/json':
-            response_json = json.loads(body)
-            print(json.dumps(response_json, indent=2, separators=(',', ':')))
-        else:
-            print(body)
-    # If no args or incomplete args are sent, then print_help(parser) is called.
+        elif content_type == 'application/json':
+            if body:
+                try:
+                    response_json = json.loads(body)
+                    output = json.dumps(response_json, indent=2, separators=(',', ':'))
+                except ValueError:
+                    print("Failed to parse JSON, unparsed JSON below: ")
+            else:
+                print("\nResponse body was empty.\n")
+        print(response.code)
+        print("")
+        print(output)
+
+    # If either only api, or method args are sent, then then this error message is printed.
     else:
         message = ""
         if args[0].api:
@@ -231,9 +265,16 @@ def main():
             message += "api endpoint must be specified by --api argument\n"
         if message:
             print("ArgumentError: " + message)
-        print("Type 'python apiclient.py --help' for usage.\n")
+        print(USAGE_MESSAGE+"\n")
             
 
 
 if __name__ == "__main__":
-    main()
+    parser = get_parser()
+    args = parser.parse_args()
+    if args[0].help:
+        print_help(parser)
+    elif not sys.argv[1:]:   # NO COMMAND LINE ARGUMENTS
+        print(USAGE_MESSAGE+"\n")
+    else:
+        main(args)
