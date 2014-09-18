@@ -16,10 +16,10 @@
 import json
 import os
 import sys
-sys.path.append(os.path.realpath('../modules'))
+sys.path.append(os.path.realpath('../../restapi_modules'))
 
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+from restapi_utils.RestApiClient import RestApiClient
+import restapi_utils.SampleUtilities as SampleUtilities
 
 def main():
 	# First we have to create our client
