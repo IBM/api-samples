@@ -15,7 +15,7 @@ See [What's new for the QRadar API's in 7.2.3](https://www.ibm.com/developerwork
 ## Introduction
 
 This package contains sample python code that demonstrates how to use the
-QRadar REST API. The API is access by sending specially crafted HTTP
+QRadar REST API. The API is accessed by sending specially crafted HTTP
 requests to specific URLs on the QRadar console. These URLs, known as
 **“endpoints”**, each perform a specific function. Some endpoints perform
 different functions depending on whether you send a GET, POST, or
