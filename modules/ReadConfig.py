@@ -47,35 +47,18 @@ def encode_credentials(username, password):
 # settings dictionary
 def parse_settings(config, config_section):
 
-    if sys.version_info >= (3, 0):
-        settings = {'version': '2.0',
-                            'accept': 'application/json',
-                            'server_ip': config[config_section]['server_ip']}
-        if 'root_password' in config[config_section]:
-            settings['root_password'] = config[config_section]['root_password']
-        if 'auth_token' in config[config_section]:
-            settings['auth_token'] = config[config_section]['auth_token']
-        else:
-            authorization = encode_credentials(
-                config[config_section]['username'],
-                config[config_section]['password'])
-            settings['authorization'] = authorization
-
-    else:
-        settings = {'version': '1.0',
+    settings = {'version': '3.0',
                         'accept': 'application/json',
-                        'server_ip': config.get(config_section, 'server_ip')}
-        try:
-            settings['root_password'] = config.get(config_section, 'root_password')
-        except:
-            pass
-        try:
-            settings['auth_token'] = config.get(config_section, 'auth_token')
-        except:
-            authorization = encode_credentials(
-                config.get(config_section, 'username'),
-                config.get(config_section, 'password'))
-            settings['authorization'] = authorization
+                        'server_ip': config[config_section]['server_ip']}
+    if 'root_password' in config[config_section]:
+        settings['root_password'] = config[config_section]['root_password']
+    if 'auth_token' in config[config_section]:
+        settings['auth_token'] = config[config_section]['auth_token']
+    else:
+        authorization = encode_credentials(
+            config[config_section]['username'],
+            config[config_section]['password'])
+        settings['authorization'] = authorization
 
     return settings
 
