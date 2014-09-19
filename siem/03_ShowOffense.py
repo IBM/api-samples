@@ -39,6 +39,10 @@ def main():
 	# Print out the result
 	SampleUtilities.pretty_print_response(response)
 
+	if (response.code != 200):
+		print('Call Failed')
+		sys.exit(1)
+
 	# Prompt the user for an ID
 	offense_ID = input('Select an offense to show. Please type its ID or quit. ')
 	
@@ -85,6 +89,11 @@ def main():
 		SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID +
 			'?status=OPEN', 'POST')
 		response = client.call_api('siem/offenses/' + offense_ID + '?status=OPEN', 'POST')
+
+		if (response.code != 200):
+			print('Call Failed')
+			SampleUtilities.pretty_print_response(response)
+			sys.exit(1)
 
 		print('Offense ' + offense_ID + ' shown (opened)')
 
