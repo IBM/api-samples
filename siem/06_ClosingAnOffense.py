@@ -14,7 +14,10 @@
 # sample is being run against.  
 # THIS SAMPLE WILL MAKE CHANGES TO THE OFFENSE IT IS RUN AGAINST
 # The scenario demonstrates the following actions:
-#  - 
+#  - Using filter and field parameters with GET endpoints to GET a comprehensive list
+#  - Selecting objects with GET from known lists of things with specific properties
+#  - How to post notes on an offense
+#  - How to close an offense
 
 # To view a list of the endpoints with the parameters they accept, you can view
 # the REST API interactive help page on your deployment at
