@@ -132,12 +132,18 @@ def main():
 	# Quote some text for the not to contain
 	note_text = urllib.parse.quote(input('Please enter a note to close the offense with:\n'))
 
-	confirm = input('Are you sure you want to close offense ' + offense_ID + ' with closing reason ' 
-		+ closing_reason_ID + ' and note ' + note_text + '? (YES/no)\n')
-
-	if (confirm != 'YES'):
-		print('Not closing offense ' + offense_ID)
-		exit(0)
+	# Ensure that the user really wants to close the offense
+	while True:
+		confirm = input('Are you sure you want to close offense ' + offense_ID + ' with closing reason ' 
+			+ closing_reason_ID + ' and note ' + note_text + '? (YES/no)\n')
+	
+		if (confirm == 'YES'):
+			break
+		elif (confirm == 'no'):
+			print('Not closing offense ' + offense_ID)
+			exit(0)
+		else:
+			print(confirm + ' is not a valid response.')
 
 	# Once the user has confirmed they want to close the offense, we can start updating the offense
 
@@ -151,7 +157,8 @@ def main():
 		print('Call Failed Creating Note')
 		exit(1)
 
-	# Then we change the status to CLOSED and add a closing reason
+	# Then we change the status to CLOSED and add a closing reason. Also using fields to trim down
+	# the data recieved by POST.
 	SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID + '?status=CLOSED&closing_reason_id='
 		+ closing_reason_ID + '&fields=id,description,status,offense_type,offense_source', 'POST')
 	response = client.call_api('siem/offenses/' + offense_ID + '?status=CLOSED&closing_reason_id=' + closing_reason_ID +
