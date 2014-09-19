@@ -40,12 +40,17 @@ def main():
 		print('Call Failed')
 		sys.exit(1)
 
-	# Double check that the user wants to create a new closing reason since
-	confirmation = input('Do you want to create a new closing reason? (YES/no) ')
+	# Double check that the user wants to create a new closing reason
+	while True:
+		confirmation = input('Are you sure you want to create a new closing reason? (YES/no) ')
 
-	if (confirmation != 'YES'):
-		print('Not creating a new closing reason')
-		exit(0)
+		if (confirmation == 'YES'):
+			break
+		elif (confirmation == 'no'):
+			print('Not creating a new closing reason')
+			exit(0)
+		else:
+			print(confirmation + 'is not a valid answer.')
 
 	# Have the user input the text. quote it to retain special characters like spaces.
 	text = urllib.parse.quote(input('Please enter the text you want to put in the closing reason.\n'))

@@ -144,7 +144,7 @@ source_network,destination_networks,assigned_to'''
 			break
 		else:
 			# Wait for the user to display the next set
-			input('Push any enter to bring up the next ' + str(offenses_per_page) + ' offenses.')
+			input('Push enter to bring up the next ' + str(offenses_per_page) + ' offenses.')
 			page_position += offenses_per_page
 		
 	print('All offenses have been printed to the screen.')
