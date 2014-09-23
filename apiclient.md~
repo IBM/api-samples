@@ -36,8 +36,8 @@ Arguments for basic calls:
 ```
 
 * This is the path to your api endpoint. It is the part of the url that 
-you would append to `http://<server_ip>/restapi/api`. For example 
-`http://<server_ip>/restapi/api/referencedata/sets`.
+you would append to `http://&lt;server_ip>/restapi/api`. For example 
+`http://&lt;server_ip>/restapi/api/referencedata/sets`.
 
 ```
 --method METHOD
@@ -65,7 +65,7 @@ the url.
 ## Calls with query parameters
 
 If you have any query parameters, they must be entered with the syntax 
-`--params <param_name>="<param_value>"`. For example, to get all 
+`--params &lt;param_name>="&lt;param_value>"`. For example, to get all 
 API endpoints of `/help` that make use of httpMethod GET, 
 you can call `/help/capabilities` and supply the query parameters 
 `httpMethods` and `categories`. Since httpMethods asks for a JSON object, 
@@ -81,7 +81,7 @@ are query, or body parameters.
 ## Calls with body parameters
 
 Body parameters are entered in the command line the same way as query 
-parameters, `--<param_name>="<param_value>"`, except you must specify the 
+parameters, `--&lt;param_name>="&lt;param_value>"`, except you must specify the 
 content type of the body you are sending with the `--content_type TYPE` 
 argument. For example, to bulkload data to an existing set of element type 
 ALN named `exampleset`:

@@ -32,9 +32,9 @@ import os
 import sys
 import time
 import urllib.parse
-import Cleanup
-
 sys.path.append(os.path.realpath('../modules'))
+
+import Cleanup
 from RestApiClient import RestApiClient
 import SampleUtilities as SampleUtilities
 

@@ -71,15 +71,16 @@ class APIClient(RestApiClient):
 
         headers = self.headers.copy()
         headers[b'Accept'] = response_type
+        
+        if ( (range_start is not None) and (range_end is not None) ):
+            headers[b'Range'] = 'items=' + str(range_start) + '-' + str(range_end)
 
         # sends a GET request to
         # https://<server_ip>/rest/api/ariel/searches/<search_id>
         endpoint = self.endpoint_start + "searches/" + search_id + '/results'
 
-        params = [['range_start', range_start], ['range_end', range_end]]
-
         # response object body should contain information pertaining to search.
-        return self.call_api(endpoint, 'GET', headers, params=params)
+        return self.call_api(endpoint, 'GET', headers)
 
     def update_search(self, search_id, save_results=None, status=None):
 
