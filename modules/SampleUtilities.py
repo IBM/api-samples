@@ -15,13 +15,16 @@ def pretty_print_response(response):
 def pretty_print_request(client, path, method, headers=None):
     ip = client.get_server_ip()
     base_uri = client.get_base_uri()
-    if not headers:
-        headers = client.get_headers()
+    
+    header_copy = client.get_headers().copy()
+    if headers is not None:
+        header_copy.update(headers)
+    
     url = 'https://' + ip + base_uri + path
     print('Sending a ' + method + ' request to:')
     print(url)
     print('with these headers:')
-    print(headers)
+    print(header_copy)
     print()
 
 
@@ -35,3 +38,4 @@ def data_setup(client, path, method):
         print("An error occurred setting up sample data:")
         pretty_print_response(response)
         sys.exit(1)
+    return response
