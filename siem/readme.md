@@ -109,8 +109,10 @@ The example shows how to assign offenses to people given the IP addresses
 of the destination_networks, and a way to keep up to date on which offenses
 need to be closed soon, and which offenses should have been closed by now.
 
-This sample uses a file containing the data in the format:  
+This sample uses a file (default assignment_data.txt)containing the data 
+in the format:  
 `destination_network    name      days_to_close`  
+with non-newline whitespace separating the elements.  
 For this sample to work all names must be existing users on the system
 and there must already be offenses on the system the
 sample is being run against.  

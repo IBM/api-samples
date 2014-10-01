@@ -6,8 +6,10 @@
 # of the destination_networks, and a way to keep up to date on which offenses
 # need to be closed soon, and which offenses should have been closed by now.
 
-# This sample uses a file containing the data in the format:
+# This sample uses a file (default assignment_data.txt)containing the data 
+# in the format:
 # destination_network    name      days_to_close
+# with non-newline whitespace separating the elements.
 # For this sample to work all names must be existing users on the system.
 
 # For this scenario to work there must already be offenses on the system the
@@ -89,6 +91,20 @@ def main():
     # the user to see.
     offense_list = json.loads(response.read().decode('utf-8'))
     print (json.dumps(offense_list, indent=4))
+
+    # Check if the user really wants to proceed, as changes will be made to the offenses
+    while True:
+        confirmation = input('This sample is about to assign offenses to users as specified'
+                             ' by assignment_data.txt. Are you sure you want to proceed?'
+                             ' (YES/no) ')
+        if (confirmation == 'YES'):
+            break
+        elif (confirmation == 'no'):
+            print('You have chosen not to proceed with assigning offenses.')
+            exit(0)
+        else:
+            print(confirmation + ' is not a valid answer.')
+
 
     # If there aren't any offenses, don't assign anything.
     if (len(offense_list) == 0):
