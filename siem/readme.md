@@ -102,3 +102,22 @@ The scenario demonstrates the following actions:
 - Selecting objects with `GET` from known lists of things with specific properties
 - How to post notes on an offense
 - How to close an offense
+
+### 07_ManagingOffenses.py
+Here we will be showing an example of how to manage offenses and users. 
+The example shows how to assign offenses to people given the IP addresses
+of the destination_networks, and a way to keep up to date on which offenses
+need to be closed soon, and which offenses should have been closed by now.
+
+This sample uses a file containing the data in the format:  
+`destination_network    name      days_to_close`  
+For this sample to work all names must be existing users on the system
+and there must already be offenses on the system the
+sample is being run against.  
+THIS SAMPLE WILL MAKE CHANGES TO THE OFFENSES IT IS RUN AGAINST  
+The scenario demonstrates the following actions:
+
+- Using siem/offenses GET with filters and fields parameters
+- Using data returned by API calls
+- Assigning offenses using rules assigned in a separate file
+- Managing offenses by assigning them to separate users and using their creation date to enforce a timetable for dealing with them.
