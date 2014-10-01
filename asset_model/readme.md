@@ -4,7 +4,8 @@ Scripts in this directory demonstrate how to use the `/asset_model` endpoints of
 
 For a list of the endpoints that you can use along with the parameters they
 accept you can view the REST API interactive help page at
-`https://&lt;hostname>/api_doc`.  You can also retrieve a list of available
+`https://&lt;hostname>/api_doc`
+You can also retrieve a list of available
 endpoints through the api itself at the `/api/help/capabilities` endpoint.
 
 
