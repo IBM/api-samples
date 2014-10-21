@@ -97,7 +97,7 @@ def main():
 	SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID + '/notes?note_text=' + text, 'POST')
 	response = client.call_api('siem/offenses/' + offense_ID + '/notes?note_text=' + text, 'POST')
 
-	#Display to the user the new note recieved from POST to confirm that it has been created properly.
+	#Display to the user the new note received from POST to confirm that it has been created properly.
 	SampleUtilities.pretty_print_response(response)
 
 	if (response.code != 201):

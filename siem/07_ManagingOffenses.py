@@ -87,7 +87,7 @@ def main():
         SampleUtilities.pretty_print_response(response)
         exit(1)
 
-    # Decode the offenses we just recieved from the API call and print them out for
+    # Decode the offenses we just received from the API call and print them out for
     # the user to see.
     offense_list = json.loads(response.read().decode('utf-8'))
     print (json.dumps(offense_list, indent=4))
@@ -211,7 +211,7 @@ def main():
 
                     elapsed_time = (current_date - assignment_date).days
 
-                    # If the offense has existed longer than days_to_resolve, display an urgest message.
+                    # If the offense has existed longer than days_to_resolve, display an urgent message.
                     # Instead of displaying an urgent message, any number of things could be done. For example,
                     # if you include an email in the data file, then in this situation you could email 
                     # the user responsible for the offense directly.

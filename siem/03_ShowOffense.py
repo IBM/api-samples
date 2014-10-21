@@ -87,13 +87,13 @@ def main():
 		if (confirmation == 'YES'):
 
 			# Sends in the POST request to update the offense. Also using fields to trim down
-			# the data recieved by POST.
+			# the data received by POST.
 			SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID +
 				'?status=OPEN&fields=id,description,status,offense_type,offense_source', 'POST')
 			response = client.call_api('siem/offenses/' + offense_ID + '?status=OPEN' + 
 				'&fields=id,description,status,offense_type,offense_source', 'POST')
 
-			# Prints the data recieved by POST
+			# Prints the data received by POST
 			SampleUtilities.pretty_print_response(response)
 
 			if (response.code != 200):

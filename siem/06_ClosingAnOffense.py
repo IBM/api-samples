@@ -92,7 +92,7 @@ def main():
 
 	# Now since we're closing an offense, we need a closing reason to justify closing the
 	# offense. While both the status parameter and the closing_reason_id parameters are
-	# optional, they're dependend on one another, so if you close an offense you NEED to 
+	# optional, they're dependent on one another, so if you close an offense you NEED to 
 	# give a reason, and vice versa.
 
 	# Here we're showing the user what options they have when selecting a closing_reason
@@ -127,7 +127,7 @@ def main():
 
 	# Now that we've selected which offense and which closing_reason we want to close, we need
 	# to leave a note. This is to reflect the UI. In the UI when you decide to close an offense,
-	# you have to leave a note usually giviing further information than the closing_id
+	# you have to leave a note usually giving further information than the closing_id
 
 	# Quote some text for the not to contain
 	note_text = urllib.parse.quote(input('Please enter a note to close the offense with:\n'))
@@ -158,7 +158,7 @@ def main():
 		exit(1)
 
 	# Then we change the status to CLOSED and add a closing reason. Also using fields to trim down
-	# the data recieved by POST.
+	# the data received by POST.
 	SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID + '?status=CLOSED&closing_reason_id='
 		+ closing_reason_ID + '&fields=id,description,status,offense_type,offense_source', 'POST')
 	response = client.call_api('siem/offenses/' + offense_ID + '?status=CLOSED&closing_reason_id=' + closing_reason_ID +
