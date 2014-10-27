@@ -109,7 +109,7 @@ The example shows how to assign offenses to people given the IP addresses
 of the destination_networks, and a way to keep up to date on which offenses
 need to be closed soon, and which offenses should have been closed by now.
 
-This sample uses a file (default assignment_data.txt)containing the data 
+This sample uses a file (default assignment_data.csv)containing the data 
 in the format:  
 `destination_network    name      days_to_close`  
 with non-newline whitespace separating the elements.  
@@ -123,3 +123,23 @@ The scenario demonstrates the following actions:
 - Using data returned by API calls
 - Assigning offenses using rules assigned in a separate file
 - Managing offenses by assigning them to separate users and using their creation date to enforce a timetable for dealing with them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+frank.abe,Net-10-172-192.Net_172_16_0_0,5
+tom.felca,Net-10-172-192.Net_10_0_0_0,2
+bill.markinas,Net-10-172-192.Net_192_168_0_0,3

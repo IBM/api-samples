@@ -1,3 +1,0 @@
-Net-10-172-192.Net_172_16_0_0   frank.abe      5
-Net-10-172-192.Net_10_0_0_0     tom.felca      2
-Net-10-172-192.Net_192_168_0_0  bill.markinas  3

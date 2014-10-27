@@ -126,16 +126,25 @@ def main():
 		closing_reason_ID =  input('There has been an error. Please try again or type quit. ')
 
 	# Now that we've selected which offense and which closing_reason we want to close, we need
-	# to leave a note. This is to reflect the UI. In the UI when you decide to close an offense,
-	# you have to leave a note usually giving further information than the closing_id
+	# have the option of leaving a note. This is to reflect the UI. In the UI when you decide to
+	# close an offense, you have option to leave a note usually giving further information than
+	# the closing_id
 
-	# Quote some text for the not to contain
-	note_text = urllib.parse.quote(input('Please enter a note to close the offense with:\n'))
+	make_note = input('Do you want to create a note for this offense? (YES/no) ')
+	if (make_note == 'YES'):
+		# Quote some text for the not to contain
+		note_text = urllib.parse.quote(input('Please enter a note to close the offense with:\n'))
+		while True:
+			if note_text != '':
+				confirmation = input('Are you sure you want to enter the note "' + note_text + '"? (YES/no) ')
+				if (confirmation == 'YES'):
+					break
+			note_text = urllib.parse.quote(input('Please enter a note to close the offense with:\n'))
 
 	# Ensure that the user really wants to close the offense
 	while True:
 		confirm = input('Are you sure you want to close offense ' + offense_ID + ' with closing reason ' 
-			+ closing_reason_ID + ' and note ' + note_text + '? (YES/no)\n')
+			+ closing_reason_ID + '? (YES/no)\n')
 	
 		if (confirm == 'YES'):
 			break
@@ -147,15 +156,16 @@ def main():
 
 	# Once the user has confirmed they want to close the offense, we can start updating the offense
 
-	# First let's create the note
-	SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID + '/notes?note_text=' + note_text, 'POST')
-	response = client.call_api('siem/offenses/' + offense_ID + '/notes?note_text=' + note_text, 'POST')
+	# First let's create the note (if the user wants to)
+	if (make_note == 'YES'):
+		SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID + '/notes?note_text=' + note_text, 'POST')
+		response = client.call_api('siem/offenses/' + offense_ID + '/notes?note_text=' + note_text, 'POST')
 
-	SampleUtilities.pretty_print_response(response)
+		SampleUtilities.pretty_print_response(response)
 
-	if (response.code != 201):
-		print('Call Failed Creating Note')
-		exit(1)
+		if (response.code != 201):
+			print('Call Failed Creating Note')
+			exit(1)
 
 	# Then we change the status to CLOSED and add a closing reason. Also using fields to trim down
 	# the data received by POST.

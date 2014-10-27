@@ -6,7 +6,7 @@
 # of the destination_networks, and a way to keep up to date on which offenses
 # need to be closed soon, and which offenses should have been closed by now.
 
-# This sample uses a file (default assignment_data.txt)containing the data 
+# This sample uses a file (default assignment_data.csv)containing the data 
 # in the format:
 # destination_network    name      days_to_close
 # with non-newline whitespace separating the elements.
@@ -42,12 +42,12 @@ def main():
     # First we have to create our client
     client = RestApiClient()
 
-    # In this half of the sample, we will show one way to use a text file and
+    # In this half of the sample, we will show one way to use a csv file and
     # turn it into a dictionary. Then using that dictionary, and information on
     # the offenses, assign each unclosed offense to the correct person.
 
     # Read your raw string
-    file_name = 'assignment_data.txt'
+    file_name = 'assignment_data.csv'
     file_in = open (file_name, 'r')
 
     # Break it into a list of lines
@@ -59,10 +59,10 @@ def main():
     # in a dictionary for later use and put the dictionary into a list of similar
     # dictionaries.
     for data in file_data:
-        data = data.split()
+        data = data.split(',')
         tmp_dict = {}
-        tmp_dict['destination_network'] = data[0]   #Given the 'destination_network'
-        tmp_dict['name']                = data[1]   #Assign the offense to 'name'
+        tmp_dict['name']                = data[0]   #Assign the offense to 'name'
+        tmp_dict['destination_network'] = data[1]   #Given the 'destination_network'
         tmp_dict['days_to_resolve']     = data[2]   #And it should be resolved by 
                                                     # 'days_to_resolve' days later
         assignment_data.append(tmp_dict)
@@ -73,8 +73,8 @@ def main():
     # Now that we have our rules set out for how to deal with offenses, we need to
     # GET the offenses. The only offenses we need to assign to people are those that
     # aren't CLOSED and aren't already assigned to someone.
-    search = urllib.parse.quote('siem/offenses?filter=status!=CLOSED and '
-                                'assigned_to is null&fields=id,description,'
+    search = urllib.parse.quote('siem/offenses?filter=status!=CLOSED'
+                                '&fields=id,description,'
                                 'magnitude,destination_networks,assigned_to')
 
     # Call the API to GET the offenses
@@ -95,7 +95,7 @@ def main():
     # Check if the user really wants to proceed, as changes will be made to the offenses
     while True:
         confirmation = input('This sample is about to assign offenses to users as specified'
-                             ' by assignment_data.txt. Are you sure you want to proceed?'
+                             ' by assignment_data.csv. Are you sure you want to proceed?'
                              ' (YES/no) ')
         if (confirmation == 'YES'):
             break
@@ -128,7 +128,7 @@ def main():
                 
                 if target_ip in assignment_networks:
                     # Once we match a destination_network to one of the networks specified
-                    # by our assignment rules, we need to find which rule, or line in the text
+                    # by our assignment rules, we need to find which rule, or line in the csv
                     # file, made a match with this current offense's destination_network
                     index = assignment_networks.index(target_ip)
 
@@ -193,12 +193,16 @@ def main():
         for offense in offense_list:
             late = False        # A flag variable to check if the offense has already existed
                                 # longer than the days_to_resolve
+            match = False       # A flag variable to check if the offense was assigned to a
+                                # user in assignment_data.csv
 
             for target_ip in offense['destination_networks']:
 
                 # Check the target_ip and the name of the user the offense was assigned to.
                 if ((target_ip in assignment_networks) and 
                    (offense['assigned_to'] == assignment_names[assignment_networks.index(target_ip)])):
+                    match = True        # Trigger the flag to say this offense has been matched to 
+                                        # a user-network pair in the assignment data
 
                     index = assignment_networks.index(target_ip)
 
@@ -218,11 +222,11 @@ def main():
                     if elapsed_time > int(assignment_data[index]['days_to_resolve']):
                         print('Notify ' + assignment_names[index] + ', ' + ' offense ' + str(offense['id']) +
                                ' must be closed immediately.')
-                        late = True     # Trigger the flag
+                        late = True     # Trigger the flag to say this offense is late
                         break
-            # If it wasn't already late, display a message just to indicate how long the offense has before
-            # it's late.
-            if (not late):
+            # If it wasn't already late, and it was matched with an destination network and user in assignment_data.csv
+            # display a message just to indicate how long the offense has before it's late.
+            if (not late and match):
                 print('Please close offense ' + str(offense['id']) + ' within ' + 
                        str(int(assignment_data[index]['days_to_resolve']) - elapsed_time) + ' days!')
 

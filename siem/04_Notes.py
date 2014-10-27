@@ -79,7 +79,7 @@ def main():
 	# permanently add that note to the offense.
 	while True:
 		confirmation = input('Would you like to make a new note for offense ' + str(offense_ID) + '? You will NOT be'
-			+ ' able to delete this not later. (YES/no)\n')
+			+ ' able to delete this note later. (YES/no)\n')
 
 		if (confirmation == 'no'):
 			print('You have chosen not to post a new note. Exiting sample.')
