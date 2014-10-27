@@ -8,8 +8,8 @@
 
 # This sample uses a file (default assignment_data.csv)containing the data 
 # in the format:
-# destination_network    name      days_to_close
-# with non-newline whitespace separating the elements.
+# name,destination_network,days_to_close
+# with commas separating the elements.
 # For this sample to work all names must be existing users on the system.
 
 # For this scenario to work there must already be offenses on the system the
