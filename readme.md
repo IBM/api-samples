@@ -33,7 +33,7 @@ https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-
 
 
 ## What's new
-For the changes to the API's and the impacts those would have on the samples See the Chapter 1 of **QRadar API Reference Guide**.
+For the changes to the API's and the impacts those would have on the samples See the Chapter 1 of [QRadar API Reference Guide](qradar_api_guide.pdf).
 
 
 
