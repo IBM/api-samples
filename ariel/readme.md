@@ -1,4 +1,11 @@
 ## Ariel Samples 
+This repository contains samples for the `ariel` endpoint of the API.
+
+These samples are provided for reference purposes on an "as is" basis, and are without warranties of any kind.
+
+It is strongly advised that these samples are not run against production systems.
+
+Any issues discovered using the samples should not be directed to QRadar support, but be reported on the Github issues tracker.
 
 Scripts in this directory demonstrate how to use the ariel 
 endpoints (/ariel) of the API.
