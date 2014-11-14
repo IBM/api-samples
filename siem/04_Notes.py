@@ -38,6 +38,10 @@ def main():
 	# Print out the result for the user to see
 	SampleUtilities.pretty_print_response(response)
 
+	if (response.code != 200):
+		print('Call Failed')
+		sys.exit(1)
+
 	# Prompt the user for an ID
 	offense_ID = input('Select an offense to post a note to. Please type its ID or quit. ')
 	
@@ -67,13 +71,23 @@ def main():
 	# Display all the notes on the offense
 	SampleUtilities.pretty_print_response(response)
 
+	if (response.code != 200):
+		print('Call Failed')
+		sys.exit(1)
+
 	# Confirm that the user wants to make a new note for the offense. We have to check this since it will
 	# permanently add that note to the offense.
-	confirmation = input('Would you like to make a new note for offense ' + str(offense_ID) + '? (YES/no)\n')
+	while True:
+		confirmation = input('Would you like to make a new note for offense ' + str(offense_ID) + '? You will NOT be'
+			+ ' able to delete this not later. (YES/no)\n')
 
-	if (confirmation != 'YES'):
-		print('You have chosen not to post a new note. Exiting sample.')
-		exit(0)
+		if (confirmation == 'no'):
+			print('You have chosen not to post a new note. Exiting sample.')
+			exit(0)
+		elif (confirmation == 'YES'):
+			break
+		else:
+			print(confirmation + ' is not a valid answer.')
 
 	# Take in the text for the note. Since the note could be multiple words, and the API calls through a
 	# url, we are using urllib.parse.quote to preserve the spaces and special characters in the note.
@@ -83,8 +97,14 @@ def main():
 	SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID + '/notes?note_text=' + text, 'POST')
 	response = client.call_api('siem/offenses/' + offense_ID + '/notes?note_text=' + text, 'POST')
 
-	#Display to the user the new note to confirm that it has been created properly.
+	#Display to the user the new note recieved from POST to confirm that it has been created properly.
 	SampleUtilities.pretty_print_response(response)
+
+	if (response.code != 201):
+		print('Call Failed')
+		sys.exit(1)
+
+	print('Note added')
 
 if __name__ == "__main__":
     main()

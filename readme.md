@@ -1,18 +1,4 @@
-# QRadar API Samples 7.2.3
-
-Code samples showing the usage of the QRadar REST API.
-
-There is a related [Security Intelligence API Forum] to share ideas, get answers and help others.
-
-[Security Intelligence API Forum]:https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-4d73-94e8-c096abe263ca&ps=25
-
-## What's new in the QRadar API 7.2.3
-
-For the changes to the API's and the impacts those would have on the samples
-See [What's new for the QRadar API's in 7.2.3](https://www.ibm.com/developerworks/community/forums/html/topic?id=3b20ef19-7a0b-4fb0-b095-89732b4a286f&ps=25)
-
-
-## Introduction
+﻿# QRadar API Samples
 
 This package contains sample python code that demonstrates how to use the
 QRadar REST API. The API is accessed by sending specially crafted HTTP
@@ -23,13 +9,13 @@ DELETE request. By linking together calls to these endpoints you can
 implement you own custom business processes or integrate QRadar data
 with external systems.
 
-This package is applicable to version 2.0 of the reference data and ariel APIs
-and 1.0 of the help endpoint. A version number of 2.0 is used by default by
+This package is applicable to version 3.0 of the reference data and ariel APIs
+and 1.0 of the help endpoint. A version number of 3.0 is used by default by
 these samples since the API automatically selects the highest version less than
 or equal to the requested version.
-Endpoints released  **Experimental** may change in future versions of the API. In
+Endpoints released as **"Experimental"** may change in future versions of the API. In
 general, past versions of the API remain available so these samples will
-continue to run against version 2.0. When changes are made in future versions
+continue to run against version 3.0. When changes are made in future versions
 of the API new samples will be released.
 
 The QRadar REST API contains endpoints not covered by these samples.
@@ -38,39 +24,35 @@ examples of more API endpoints.
 
 For a list of the endpoints that you can use along with the parameters
 they accept you can view the REST API interactive help page on your QRadar
-installation at https://&lt;hostname&gt;/api_doc.
+installation at `https://<hostname>/api_doc`
 You can retrieve a list of available endpoints from the API itself at
-the *'/help/capabilities'* endpoint.
+the `/help/capabilities` endpoint.
+
+You can also join the community on our forums at:
+https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-4d73-94e8-c096abe263ca
 
 
 ## What's new
+For the changes to the API's and the impacts those would have on the samples See the Chapter 1 of [QRadar API Reference Guide](qradar_api_guide.pdf).
 
-* Ariel Samples now demonstrate Ariel V3
-* Offense samples added to demonstrate the new /siem/offenses endpoint
-* Endpoints and parameter names are now consistently written in snake case
-* There is a new alias for accessing the api. You can now use 
-** `https://<hostname>/api/<endpoint>` in addition to
-** `https://<hostname>/restapi/api/<endpoint>' . 
-
-/api is the preferred alias.
 
 
 ## Package contents
 
- * An introduction package that shows how to use the API at a low level
- * A reference data package that demonstrates endpoints in the
-    /reference_data category.
- * An Ariel package that demonstrates endpoints in the /ariel category.
- * An Offense package that demonstrates endpoints in the /siem/offenses category.
- * An API CLI client that can be used to access the API from the
+ - An introduction package that shows how to use the API at a low level
+ - A reference data package that demonstrates endpoints in the
+    `/reference_data category`.
+ - An Ariel package that demonstrates endpoints in the `/ariel` category.
+ - An Offense package that demonstrates endpoints in the `/siem/offenses` category.
+ - An API CLI client that can be used to access the API from the
     command line.
- * A package containing shared modules.
+ - A package containing shared modules.
 
 
 ## Requirements
 
-* Python 3.3 or above
-* QRadar system 7.2.3 or higher
+- Python 3.3 or above
+- QRadar system 7.2.4 or higher
 
 
 ## Instructions
@@ -89,13 +71,13 @@ configuration file can be created.
 If this is your first time running any of the samples, you will be prompted for
 the IP address of your QRadar install. Authorize your session by supplying
 an authorization token or by supplying a username and password.
-Authorization tokens can be generated in 'Authorized Services' under the
+Authorization tokens can be generated in **Authorized Services** under the
 admin tab of the QRadar console.
 
 Currently, it is strongly recommend that only administrators be granted access
 to the QRadar Security Intelligence API.
 
-Note that credentials are stored in plain text in a file called config.ini. IBM
+Note that credentials are stored in plain text in a file called `config.ini`. IBM
 recommends that you do not leave this file stored in your file system. You
 should make sure to delete it when you are done with it.
 By default this configuration file is stored at the root level of the samples
@@ -112,7 +94,7 @@ this sample data when you are done with it so that it does not get lost on your
 system.
 
 
-### Makeup of the config.ini file
+## Makeup of the config.ini file
 
 ```
 [DEFAULT]
@@ -122,12 +104,12 @@ username = {USERNAME} (Optional)
 password = {PASSWORD} (Optional)
 ```
 
-If you are using the shared module “RestApiClient.py” to experiment with
+If you are using the shared module `RestApiClient.py` to experiment with
 writing your own API scripts there are several options available to you
 for loading configurations other than the default configuration.
 You can pass a different file name to have the Client load the configuration
 from that file instead of the default. You can create a new configuration
-section in the config.ini file and pass the name of that section.
+section in the `config.ini` file and pass the name of that section.  
 For example you could add a section
 
 ```
@@ -140,4 +122,3 @@ to the configuration file and load your setting from there. Any required setting
 not included in this custom section will be loaded from the default section.
 You can also create you own dictionary of setting from some other source
 and pass it directly to the RestApiClient.
-

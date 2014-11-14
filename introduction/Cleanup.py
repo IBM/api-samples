@@ -4,6 +4,7 @@
 import argparse
 import os
 import sys
+
 sys.path.append(os.path.realpath('../modules'))
 from RestApiClient import RestApiClient
 
@@ -11,19 +12,36 @@ from RestApiClient import RestApiClient
 def main():
     client = RestApiClient()
     cleanup_introduction_data(client)
+    cleanup_06_common_parameters(client)
 
 
 # This function tears down data used in the introduction samples.
 def cleanup_introduction_data(client):
     response = client.call_api('reference_data/sets/rest_api_samples_testset', 'DELETE')
     print(response.code)
-    print(response.read().decode('utf-8'))
     print("Sample data removed")
+
+
+# This function tears down data used in the 06_CommonParameters sample
+def cleanup_06_common_parameters(client):
+    response = client.call_api('reference_data/sets/rest_api_samples_authorized_users', 'DELETE')
+    print(response.code)
+    response = client.call_api('reference_data/sets/rest_api_samples_authorized_ips', 'DELETE')
+    print(response.code)
+    response = client.call_api('reference_data/sets/rest_api_samples_keywords', 'DELETE')
+    print(response.code)
+    response = client.call_api('reference_data/sets/rest_api_samples_authorized_ports', 'DELETE')
+    print(response.code)
+    response = client.call_api('reference_data/sets/rest_api_samples_recent_access', 'DELETE')
+    print(response.code)
+    print("Sample data for 06_CommonParameters removed")
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Cleanup sample data")
     parser.add_argument('script', default='all', nargs='?', help='The name of the script you would like to clean up after',
-                        choices=['02_QueryParameters.py', '03_PathParameters.py', '04_BodyParameters.py', 'all'])
+                        choices=['02_QueryParameters.py', '03_PathParameters.py', '04_BodyParameters.py', '06_CommonParameters', 'all'])
 
     client = RestApiClient()
     args = parser.parse_args()
@@ -33,5 +51,7 @@ if __name__ == "__main__":
         cleanup_introduction_data(client)
     elif (args.script == '04_BodyParameters.py'):
         cleanup_introduction_data(client)
+    elif (args.script == '06_CommonParameters.py'):
+        cleanup_06_common_parameters(client)
     elif (args.script == 'all'):
         main()

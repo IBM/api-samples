@@ -39,6 +39,10 @@ def main():
 	# Print out the result
 	SampleUtilities.pretty_print_response(response)
 
+	if (response.code != 200):
+		print('Call Failed')
+		sys.exit(1)
+
 	# Prompt the user for an ID
 	offense_ID = input('Select an offense to hide. Please type its ID or quit. ')
 	
@@ -74,22 +78,38 @@ def main():
 	# Prints the response, which has already been decoded.
 	#**Only works on responses that have been decoded**
 	print(json.dumps(response_body, indent=4))
+	
+	while True:
+		# As this sample uses data on your system, ensure that the user wants to hide the offense.
+		confirmation = input('Are you sure you want to hide this offense? ' +
+			'This will affect the status of the offense. (YES/no)\n')
+	
+		if (confirmation == 'YES'):
 
-	# As this sample uses data on your system, ensure that the user wants to hide the offense.
-	confirmation = input('Are you sure you want to hide this offense? ' +
-		'This will affect the status of the offense. (YES/no)\n')
+			# Sends in the POST request to update the offense. Also using fields to trim down
+			# the data recieved by POST.
+			SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID +
+				'?status=HIDDEN&fields=id,description,status,offense_type,offense_source', 'POST')
+			response = client.call_api('siem/offenses/' + offense_ID + '?status=HIDDEN' +
+				'&fields=id,description,status,offense_type,offense_source', 'POST')
 
-	if (confirmation == 'YES'):
+			# Prints the data recieved by POST
+			SampleUtilities.pretty_print_response(response)
 
-		#Sends in the request to update the offense
-		SampleUtilities.pretty_print_request(client, 'siem/offenses/' + offense_ID +
-			'?status=HIDDEN', 'POST')
-		response = client.call_api('siem/offenses/' + offense_ID + '?status=HIDDEN', 'POST')
+			if (response.code != 200):
+				print('Call Failed')
+				SampleUtilities.pretty_print_response(response)
+				sys.exit(1)
 
-		print('Offense ' + offense_ID + ' hidden')
-
-	else:
-		print('You have decided not to hide offense ' + offense_ID +'. This sample will now end.')
+			print('Offense ' + offense_ID + ' hidden')
+			break
+		elif (confirmation == 'no'):
+			print('You have decided not to hide offense ' + offense_ID +'. This sample will now end.')
+			break
+		
+		else:
+			print(confirmation + ' is not a valid response.')
+ 
 
 if __name__ == "__main__":
     main()

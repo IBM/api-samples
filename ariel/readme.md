@@ -1,4 +1,4 @@
-## Ariel Samples 7.2.3
+## Ariel Samples 
 
 Scripts in this directory demonstrate how to use the ariel 
 endpoints (/ariel) of the API.
