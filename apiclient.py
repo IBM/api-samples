@@ -54,6 +54,7 @@ def get_parser():
     parser.add_option('-v','--version', help='The version of the endpoint you would like to use. Default is most recent version', action='store')
     parser.add_option('--add_headers', help='For any headers you would like to pass. This is not required to use any endpoint. Must be in format "<name1>=<value1>+<name2>=<value2>"') 
     parser.add_option('-p','--params', help='For any parameters you would like to pass. Individual parameters are separated by spaces.\nExample: --params <name1>="<value1>" <name2>="<value2>"', action='callback', callback=get_params, dest="params")
+    parser.add_option('-r','--range', help='Allows you to construct a Range header to perform paging (v3_0 endpoints and above only). Range is 0 based inclusive, and must be in formation \'x-y\'', action='store', default='')
 
     return parser
 
@@ -164,6 +165,9 @@ def make_request(args, settings):
         except IndexError as ex:
             raise ParseError("Error: Parsing headers failed. Make sure headers are in format \"<name1>=<value1>+<name2>=<value2>\"", ex)
 
+    if args.range:
+        api_client.headers['Range'] = 'items='+args.range
+
     # This adds any query/body params to the list of query/body params.
     
     params = parse_params(args.params)
@@ -211,7 +215,7 @@ def failed_auth():
     print("AuthorizationError:")
     print("\nToken, or user credentials failed to authorize api call. Please verify your token, or user credentials are correct.\n") 
     print("Body returned by failed request:\n")
-
+    
 
 def main(args):
 

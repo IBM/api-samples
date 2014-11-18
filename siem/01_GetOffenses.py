@@ -118,7 +118,8 @@ source_network,destination_networks,assigned_to'''
 	offenses_per_page = 5
 
 	# Looping here in order to repeatedly show 5 offenses at a time until we've
-	# seen all of the OPEN offenses
+	# seen all of the OPEN offenses or exit character q is pressed
+	input_string = ""
 	while True:
 
 		# Change the value for Range in the header in the format item=x-y
@@ -141,13 +142,16 @@ source_network,destination_networks,assigned_to'''
 	
 		# Check to see if all the offenses have been displayed
 		if (page_position + offenses_per_page >= num_of_open_offenses):
+			print('All offenses have been printed to the screen.')
 			break
 		else:
-			# Wait for the user to display the next set
-			input('Push any enter to bring up the next ' + str(offenses_per_page) + ' offenses.')
+			# Wait for the user to display the next set or quit
+			input_string = input('Push enter to bring up the next ' +
+								 str(offenses_per_page) + ' offenses, or q to quit. ')
+			# If the user entered the character 'q', quit.
+			if (input_string == 'q'):
+				break
 			page_position += offenses_per_page
-		
-	print('All offenses have been printed to the screen.')
 
 if __name__ == "__main__":
     main()
