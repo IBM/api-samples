@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # In this sample you will see how data in reference sets can be manipulated
 # using the REST API.
 
