@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample shows how to use path parameters with the REST API.
 
 # For a list of the endpoints that you can use along with the parameters that

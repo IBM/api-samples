@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This script is used to clean up data created by the sample code
 # run python Cleanup.py -h for usage information.
 

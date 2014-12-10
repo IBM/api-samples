@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates some common errors that can be made while using the
 # REST API. It shows the information that is returned with an error response to
 # help you diagnose the problem.

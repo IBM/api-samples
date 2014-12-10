@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates how to encode credentials, how to format and attach
 # headers to an HTTP request, and how to send a simple request to a REST API
 # endpoint. This script uses many python modules directly in order to
