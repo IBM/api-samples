@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates how to use the /asset_model//saved_searches/{saved_search_id}/results
 # endpoint in the REST API.
 
