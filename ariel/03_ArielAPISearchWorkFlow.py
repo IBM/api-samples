@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This is the typical way to query to the ArielAPI, and receive
 # the results. ArielAPI searches are asynchronous.
 # Endpoints are used to determine if the search has completed.
