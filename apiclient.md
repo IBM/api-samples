@@ -1,4 +1,4 @@
-﻿﻿# Instructions
+﻿# Instructions
 
 These instructions assume that your python binary is called **"python"**.
 

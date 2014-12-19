@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates how to use the /asset_model/assets endpoint in the
 # REST API.
 

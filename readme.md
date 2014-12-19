@@ -1,4 +1,4 @@
-﻿# QRadar API Samples
+# QRadar API Samples
 
 This package contains sample python code that demonstrates how to use the
 QRadar REST API. The API is accessed by sending specially crafted HTTP
