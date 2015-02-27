@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #This file contains a command line client that can be used to access the API.
 
 import sys

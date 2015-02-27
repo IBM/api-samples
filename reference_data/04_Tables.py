@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # In this example we will see how data in reference tables can be manipulated
 # using the REST API.
 

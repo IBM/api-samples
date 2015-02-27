@@ -3,6 +3,7 @@ import getpass
 import json
 import re
 import sys
+import socket
 from urllib.error import HTTPError
 from urllib.request import Request
 from urllib.request import urlopen
@@ -14,7 +15,7 @@ inputter = input
 
 
 
-# Check to make sure the provided ip address is valid
+# Check to make sure the provided ip address is valid.
 def validate_ip(ip):
     patt = re.compile('''
             ^                                       # Match start of string
@@ -34,6 +35,13 @@ def validate_ip(ip):
     else:
         return False
 
+# Return the IP of the given hostname
+def resolve_host(host):
+    try:
+        ip = socket.gethostbyname(host)
+        return ip
+    except socket.gaierror:
+        return host
 
 # This function tests the configuration details entered to make sure they work.
 def test_config(config):
@@ -63,10 +71,13 @@ def test_config(config):
 # The main entry point for MakeConfig
 def main(file_name='../config.ini'):
 
-    ip = inputter("Please input the IP address of the server you want to connect to: ")
+    ip = inputter("Please input the IP address or the hostname of the server you want to connect to: ")
+    # try to resolve host if hostname is given
+    ip = resolve_host(ip)
+
     while not validate_ip(ip):
-        print("Invalid IP")
-        ip = inputter("Please input the IP address of the server you want to connect to: ")
+        print("Invalid IP or DNS resolution failed")
+        ip = inputter("Please input the IP address or the hostname of the server you want to connect to: ")
 
     config_dict = {'server_ip': ip}
 

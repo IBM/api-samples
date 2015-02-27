@@ -123,7 +123,6 @@ not included in this custom section will be loaded from the default section.
 You can also create you own dictionary of setting from some other source
 and pass it directly to the RestApiClient.
 
-
 These samples are provided for reference purposes on an "as is" basis, and are without warranties of any kind.
 
 It is strongly advised that these samples are not run against production systems.

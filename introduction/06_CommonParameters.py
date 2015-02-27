@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # In this sample you will see how to limit the data returned by an endpoint
 # using some shared parameters. The 'filter' query parameter can be used to
 # restrict the elements returned in a list based on the contents of the fields
