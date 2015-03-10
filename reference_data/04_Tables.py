@@ -42,7 +42,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     setup_data(client)
 
     # First lets have a look at the data in the system.

@@ -25,7 +25,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
 	# First we have to create our client
-	client = RestApiClient()
+	client = RestApiClient(version='3.0')
 
 	# This example gives a demonstration of how to create a new closing reason for your
 	# offenses.

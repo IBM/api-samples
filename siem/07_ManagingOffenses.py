@@ -41,7 +41,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # First we have to create our client
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
 
     # In this half of the sample, we will show one way to use a csv file and
     # turn it into a dictionary. Then using that dictionary, and information on

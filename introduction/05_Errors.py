@@ -20,7 +20,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
 
     # While using the REST API an error may occur. Information about
     # the error is returned to you in the HTTP response that you receive.

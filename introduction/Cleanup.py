@@ -11,7 +11,7 @@ from RestApiClient import RestApiClient
 
 
 def main():
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     cleanup_introduction_data(client)
     cleanup_06_common_parameters(client)
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     parser.add_argument('script', default='all', nargs='?', help='The name of the script you would like to clean up after',
                         choices=['02_QueryParameters.py', '03_PathParameters.py', '04_BodyParameters.py', '06_CommonParameters', 'all'])
 
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     args = parser.parse_args()
     if (args.script == '02_QueryParameters.py'):
         cleanup_introduction_data(client)

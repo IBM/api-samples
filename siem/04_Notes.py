@@ -29,7 +29,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
 	# First we have to create our client
-	client = RestApiClient()
+	client = RestApiClient(version='3.0')
 
 	# Request the API call only taking a few fields
 	SampleUtilities.pretty_print_request(client, 'siem/offenses?fields=id,description,' +
