@@ -107,7 +107,7 @@ def print_help(parser):
                    Any query parameters must be in this format. 
                    Ex. name="example"
 
-Example query: python apiclient.py --api /help/capabilities --method GET --httpMethods="['POST']" --ver="0.1" 
+Example query: python apiclient.py --api /help/capabilities --method GET --httpMethods="['POST']" --ver="1.0" 
 
 """)
 
@@ -164,8 +164,8 @@ def make_request(args):
             return api_client.call_api(endpoint, 'POST', headers=headers, data=data)
     # Else it sends all params as query parameters.
         else:
-            for name_value in params:
-                name_value[1] = urlparse.quote(name_value[1])
+            for key, value in params.items():
+                params[key] = urlparse.quote(value)
             return api_client.call_api(endpoint, args[0].method, headers=headers, params=params)
               
     except IndexError:
