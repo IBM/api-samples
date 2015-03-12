@@ -7,7 +7,7 @@
 
 # For a list of the endpoints that you can use along with the parameters that
 # they accept you can view the REST API interactive help page on your
-# deployment at https://<hostname>/api_doc
+# deployment at https://<hostname>/restapi/doc
 # You can also retrieve a list of available endpoints through the API itself
 # at the /api/help/capabilities endpoint.
 
@@ -110,7 +110,7 @@ def main():
                                     check_hostname=check_hostname)))
 
     # REST API requests are made by sending an HTTPS request to specific URLs.
-    url = 'https://' + host + '/api/help/capabilities'
+    url = 'https://' + host + '/restapi/api/help/capabilities'
     print(url)
     # There are several base URL aliases that can be used to access the api.
     # As of this release '/api' is the preferred alias.
