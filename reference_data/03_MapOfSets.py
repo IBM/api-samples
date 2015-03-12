@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # In this example we will see how data in reference maps of sets can be
 # manipulated using the REST API.
 
@@ -31,7 +32,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     setup_data(client)
 
     # Here we have a look at the data in this map of sets.

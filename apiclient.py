@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #This file contains a command line client that can be used to access the API.
 
 import sys
@@ -5,8 +6,6 @@ import os
 sys.path.append(os.path.realpath('modules'))
 import json
 from RestApiClient import RestApiClient
-import ReadConfig
-import MakeConfig
 from optparse import OptionParser
 import re
 import urllib.parse as urlparse
@@ -61,10 +60,9 @@ def get_parser():
 # This method takes the output of the /help/capabilities endpoint and prints it
 # into a user readable format.
 
-def print_api(settings):
+def print_api():
 
-    settings['version'] = None
-    api_client = RestApiClient(settings)
+    api_client = RestApiClient()
 
     response = api_client.call_api('help/capabilities', 'GET')
     response_json = json.loads(response.read().decode('utf-8'))
@@ -131,7 +129,14 @@ def parse_params(args):
 
 # This method calls the api for the user.
 
-def make_request(args, settings):
+def make_request(args):
+
+    # Create an API for the version specified by the user. If args.version is
+    # None the latest version will be used.
+    api_client = RestApiClient(version=args.version)
+
+    # Make a copy of the headers so we are able to set some custom headers.
+    headers = api_client.get_headers()
 
     # Gets endpoint from --api ENDPOINT argument
     endpoint = args.api
@@ -141,18 +146,8 @@ def make_request(args, settings):
     if str.startswith(endpoint, '/'):
         endpoint = endpoint[1:]
 
-    # Settings dict is copied so it can be modified.
-    util_settings = settings.copy()
-
     # Changes 'Accept' header to --response_format RESPONSE_FORMAT argument.
-    util_settings['accept'] = args.response_format
-
-    # Changes 'Version' header to --version VERSION argument, or clears the version.
-    util_settings['version'] = args.version
-
-    # Creates RestApiClient with user supplied settings. (So it doesn't fall 
-    # to module defaults)
-    api_client = RestApiClient(util_settings)
+    headers['Accept'] = args.response_format
 
     # This code snippet adds any extra headers you wish to send with your api 
     # call. Must be in name1=value1+name2=value2 form.
@@ -161,12 +156,12 @@ def make_request(args, settings):
             header_pairs = args.add_headers.split("+")
             for header_pair in header_pairs:
                 header_pair = header_pair.split("=", 1)
-                api_client.headers[header_pair[0]] = header_pair[1]
+                headers[header_pair[0]] = header_pair[1]
         except IndexError as ex:
             raise ParseError("Error: Parsing headers failed. Make sure headers are in format \"<name1>=<value1>+<name2>=<value2>\"", ex)
 
     if args.range:
-        api_client.headers['Range'] = 'items='+args.range
+        headers['Range'] = 'items='+args.range
 
     # This adds any query/body params to the list of query/body params.
     
@@ -178,20 +173,20 @@ def make_request(args, settings):
 
     # Gets Content-type from --request_format REQUEST_FORMAT argument.
     if args.request_format:
-        api_client.headers['Content-type'] = args.request_format
+        headers['Content-type'] = args.request_format
         content_type = args.request_format
 
-    # If content_type is application/json, then it is sending a JSON object as
-    # a body parameter.
     try:
+        # If content_type is application/json, then it is sending a JSON object as
+        # a body parameter.
         if content_type == 'application/json':
             data = params['data'].encode('utf-8')
-            return api_client.call_api(endpoint, 'POST', data=data)
-    # Else it sends all params as query parameters.
+            return api_client.call_api(endpoint, 'POST', data=data, headers=headers)
+        # Else it sends all params as query parameters.
         else:
             for key, value in params.items():
                 params[key] = urlparse.quote(value)
-            return api_client.call_api(endpoint, args.method, params=params)
+            return api_client.call_api(endpoint, args.method, params=params, headers=headers)
               
     except IndexError:
         raise ParseError('Error: Parameter parsing failed. Make sure any parameters follow the syntax <paramname>="<paramvalue>"')
@@ -219,22 +214,14 @@ def failed_auth():
 
 def main(args):
 
-    # Gets settings dict by reading config.ini.
-    settings = ReadConfig.main(file_name='config.ini')
-    # If it doesn't exist, it calls on the user to input box information through
-    # MakeConfig.main script.
-    if not settings:
-        MakeConfig.main(file_name='config.ini')
-        settings = ReadConfig.main(file_name='config.ini')
-
     # Then if --print_api is true, then apiclient prints output of /help/capabilities
     # endpoint.
     if args[0].print_api:
-        print_api(settings)
+        print_api()
     # Then if --api and --method both have values, apiclient will attempt an api request.
     elif args[0].api and args[0].method:
         # Gets response object from making api call.
-        response = make_request(args[0], settings)
+        response = make_request(args[0])
         # Determines content type of response object (for printing).
         content_type = response.headers.get('Content-type')
         # Gleans body from response object.

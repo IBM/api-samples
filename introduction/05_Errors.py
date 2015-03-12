@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates some common errors that can be made while using the
 # REST API. It shows the information that is returned with an error response to
 # help you diagnose the problem.
@@ -19,7 +20,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
 
     # While using the REST API an error may occur. Information about
     # the error is returned to you in the HTTP response that you receive.

@@ -9,14 +9,7 @@ DELETE request. By linking together calls to these endpoints you can
 implement you own custom business processes or integrate QRadar data
 with external systems.
 
-This package is applicable to version 3.0 of the reference data and ariel APIs
-and 1.0 of the help endpoint. A version number of 3.0 is used by default by
-these samples since the API automatically selects the highest version less than
-or equal to the requested version.
-Endpoints released as **"Experimental"** may change in future versions of the API. In
-general, past versions of the API remain available so these samples will
-continue to run against version 3.0. When changes are made in future versions
-of the API new samples will be released.
+Endpoints released as **"Experimental"** may change in future versions of the API.
 
 The QRadar REST API contains endpoints not covered by these samples.
 Future releases of this sample package will be expanded to include
@@ -69,30 +62,52 @@ command line or set up you IDE's console to be interactive so that the
 configuration file can be created.
 
 If this is your first time running any of the samples, you will be prompted for
-the IP address of your QRadar install. Authorize your session by supplying
-an authorization token or by supplying a username and password.
+the configuration details. Configuration details include:
+
+ - IP address or domain name of your QRadar install.
+ - Credentials.  Either username and password or an authorized service token.
+ - Optional TLS certificate.
+
 Authorization tokens can be generated in **Authorized Services** under the
 admin tab of the QRadar console.
 
-Currently, it is strongly recommend that only administrators be granted access
-to the QRadar Security Intelligence API.
+The TLS certificate is optional, but must be provided if your system uses a
+self signed TLS certificate. See the [TLS Certificate][] section for more
+information.
 
-Note that credentials are stored in plain text in a file called `config.ini`. IBM
-recommends that you do not leave this file stored in your file system. You
-should make sure to delete it when you are done with it.
-By default this configuration file is stored at the root level of the samples
-directory. From there all sample scripts, as well as the command line client,
-will be able to use it.
+After entering configuration details for the sample you will be prompted asking
+if you would like to save the configuration to disk. If you choose to store the
+configuration it will be stored in plain text unencripted in a file called
+`config.ini`. IBM recommends that you do not store sensitive credentials in
+this file. If you choose not to save the configuration details in the file you
+will be prompted to enter the configuration details each time you run a sample.
+This configuration file is stored at the root level of the samples directory.
+From there all sample scripts, as well as the command line client, will be able
+to use it.
 
-Each sample directory also contains a `Cleanup.py` script that you can use
-to remove the data created by the script from your system. Some scripts
+Some sample directories also contains a `Cleanup.py` script that you can use
+to remove the data created by the samples from your system. Some scripts
 include a line that you can uncomment to clean up the script's data as soon
 as it is run. Data created by scripts is left on the system by default so that
 you can see how it affects the system and so that you can experiment with it
 either through the API or through the main UI. IBM recommends that you clean up
-this sample data when you are done with it so that it does not get lost on your
-system.
+this sample data when you are done with it.
 
+## TLS Certificate
+
+When entering the configuration details you have the option of providing a TLS
+certificate file. This is required when your QRadar system uses a self signed
+certificate. When prompted enter the path to the certificate stored in PEM
+format.
+
+Use one of the following methods to obtain the certificate file:
+
+ - Copy the certificate file from the QRadar box. The QRadar certificate is
+   stored at `/etc/httpd/conf/certs/cert.cert`.
+ - Export the certificate in PEM format from your browser.
+
+When you manually obtain and specify the certificate file it is your
+responsibility to verify the certificate authenticity.
 
 ## Makeup of the config.ini file
 
@@ -102,6 +117,7 @@ server_ip = {IP ADDRESS}
 auth_token = {AUTH TOKEN} (Optional)
 username = {USERNAME} (Optional)
 password = {PASSWORD} (Optional)
+certificate_file = {CERTIFICATE FILE} (Optional)
 ```
 
 If you are using the shared module `RestApiClient.py` to experiment with
@@ -122,7 +138,6 @@ to the configuration file and load your setting from there. Any required setting
 not included in this custom section will be loaded from the default section.
 You can also create you own dictionary of setting from some other source
 and pass it directly to the RestApiClient.
-
 
 These samples are provided for reference purposes on an "as is" basis, and are without warranties of any kind.
 

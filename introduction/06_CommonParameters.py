@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # In this sample you will see how to limit the data returned by an endpoint
 # using some shared parameters. The 'filter' query parameter can be used to
 # restrict the elements returned in a list based on the contents of the fields
@@ -28,7 +29,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     setup_data(client)
 
     # First lets have a look at the data in this reference set

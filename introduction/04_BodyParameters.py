@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates how to send a parameter in the body of a request.
 
 # For a list of the endpoints that you can use along with the parameters that
@@ -18,7 +19,7 @@ import SampleUtilities as SampleUtilities
 def main():
 
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     setup_data(client)
 
     # Some endpoints accept body parameters. An example of this is the

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This workflow will show how to handle errors returned by the API.
 # If a faulty expression is sent to the ArielAPI, a response object with an error will
 # be returned. The error gets read out.
