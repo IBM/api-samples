@@ -38,23 +38,6 @@ class RestApiClient:
         self.server_ip = self.config.get_config_value('server_ip')
         self.base_uri = '/restapi/api/'
 
-    # This method is used to set up an HTTP request and send it to the server
-    def call_api(self, endpoint, method, headers=None, params=[], data=None):
-
-        path = self.parse_path(endpoint, params)
-
-        # If the caller specified customer headers merge them with the default
-        # headers.
-        actual_headers = self.headers.copy();
-        if headers is not None:
-            for header_key in headers:
-                actual_headers[header_key] = headers[header_key]
-
-        # Send the request and receive the response
-        request = Request(
-            'https://' + self.server_ip + self.base_uri + path, headers=actual_headers)
-        request.get_method = lambda: method
-
         # Create a secure SSLContext
         # PROTOCOL_SSLv23 is misleading.  PROTOCOL_SSLv23 will use the highest
         # version of SSL or TLS that both the client and server supports.
@@ -92,6 +75,23 @@ class RestApiClient:
                 context.set_default_verify_paths()
 
         install_opener(build_opener(HTTPSHandler(context=context, check_hostname=check_hostname)))
+
+    # This method is used to set up an HTTP request and send it to the server
+    def call_api(self, endpoint, method, headers=None, params=[], data=None):
+
+        path = self.parse_path(endpoint, params)
+
+        # If the caller specified customer headers merge them with the default
+        # headers.
+        actual_headers = self.headers.copy();
+        if headers is not None:
+            for header_key in headers:
+                actual_headers[header_key] = headers[header_key]
+
+        # Send the request and receive the response
+        request = Request(
+            'https://' + self.server_ip + self.base_uri + path, headers=actual_headers)
+        request.get_method = lambda: method
 
         try:
             # returns response object for opening url.
