@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This workflow calls the Ariel API to return a list of all databases
 # that can be queried by Ariel API methods.
 

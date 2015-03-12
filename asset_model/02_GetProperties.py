@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates how to use the /asset_model/properties endpoint in the
 # REST API.
 
@@ -17,7 +18,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
 
     # Using the /asset_model/properties endpoint with a GET request. 
     SampleUtilities.pretty_print_request(client, 'asset_model/properties', 'GET')

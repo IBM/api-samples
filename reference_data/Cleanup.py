@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This script is used to clean up data created by the sample code
 # run python Cleanup.py -h for usage information.
 
@@ -10,7 +11,7 @@ from RestApiClient import RestApiClient
 
 
 def main():
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     cleanup_01_sets(client)
     cleanup_02_maps(client)
     cleanup_03_map_of_sets(client)
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument('script', default='all', nargs='?', help='The name of the script you would like to clean up after',
                         choices=['01_Sets.py', '02_Maps.py', '03_MapOfSets.py', '04_Tables.py', 'all'])
 
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     args = parser.parse_args()
     if (args.script == '01_Sets.py'):
         cleanup_01_sets(client)

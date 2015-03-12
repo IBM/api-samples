@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # In this sample you will see how data in reference sets can be manipulated
 # using the REST API.
 
@@ -35,7 +36,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='3.0')
     setup_data(client)
 
     # Using the '/sets/{name} endpoint with a GET request we can retrieve the
