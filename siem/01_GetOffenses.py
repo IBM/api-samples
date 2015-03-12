@@ -1,153 +1,127 @@
-# This sample demonstrates how to use the siem endpoint in the
+# This sample demonstrates how to use the /siem/offenses endpoint in the
 # REST API.
 
 # For this scenario to work there must already be offenses on the system the
 # sample is being run against.  The scenario demonstrates the following actions:
 #  - How to get offenses.
+#  - How to page through the results using the limit and offset parameters.
 #  - How to filter the data that is returned with the fields parameter.
-#  - How to filter the data that is returned with the filter parameter.
-#  - How to page through the results using the range parameter.
 
 # To view a list of the endpoints with the parameters they accept, you can view
 # the REST API interactive help page on your deployment at
 # https://<hostname>/api_doc.  You can also retrieve a list of available
 # endpoints with the REST API itself at the /api/help/capabilities endpoint.
 
-import json
-import os
 import sys
+import os
+import json
 sys.path.append(os.path.realpath('../modules'))
-
 from RestApiClient import RestApiClient
 import SampleUtilities as SampleUtilities
 
 def main():
-	# First we have to create our client
-	client = RestApiClient()
+    # Create our client.
+    client = RestApiClient(version='2.0')
 
+    # Using the /siem/offenses endpoint with a GET request.  Since no limit
+    # parameter is provided, the first 20 offenses are retrieved from the
+    # system.
 
-	#----------------------------------------------------------------------------#
-	#Basic 'GET'
-	# In this example we'll be using the GET endpoint of siem/offenses without
-	# any parameters. This will print absolutely everything it can find, every
-	# parameter of every offense.
+    SampleUtilities.pretty_print_request(client, 'siem/offenses', 'GET')
+    response = client.call_api('siem/offenses', 'GET')
 
-	# Send in the request
-	SampleUtilities.pretty_print_request(client, 'siem/offenses', 'GET')
-	response = client.call_api('siem/offenses', 'GET')
+    # Verify that the call to the API was successful.
+    if (response.code != 200):
+        print('Failed to retrieve offense list.')
+        SampleUtilities.pretty_print_response(response)
+        sys.exit(1)
 
-	# Check if the success code was returned to ensure the call to the API was
-	# successful.
-	if (response.code != 200):
-		print('Failed to retrieve the list of offenses')
-		SampleUtilities.pretty_print_response(response)
-		sys.exit(1)
+    # Display the number of offenses retrieved.
+    response_body = json.loads(response.read().decode('utf-8'))
+    print('Number of offenses retrived: ' + str(len(response_body)))
 
-    # Since the previous call had no parameters and response has a lot of text,
-	# we'll just print out the number of offenses 
-	response_body = json.loads(response.read().decode('utf-8'))
-	print('Number of offenses retrived: ' + str(len(response_body)))
-	
+    # Display the content of an offense.
 
-	#----------------------------------------------------------------------------#
-	#Using the fields parameter with 'GET'	
-	# If you just print out the result of a call to the siem/offenses GET endpoint
-	# there will be a lot of fields displayed which you have no interest in.
-	# Here, the fields parameter will make sure the only the fields you want
-	# are displayed for each offense.
+    SampleUtilities.pretty_print_request(client, 'siem/offenses?limit=1', 'GET')
+    response = client.call_api('siem/offenses?limit=1', 'GET')
+    SampleUtilities.pretty_print_response(response)
 
-	# Setting a variable for all the fields that are to be displayed
-	fields = '''id,status,description,offense_type,offense_source,magnitude,\
-source_network,destination_networks,assigned_to'''
+    # Paging offenses is useful when the user is expecting many results. Using
+    # the /siem/offenses endpoint with a GET request, obtain offenses, 5 at a
+    # time.
 
-	# Send in the request
-	SampleUtilities.pretty_print_request(client, 'siem/offenses?fields=' + fields, 'GET')
-	response = client.call_api('siem/offenses?fields=' + fields, 'GET')
+    # This is the number of offenses we want to retrieve at a time.
+    limit = 5
 
-	# Once again, check the response code
-	if (response.code != 200):
-		print('Failed to retrieve list of offenses')
-		SampleUtilities.pretty_print_response(response)
-		sys.exit(1)
+    # This parameter indicates to retrieve offenses that start from the offset
+    # value rather than from the beginning of the offenses. The first offense
+    # has an offset of 0.  The default offset value is 0. In this loop, the
+    # offset is incremented by the limit for each call to the offense API.
+    offset = 0
 
-	# This time we will print out the data itself
-	SampleUtilities.pretty_print_response(response)
+    while True:
 
+        # Retrieve some offenses.
+        SampleUtilities.pretty_print_request(client,
+                'siem/offenses?limit=' + str(limit) + '&offset=' + str(offset),
+                'GET')
+        response = client.call_api(
+                'siem/offenses?limit=' + str(limit) + '&offset=' + str(offset),
+                'GET')
 
-	#----------------------------------------------------------------------------#
-	#Using the filter parameter with 'GET'
-	# Sometimes you'll want to narrow down your search to just a few offenses.
-	# You can use the filter parameter to carefully select what is returned
-	# after the call by the value of the fields.
-	# Here we're only looking for OPEN offenses, as shown by the value of 'status'
-	# being 'OPEN' 
-	
-	# Send in the request
-	SampleUtilities.pretty_print_request(client, 'siem/offenses?fields=' + fields + 
-			'&filter=status=OPEN', 'GET')
-	response = client.call_api('siem/offenses?fields=' + fields + '&filter=status=OPEN', 'GET')
+        # Verify that the call to the API was successful.
+        if (response.code != 200):
+            print('Failed to retrieve offense list.')
+            SampleUtilities.pretty_print_response(response)
+            sys.exit(1)
 
-	# Always check the response code
-	if (response.code != 200):
-		print('Failed to retrieve list of offenses')
-		SampleUtilities.pretty_print_response(response)
-		sys.exit(1)
+        # Increment the offset by limit so new offenses can be retrieved in the
+        # next iteration of the loop.
+        offset += limit
 
-	# And output the data
-	SampleUtilities.pretty_print_response(response)
+        response_body = json.loads(response.read().decode('utf-8'))
 
+        number_of_offenses_retrieved = len(response_body)
 
-	#----------------------------------------------------------------------------#
-	#Paging the 'GET' data using 'Range'
-	# If you have a lot of offenses, then you may want to browse through them
-	# just a few at a time. In that case, you can use the Range header to 
-	# limit the number of offenses shown in a single call. 
+        # Display number of offenses, and the IDs of the offenses retrieved.
+        print(str(number_of_offenses_retrieved) + ' offenses were retrieved.')
+        if (number_of_offenses_retrieved > 0):
+            print("Offense IDs: ", end="")
+            for offense in response_body:
+                print(str(offense['id']) + ' ', end="")
+            print()
 
-	# In this example only OPEN offenses will be used.
+        # If less than limit offenses were returned, then there are no more
+        # offenses to be retrieved, exit the loop.
+        if (number_of_offenses_retrieved < limit):
+            break
+        else:
+            print()
 
-	# Call the endpoint so that we can find how many OPEN offenses there are.
-	response = client.call_api('siem/offenses?filter=status=OPEN', 'GET')
-	num_of_open_offenses = len(json.loads(response.read().decode('utf-8')))
+        # If there are many offenses on the system, this loop could run for a
+        # long time. If we have retrieved more than 50 offenses, then stop the
+        # loop.
+        if (offset > 50):
+            break
 
-	# Copy the headers into our own variable
-	range_header = client.get_headers().copy()
+    # Using the /siem/offenses endpoint with a GET request, filter the data that
+    # is returned with the fields parameter. The fields parameter is a
+    # comma-separated list of fields from the offense structure. Only the fields
+    # that were requested are returned by the API.
 
-	# Set the starting point (indexing starts at 0)
-	page_position = 0
-	# and choose how many offenses you want to display at a time.
-	offenses_per_page = 5
+    # Retrieve the id and status for the first 3 offenses.
+    SampleUtilities.pretty_print_request(client,
+        'siem/offenses?limit=3&fields=id,status', 'GET')
+    response = client.call_api(
+        'siem/offenses?limit=3&fields=id,status', 'GET')
 
-	# Looping here in order to repeatedly show 5 offenses at a time until we've
-	# seen all of the OPEN offenses
-	while True:
+    # Verify that the call to the API was successful.
+    if (response.code != 200):
+        print('Failed to retrieve offense list.')
+        SampleUtilities.pretty_print_response(response)
+        sys.exit(1)
 
-		# Change the value for Range in the header in the format item=x-y
-		range_header['Range'] = 'items=' + str(page_position) + '-' + str(page_position + offenses_per_page - 1)
-
-		# Send in the request
-		SampleUtilities.pretty_print_request(client,'siem/offenses?fields=' + fields + 
-			'&filter=status=OPEN', 'GET', headers=range_header)
-		response = client.call_api('siem/offenses?fields=' + fields + 
-			'&filter=status=OPEN', 'GET', headers=range_header)
-
-		# As usual, check the response code
-		if (response.code != 200):
-			print('Failed to retrieve list of offenses')
-			SampleUtilities.pretty_print_response(response)
-			sys.exit(1)
-
-		# Output the data
-		SampleUtilities.pretty_print_response(response)
-	
-		# Check to see if all the offenses have been displayed
-		if (page_position + offenses_per_page >= num_of_open_offenses):
-			break
-		else:
-			# Wait for the user to display the next set
-			input('Push any enter to bring up the next ' + str(offenses_per_page) + ' offenses.')
-			page_position += offenses_per_page
-		
-	print('All offenses have been printed to the screen.')
+    SampleUtilities.pretty_print_response(response)
 
 if __name__ == "__main__":
     main()

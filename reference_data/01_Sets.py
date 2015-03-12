@@ -34,7 +34,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='2.0')
     setup_data(client)
 
     # Using the '/sets/{name} endpoint with a GET request we can retrieve the
