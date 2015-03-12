@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # This sample demonstrates how to encode credentials, how to format and attach
 # headers to an HTTP request, and how to send a simple request to a REST API
 # endpoint. This script uses many python modules directly in order to
@@ -8,78 +9,123 @@
 # they accept you can view the REST API interactive help page on your
 # deployment at https://<hostname>/restapi/doc
 # You can also retrieve a list of available endpoints through the API itself
-# at the /api/help/capabilities endpoint.
+# at the /restapi/api/help/capabilities endpoint.
 
-import sys, os
-sys.path.append(os.path.realpath('../modules'))
-import urllib.request
-import http.cookiejar
-import http.cookies
+import base64
 import configparser
 import json
-import base64
-import MakeConfig
+import ssl
+import sys
+import os
+import urllib.request
+import getpass
+import http.cookiejar
+import http.cookies
+
 
 def main():
-    
-    # For the purpose of this sample, credentials and settings are read
-    # from plain text config files. It is recommended that you do not leave
-    # secure credentials saved in these files.
-    create_config_file()
-    config = configparser.ConfigParser()
-    config.read('../config.ini')
-    
-    if 'username' in config['DEFAULT']:
-        username = config['DEFAULT']['username']
-        password = config['DEFAULT']['password']
 
+    # Prompt for server host and credentials.
+    host = input("Please input the IP address or the hostname of the server " +
+                 "you want to connect to: ").strip()
+    username = input("Username: ").strip()
+    password = getpass.getpass("Password: ")
+    certificate_file = input(
+        "Enter path to TLS PEM certificate (optional): ").strip()
 
-        # Credentials may be passed as the base 64 encoding of the string
-        # username:password.
-        userpass = username + ":" + password
-        encoded_credentials = b"Basic " + base64.b64encode(userpass.encode('ascii'))
-    
-        # Note that base 64 encoding is not a secure form of encoding. The security
-        # of the contents of requests relies on ssl encryption in the HTTPS
-        # protocol. You should ensure that connections made to the REST API are
-        # properly secured to ensure that sensitive information can not be
-        # intercepted.
-        print(encoded_credentials)
-    
-        # You must pass your credentials in the https request headers.
-        # You may also specify the version of the API you want to use and the format
-        # of the response you will receive. For the purpose of these samples,
-        # version 1.0 of the API will be used and responses will be in JSON.
-        # Note that if you pass a version number that does not exist, the API
-        # will select the highest matching version lower than the one you requested
-        # and use that version instead.
-        headers = {'Version': '1.0', 'Accept': 'application/json', 'Authorization': encoded_credentials}
-        print(headers)
-        
+    # Credentials may be passed as the base 64 encoding of the string
+    # username:password.
+    userpass = username + ":" + password
+    encoded_credentials = b"Basic " + base64.b64encode(
+        userpass.encode('ascii'))
+
+    # Note that base 64 encoding is not a secure form of encoding. The security
+    # of the contents of requests relies on ssl encryption in the HTTPS
+    # protocol. You should ensure that connections made to the REST API are
+    # properly secured to ensure that sensitive information can not be
+    # intercepted.
+    print(encoded_credentials)
+
+    # You must pass your credentials in the https request headers.
+    # You may also specify the version of the API you want to use and the
+    # format of the response you will receive. For the purpose of these
+    # samples, version 1.0 of the API will be used and responses will be in
+    # JSON. Note that if you pass a version number that does not exist, the API
+    # will select the highest matching version lower than the one you requested
+    # and use that version instead.
+    headers = {'Version': '1.0', 'Accept': 'application/json',
+               'Authorization': encoded_credentials}
+    print(headers)
+    # You can also use a security token for authentication.
+    # The format for passing a security token is "'SEC': token" instead of
+    # "'Authorization': 'Basic encoded_credentials'".
+
+    # Python version 3.4.2 and before by default do not perform certificate
+    # validation. Here we will set up an SSLContext that performs certificate
+    # validation. ssl.PROTOCOL_SSLv23 is misleading. PROTOCOL_SSLv23 will use
+    # the highest version of SSL or TLS that both the client and server
+    # supports.
+    context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    # SSL version 2 and SSL version 3 are insecure. The insecure versions are
+    # disabled.
+    context.options = ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
+    # Require certificate verification.
+    context.verify_mode = ssl.CERT_REQUIRED
+    # By default we are going to enable hostname verification.
+    # context.check_hostname is only available on Python version 3.4 and above.
+    # On Python version 3.3 check_hostname parameter on the HTTPSHandler is
+    # used.
+    if sys.version_info >= (3, 4):
+        context.check_hostname = True
+    check_hostname = True
+
+    if certificate_file != "":
+        # An optional certificate file was provided by the user.
+
+        # The default QRadar certificate does not have a valid hostname so me
+        # must disable hostname checking.
+        if sys.version_info >= (3, 4):
+            context.check_hostname = False
+        check_hostname = False
+
+        # Load the certificate file that was specificed by the user.
+        context.load_verify_locations(cafile=certificate_file)
     else:
-        # You can also use a security token for authentication.
-        # The format for passing a security token is "'SEC': token" instead of
-        # "'Authorization': 'Basic encoded_credentials'".
-        auth_token = config['DEFAULT']['auth_token']
-        headers = {'Version': '1.0', 'Accept': 'application/json', 'SEC': auth_token}
-        print(headers)   
-        
-            
-    server_ip = config['DEFAULT']['server_ip']
+        # The optional certificate file was not provided. Load the default
+        # certificates.
+        if sys.version_info >= (3, 4):
+            # Python 3.4 and above has the improved load_default_certs()
+            # function. This should work on most systems.
+            context.load_default_certs(ssl.Purpose.CLIENT_AUTH)
+        else:
+            # Versions of Python before 3.4 do not have the
+            # load_default_certs method.  set_default_verifypaths will
+            # work on some, but not all systems.  It fails silently.  If
+            # this call fails the certificate will fail to validate.
+            # This will never work on Windows. Windows users should upgrade
+            # to Python 3.4 or later.
+            context.set_default_verify_paths()
 
-    # REST API requests are made by sending an HTTPS request to specific URLs.
-    url = 'https://' + server_ip + '/restapi/api/help/capabilities'
-    print(url)
-    
-    # In 7.2.1 you need a session cookie to make API requests. The first request
-    # that you make to the API must be a GET request. The response will include
-    # a cookie that you must include with subsequent requests.
+    # In 7.2.1 you need a session cookie to make API requests. The first
+    # request that you make to the API must be a GET request. The response will
+    # include a cookie that you must include with subsequent requests.
     # This requirement is removed in 7.2.2.
     # Here we are using Python's built in cookie handling to capture and store
     # the cookie we will receive.
     cookies = http.cookiejar.CookieJar()
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies))
-    urllib.request.install_opener(opener)
+
+    # Create a new HTTPSHandler and install it using the new HTTPSContext.
+    # Also install the HTTPCookieProcessor for handling the session cookie.
+    urllib.request.install_opener(urllib.request.build_opener(
+        urllib.request.HTTPSHandler(context=context,
+                                    check_hostname=check_hostname),
+        urllib.request.HTTPCookieProcessor(cookies)))
+
+    # REST API requests are made by sending an HTTPS request to specific URLs.
+    url = 'https://' + host + '/restapi/api/help/capabilities'
+    print(url)
+    # There are several base URL aliases that can be used to access the api.
+    # As of this release '/api' is the preferred alias.
 
     # Here we are creating a GET request that will return a list of all
     # endpoints available to you on the system. This endpoint provides
@@ -96,7 +142,7 @@ def main():
     # long.
     parsed_response = json.loads(response.read().decode('utf-8'))
     print(json.dumps(parsed_response, indent=4))
-    
+
     # Each response contains an HTTP response code.
     # Response codes in the 200 range indicate that your request succeeded.
     # Response codes in the 400 range indicate that your request failed due to
@@ -104,25 +150,10 @@ def main():
     # Response codes in the 500 range indicate that there was an error on the
     # server side.
     print(response.code)
-    
-    # Here we can see the headers of the response, including the session cookie.
+
+    # Here we can see the headers of the response.
     print(response.headers)
-    
-    # We can also look at the cookies we have saved that will be used to
-    # help authenticate future requests.
-    for cookie in cookies:
-        print (str(cookie))
 
-
-# This function invokes the interactive config file creator if no config file
-# exists.
-def create_config_file():
-    filename = os.path.join(os.getcwd(), "../config.ini")
-    if os.path.isfile(filename):
-        return
-    else:
-        MakeConfig.main()
-        return
 
 if __name__ == "__main__":
     main()

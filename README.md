@@ -68,17 +68,28 @@ command line or set up your IDE's console to be interactive so that the
 configuration file can be created.
 
 If this is your first time running any of the samples, you will be prompted for
-the IP address of your QRadar install. Authorize your session by supplying
-an authorization token or by supplying a username and password.
-Authorization tokens can be generated in 'Authorized Services' under the
+the configuration details. Configuration details include:
+
+ - IP address or domain name of your QRadar install.
+ - Credentials.  Either username and password or an authorized service token.
+ - Optional TLS certificate.
+
+Authorization tokens can be generated in **Authorized Services** under the
 admin tab of the QRadar console.
 
-Note that credentials are stored in plain text in a file called config.ini. IBM
-recommends that you do not leave this file stored in your file system. You
-should make sure to delete it when you are done with it.
-By default this configuration file is stored at the root level of the samples
-directory. From there all sample scripts, as well as the command line client,
-will be able to use it.
+The TLS certificate is optional, but must be provided if your system uses a
+self signed TLS certificate. See the [TLS Certificate][] section for more
+information.
+
+After entering configuration details for the sample you will be prompted asking
+if you would like to save the configuration to disk. If you choose to store the
+configuration it will be stored in plain text unencripted in a file called
+`config.ini`. IBM recommends that you do not store sensitive credentials in
+this file. If you choose not to save the configuration details in the file you
+will be prompted to enter the configuration details each time you run a sample.
+This configuration file is stored at the root level of the samples directory.
+From there all sample scripts, as well as the command line client, will be able
+to use it.
 
 Each sample directory also contains a `Cleanup.py` script that you can use
 to remove the data created by the script from your system. Some scripts
@@ -90,7 +101,24 @@ this sample data when you are finished with it so that it does not get lost on
 your system.
 
 
-Makeup of the config.ini file:
+## TLS Certificate
+
+When entering the configuration details you have the option of providing a TLS
+certificate file. This is required when your QRadar system uses a self signed
+certificate. When prompted enter the path to the certificate stored in PEM
+format.
+
+Use one of the following methods to obtain the certificate file:
+
+ - Copy the certificate file from the QRadar box. The QRadar certificate is
+   stored at `/etc/httpd/conf/certs/cert.cert`.
+ - Export the certificate in PEM format from your browser.
+
+When you manually obtain and specify the certificate file it is your
+responsibility to verify the certificate authenticity.
+
+
+## Makeup of the config.ini file:
 
 ```
 [DEFAULT]
@@ -98,6 +126,7 @@ server_ip = {IP ADDRESS}
 auth_token = {AUTH TOKEN} (Optional)
 username = {USERNAME} (Optional)
 password = {PASSWORD} (Optional)
+certificate_file = {CERTIFICATE FILE} (Optional)
 ```
 
 If you are using the shared module `RestApiClient.py` to experiment with
@@ -231,29 +260,3 @@ This means you must set your `--output` argument to one of the supported types.
 This tells the system which version of the endpoint you are calling. 
 If the endpoint does not have that exact version it will round down to
 the closest available version number.
-
-
-### Modifying the config.ini file 
-
-For the apiclient to run properly it requires a server_ip and proper 
-authorization. The authorization can either be an auth_token or a username and
-password. 
-
-Template config.ini #1: With authorization token
-
-```
-[DEFAULT]
-server_ip = {IP ADDRESS}
-auth_token = {AUTH TOKEN}
-```
-
-Template config.ini #2: With username and password.
-
-```
-[DEFAULT]
-server_ip = {IP ADDRESS}
-username = {USERNAME}
-password = {PASSWORD}
-```
-
-Nothing else needs to be specified in the config.ini file.

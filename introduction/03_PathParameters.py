@@ -15,7 +15,7 @@ import SampleUtilities
 def main():
 
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='0.1')
     setup_data(client)
     
     # Some endpoints accept path parameters.
