@@ -7,9 +7,9 @@
 
 # For a list of the endpoints that you can use along with the parameters that
 # they accept you can view the REST API interactive help page on your
-# deployment at https://<hostname>/api_doc
+# deployment at https://<hostname>/restapi/doc
 # You can also retrieve a list of available endpoints through the API itself
-# at the /api/help/capabilities endpoint.
+# at the /restapi/api/help/capabilities endpoint.
 
 import base64
 import configparser
