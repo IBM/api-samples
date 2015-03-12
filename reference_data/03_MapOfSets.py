@@ -30,7 +30,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient()
+    client = RestApiClient(version='2.0')
     setup_data(client)
 
     # Here we have a look at the data in this map of sets.

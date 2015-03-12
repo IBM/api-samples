@@ -17,7 +17,7 @@ import SampleUtilities as SampleUtilities
 
 def main():
     # Create our client.
-    client = RestApiClient()
+    client = RestApiClient(version='2.0')
 
     # Using the /asset_model/properties endpoint with a GET request. 
     SampleUtilities.pretty_print_request(client, 'asset_model/properties', 'GET')

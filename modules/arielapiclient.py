@@ -12,11 +12,12 @@ class APIClient(RestApiClient):
 
     # This class will encode any data or query parameters which will then be sent
     # to the call_api() method of its inherited class.
-    def __init__(self, settings=None):
+    def __init__(self, config_section='DEFAULT', config=None):
 
 
         self.endpoint_start = 'ariel/'
-        super(APIClient, self).__init__(settings=settings)
+        super(APIClient, self).__init__(config_section=config_section,
+                                       version='2.0', config=config)
 
     def get_databases(self):
 

@@ -4,12 +4,9 @@ These instructions assume that your python binary is called `python`.
 
 ## Authorization
 
-The first time you run apiclient.py, you will be asked for either a username and
-password, or an authorization token. Authorization tokens must be generated on
-the system whose API you are calling. After your credentials are entered, your 
-configuration will be tested. If your configuration is valid, it will write 
-your configuration to a config.ini file found in the same folder. Information 
-on modifying config.ini files can be found at the end of this document.
+The first time you run `apiclient.py`, you will be asked to enter configuration
+information, including credentials. For more details see the Configuration
+section of `README.md`.
 
 ## Using apiclient.py
 
@@ -115,28 +112,3 @@ as a query parameter, and the API call will fail.
         This tells the system which version of the endpoint you are calling. 
         If the endpoint does not have that exact version it will round down to
         the closest available version number.
-
-
-## Modifying the config.ini file
-
-For the apiclient to run properly it requires a server_ip and proper 
-authorization. The authorization can either be an auth_token or a username and
-password. 
-
-Template config.ini #1: With authorization token
-```
-[DEFAULT]
-server_ip = {IP ADDRESS}
-auth_token = {AUTH TOKEN}
-```
-
-Template config.ini #2: With username and password.
-
-```
-[DEFAULT]
-server_ip = {IP ADDRESS}
-username = {USERNAME}
-password = {PASSWORD}
-```
-
-Nothing else needs to be specified in the config.ini file.
