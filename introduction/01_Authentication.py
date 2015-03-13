@@ -112,8 +112,6 @@ def main():
     # REST API requests are made by sending an HTTPS request to specific URLs.
     url = 'https://' + host + '/restapi/api/help/capabilities'
     print(url)
-    # There are several base URL aliases that can be used to access the api.
-    # As of this release '/api' is the preferred alias.
 
     # Here we are creating a GET request that will return a list of all
     # endpoints available to you on the system. This endpoint provides
