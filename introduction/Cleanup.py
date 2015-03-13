@@ -9,7 +9,7 @@ from RestApiClient import RestApiClient
 import SampleUtilities as SampleUtilities
 
 def main():
-    client = RestApiClient()
+    client = RestApiClient(version='1.0')
     cleanup_introduction_data(client)
 
 # This function tears down data used in the 02_QueryParameters sample.
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument('script', default='all', nargs='?', help='The name of the script you would like to clean up after',
                         choices=['02_QueryParameters.py', '03_PathParameters.py', '04_BodyParameters.py', 'all'])
     
-    client = RestApiClient()    
+    client = RestApiClient(version='1.0')
     args = parser.parse_args()
     if (args.script == '02_QueryParameters.py'):
         cleanup_introduction_data(client)

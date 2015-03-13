@@ -4,8 +4,6 @@ import sys, os
 sys.path.append(os.path.realpath('modules'))
 import json
 from RestApiClient import RestApiClient
-import ReadConfig
-import MakeConfig
 from optparse import OptionParser
 from optparse import BadOptionError
 from optparse import AmbiguousOptionError
@@ -109,13 +107,17 @@ def print_help(parser):
                    Any query parameters must be in this format. 
                    Ex. name="example"
 
-Example query: python apiclient.py --api /help/capabilities --method GET --httpMethods="['POST']" --version="0.1" 
+Example query: python apiclient.py --api /help/capabilities --method GET --httpMethods="['POST']" --ver="1.0" 
 
 """)
 
 # This method calls the api for the user.
 
-def make_request(args, settings):
+def make_request(args):
+
+    # Create an API for the version specified by the user. If args.version is
+    # None the latest version will be used.
+    api_client = RestApiClient(version=args[0].ver)
 
     # Gets endpoint from --api ENDPOINT argument
     endpoint = args[0].api
@@ -125,26 +127,14 @@ def make_request(args, settings):
     if str.startswith(endpoint, '/'):
         endpoint = endpoint[1:]
 
-    # Settings dict is copied so it can be modified.
-    util_settings = settings.copy()
+    # Make a copy of the headers so we are able to set some custom headers.
+    headers = api_client.get_headers()
 
-    # Changes 'Accept' header to --output OUTPUT argument.
-    util_settings['accept'] = args[0].output
-    # Clears default version from settings dict.
-    util_settings['version'] = None
-
-    # Changes 'Version' header to --ver VER argument.
-    if args[0].ver:
-        util_settings['version'] = args[0].ver
-
-    # Creates RestApiClient with user supplied settings. (So it doesn't fall 
-    # to module defaults)
-    api_client = RestApiClient(util_settings)
+    # Changes 'Accept' header to --response_format RESPONSE_FORMAT argument.
+    headers['Accept'] = args[0].output
 
     # This code snippet adds any extra headers you wish to send with your api 
     # call. Must be in name1=value1+name2=value2 form.
-    headers = api_client.headers
-
     if args[0].add_headers:
         header_pairs = args[0].add_headers.split("+")
         for header_pair in header_pairs:
@@ -152,10 +142,10 @@ def make_request(args, settings):
             headers[header_pair[0]] = header_pair[1]
 
     # This adds any query/body params to the list of query/body params.
-    params = []
+    params = {}
     for x in range(1, len(args[1]), 2):
-        name_value = [args[1][x-1][2:], args[1][x]]
-        params.append(name_value)
+        name_value = {args[1][x-1][2:]: args[1][x]}
+        params.update(name_value)
  
     # Checks content_type to see if it should send params as body param, or 
     # query param.
@@ -170,15 +160,13 @@ def make_request(args, settings):
     # a body parameter.
     try:
         if content_type == 'application/json':
-            data = None
-            for name_value in params:
-                data = name_value[1].encode('utf-8')
-            return api_client.call_api(endpoint, 'POST', headers, data=data)
+            data = params['data'].encode('utf-8')
+            return api_client.call_api(endpoint, 'POST', headers=headers, data=data)
     # Else it sends all params as query parameters.
         else:
-            for name_value in params:
-                name_value[1] = urlparse.quote(name_value[1])
-            return api_client.call_api(endpoint, args[0].method, headers, params)
+            for key, value in params.items():
+                params[key] = urlparse.quote(value)
+            return api_client.call_api(endpoint, args[0].method, headers=headers, params=params)
               
     except IndexError:
         raise Exception('Parameter parsing failed. Make sure any parameters follow the syntax --<paramname>="<paramvalue>"')
@@ -191,14 +179,6 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
 
-    # Gets settings dict by reading config.ini.
-    settings = ReadConfig.main(file_name='config.ini')
-    # If it doesn't exist, it calls on the user to input box information through
-    # MakeConfig.main script.
-    if not settings:
-        MakeConfig.main(file_name='config.ini')
-        settings = ReadConfig.main(file_name='config.ini')
-
     # If -h, --help is true. Prints api help.
     if args[0].help:
         print_help(parser)
@@ -209,7 +189,7 @@ def main():
     # Then if --api and --method both have values, apiclient will attempt an api request.
     elif args[0].api and args[0].method:
         # Gets response object from making api call.
-        response = make_request(args, settings)
+        response = make_request(args)
         # Determines content type of response object (for printing).
         content_type = response.headers.get('Content-type')
         # Gleans body from response object.
