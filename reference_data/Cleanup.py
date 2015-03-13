@@ -20,10 +20,12 @@ def main():
 
 # This function tears down data used in the 01_Sets sample
 def cleanup_01_sets(client):
-    response = client.call_api('reference_data/sets/rest_api_samples_suspect_ips', 'DELETE')
+    response = client.call_api(
+        'reference_data/sets/rest_api_samples_suspect_ips', 'DELETE')
     print(response.code)
     print(response.read().decode('utf-8'))
-    response = client.call_api('reference_data/sets/rest_api_samples_blocked_ips', 'DELETE')
+    response = client.call_api(
+        'reference_data/sets/rest_api_samples_blocked_ips', 'DELETE')
     print(response.code)
     print(response.read().decode('utf-8'))
     print("Sample data for 01_Sets removed")
@@ -31,7 +33,8 @@ def cleanup_01_sets(client):
 
 # This function tears down data used in the 02_Maps sample
 def cleanup_02_maps(client):
-    response = client.call_api('reference_data/maps/rest_api_samples_current_admin_shift', 'DELETE')
+    response = client.call_api(
+        'reference_data/maps/rest_api_samples_current_admin_shift', 'DELETE')
     print(response.code)
     print(response.read().decode('utf-8'))
     print("Sample data for 02_Maps removed")
@@ -39,7 +42,8 @@ def cleanup_02_maps(client):
 
 # This function tears down data used in the 03_MapOfSets sample
 def cleanup_03_map_of_sets(client):
-    response = client.call_api('reference_data/map_of_sets/rest_api_samples_login_events', 'DELETE')
+    response = client.call_api(
+        'reference_data/map_of_sets/rest_api_samples_login_events', 'DELETE')
     print(response.code)
     print(response.read().decode('utf-8'))
     print("Sample data for 03_MapOfSets removed")
@@ -47,7 +51,8 @@ def cleanup_03_map_of_sets(client):
 
 # This function tears down data used in the 04_Tables sample
 def cleanup_04_tables(client):
-    response = client.call_api('reference_data/tables/rest_api_samples_server_access', 'DELETE')
+    response = client.call_api(
+        'reference_data/tables/rest_api_samples_server_access', 'DELETE')
     print(response.code)
     print(response.read().decode('utf-8'))
     print("Sample data for 04_Tables removed")
@@ -55,8 +60,11 @@ def cleanup_04_tables(client):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Cleanup sample data")
-    parser.add_argument('script', default='all', nargs='?', help='The name of the script you would like to clean up after',
-                        choices=['01_Sets.py', '02_Maps.py', '03_MapOfSets.py', '04_Tables.py', 'all'])
+    parser.add_argument(
+        'script', default='all', nargs='?',
+        help='The name of the script you would like to clean up after',
+        choices=['01_Sets.py', '02_Maps.py', '03_MapOfSets.py', '04_Tables.py',
+                 'all'])
 
     client = RestApiClient(version='3.0')
     args = parser.parse_args()

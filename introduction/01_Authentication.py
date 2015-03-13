@@ -60,7 +60,7 @@ def main():
 
     # Python version 3.4.2 and before by default do not perform certificate
     # validation. Here we will set up an SSLContext that performs certificate
-    #validation. ssl.PROTOCOL_SSLv23 is misleading. PROTOCOL_SSLv23 will use
+    # validation. ssl.PROTOCOL_SSLv23 is misleading. PROTOCOL_SSLv23 will use
     # the highest version of SSL or TLS that both the client and server
     # supports.
     context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)

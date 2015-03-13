@@ -36,11 +36,12 @@ def main():
     SampleUtilities.pretty_print_request(client, 'reference_data/sets', 'GET')
     response = client.call_api('reference_data/sets', 'GET')
     SampleUtilities.pretty_print_response(response)
-    
+
     # Suppose we are only interested in the names and the size of each set. We
     # can restrict the data we get back with a 'fields' parameter.
     fields = 'fields=' + urllib.parse.quote('name,number_of_elements')
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' + fields, 'GET')
+    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
+                                                 fields, 'GET')
     response = client.call_api('reference_data/sets?' + fields, 'GET')
     SampleUtilities.pretty_print_response(response)
 
@@ -50,55 +51,65 @@ def main():
     # Note that the range header is indexed form zero, so here we are asking
     # for the first 5 items.
     range_header = {'Range': 'items=0-4'}
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets', 'GET', headers=range_header)
-    response = client.call_api('reference_data/sets', 'GET', headers=range_header)
+    SampleUtilities.pretty_print_request(client, 'reference_data/sets', 'GET',
+                                         headers=range_header)
+    response = client.call_api('reference_data/sets', 'GET',
+                               headers=range_header)
     response_headers = response.info()
     SampleUtilities.pretty_print_response(response)
-    
-    
+
     # Note that there is a header in the response that contains information
     # about the portion of the data that you requested.
-    # the 'Content-Range' header tells you which items you got back and how many
-    # items are in the whole list.
-    print ('Content-Range header value: ' + response_headers['Content-Range'])
-    
+    # the 'Content-Range' header tells you which items you got back and how
+    # many items are in the whole list.
+    print('Content-Range header value: ' + response_headers['Content-Range'])
+
     parsed_range_header = response_headers['Content-Range'].split('/')
-    
+
     print('This tells us which items we got back: ' + parsed_range_header[0])
-    print('This tells us how many items there are in total: ' + parsed_range_header[1])
-    
+    print('This tells us how many items there are in total: ' +
+          parsed_range_header[1])
+
     # We can use this information to get back the data one page at a time
     current_position = 5
     while(current_position < int(parsed_range_header[1])):
-        range_string = 'items=' + str(current_position) + '-' + str(current_position + 4)
+        range_string = ('items=' + str(current_position) + '-' +
+                        str(current_position + 4))
         range_header = {'Range': range_string}
-        SampleUtilities.pretty_print_request(client, 'reference_data/sets', 'GET', headers=range_header)
-        response = client.call_api('reference_data/sets', 'GET', headers=range_header)
+        SampleUtilities.pretty_print_request(client, 'reference_data/sets',
+                                             'GET', headers=range_header)
+        response = client.call_api('reference_data/sets', 'GET',
+                                   headers=range_header)
         print((response.info())['Content-Range'])
         SampleUtilities.pretty_print_response(response)
         current_position = current_position + 5
-        
-    
-    
+
     # Now suppose that we want to find a specific set that contains data we are
     # interested in. We can use the filter parameter to do this.
-    # Some sets were added during the setup of this sample script. Lets find them.
-    filter_string = 'filter=' + urllib.parse.quote('name between rest_api_samples and rest_api_samplet')
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' + filter_string, 'GET')
+    # Some sets were added during the setup of this sample script. Lets find
+    # them.
+    filter_string = 'filter=' + urllib.parse.quote(
+        'name between rest_api_samples and rest_api_samplet')
+    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
+                                         filter_string, 'GET')
     response = client.call_api('reference_data/sets?' + filter_string, 'GET')
     SampleUtilities.pretty_print_response(response)
-    
+
     # Only some of these sets contain data.
-    filter_string = 'filter=' + urllib.parse.quote('name between rest_api_samples and rest_api_samplet and number_of_elements>0')
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' + filter_string, 'GET')
+    filter_string = 'filter=' + urllib.parse.quote(
+        'name between rest_api_samples and rest_api_samplet and ' +
+        'number_of_elements>0')
+    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
+                                         filter_string, 'GET')
     response = client.call_api('reference_data/sets?' + filter_string, 'GET')
     SampleUtilities.pretty_print_response(response)
-    
+
     response = client.call_api('reference_data/sets?' + filter_string, 'GET')
     parsed_response = json.loads(response.read().decode('utf-8'))
-    
+
     for ref_data_set in parsed_response:
-        print('The sample reference set ' + ref_data_set['name'] + ' contains data')
+        print('The sample reference set ' + ref_data_set['name'] +
+              ' contains data')
 
     # the filter parameter supports:
     # and, or, and not logical operators as well as brackets to specify
@@ -109,16 +120,19 @@ def main():
 
     # You can combine fields, filters, and the range parameter to have precise
     # control over the data you get back from the API.
-    filter_string = 'filter=' + urllib.parse.quote('name between rest_api_samples and rest_api_samplet')
+    filter_string = 'filter=' + urllib.parse.quote(
+        'name between rest_api_samples and rest_api_samplet')
     range_header = {'Range': 'items=0-1'}
     fields = 'fields=' + urllib.parse.quote('name')
-    
+
     # Here we are asking for only the names of the top two reference sets that
     # were added by this sample script.
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' + filter_string + '&' + fields, 'GET', headers=range_header)
-    response = client.call_api('reference_data/sets?' + filter_string + '&' + fields, 'GET', headers=range_header)
+    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
+                                         filter_string + '&' + fields, 'GET',
+                                         headers=range_header)
+    response = client.call_api('reference_data/sets?' + filter_string + '&' +
+                               fields, 'GET', headers=range_header)
     SampleUtilities.pretty_print_response(response)
-    
 
     # You can uncomment this line to have this script remove the data it
     # creates after it is done, or you can invoke the Cleanup script directly.
@@ -127,14 +141,33 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'reference_data/sets?name=rest_api_samples_authorized_users&element_type=ALN', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/sets/rest_api_samples_authorized_users?value=dave', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/sets?name=rest_api_samples_authorized_ips&element_type=IP', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/sets?name=rest_api_samples_keywords&element_type=ALNIC', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/sets/rest_api_samples_keywords?value=sample', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/sets?name=rest_api_samples_authorized_ports&element_type=PORT', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/sets?name=rest_api_samples_recent_access&element_type=DATE', 'POST')
-   
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets?name=rest_api_samples_authorized_users&' +
+        'element_type=ALN', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets/rest_api_samples_authorized_users?value=dave',
+        'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets?name=rest_api_samples_authorized_ips&' +
+        'element_type=IP', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets?name=rest_api_samples_keywords&' +
+        'element_type=ALNIC', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets/rest_api_samples_keywords?value=sample', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets?name=rest_api_samples_authorized_ports&' +
+        'element_type=PORT', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/sets?name=rest_api_samples_recent_access&' +
+        'element_type=DATE', 'POST')
 
 if __name__ == "__main__":
     main()

@@ -18,12 +18,15 @@ def main():
     response = api_client.get_databases()
 
     # Each response contains an HTTP response code.
-    # Response codes in the 200 range indicate that your request succeeded.
-    # Response codes in the 400 range indicate that your request failed due to incorrect input.
-    # Response codes in the 500 range indicate that there was an error on the server side.
+    #  - Response codes in the 200 range indicate that your request succeeded.
+    #  - Response codes in the 400 range indicate that your request failed due
+    #    to incorrect input.
+    #  - Response codes in the 500 range indicate that there was an error on
+    #    the server side.
     print(response.code)
 
-    # When a JSON object is requested, the Body of the object is decoded into a JSON object.
+    # When a JSON object is requested, the Body of the object is decoded into a
+    # JSON object.
 
     response_json = (json.loads(response.read().decode('utf-8')))
 
