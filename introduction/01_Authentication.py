@@ -80,7 +80,7 @@ def main():
     if certificate_file != "":
         # An optional certificate file was provided by the user.
 
-        # The default QRadar certificate does not have a valid hostname so me
+        # The default QRadar certificate does not have a valid hostname so we
         # must disable hostname checking.
         if sys.version_info >= (3, 4):
             context.check_hostname = False
