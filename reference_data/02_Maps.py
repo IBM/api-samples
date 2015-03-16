@@ -41,14 +41,15 @@ def main():
 
     # First lets see who is on duty now.
     print("These administrators are on duty during the first shift:")
-    response = client.call_api('reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
+    response = client.call_api(
+        'reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
     SampleUtilities.pretty_print_response(response)
-
 
     # # Change to the second shift as scheduled by our HR system.
 
     # Get the current shift.
-    response = client.call_api('reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
+    response = client.call_api(
+        'reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
     response_body = json.loads(response.read().decode('utf-8'))
     data = response_body['data']
 
@@ -56,13 +57,15 @@ def main():
     print("Changing to the second shift:")
     update_reference_map(get_second_shift_schedule_from_hr(), data, client)
     # Show that the change has happened.
-    response = client.call_api('reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
+    response = client.call_api(
+        'reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
     SampleUtilities.pretty_print_response(response)
 
     # # Change to the third shift as scheduled by our HR system.
 
     # Get the current shift.
-    response = client.call_api('reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
+    response = client.call_api(
+        'reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
     response_body = json.loads(response.read().decode('utf-8'))
     data = response_body['data']
 
@@ -70,7 +73,8 @@ def main():
     print("Changing to the third shift:")
     update_reference_map(get_third_shift_schedule_from_hr(), data, client)
     # Show that the change has happened.
-    response = client.call_api('reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
+    response = client.call_api(
+        'reference_data/maps/rest_api_samples_current_admin_shift', 'GET')
     SampleUtilities.pretty_print_response(response)
 
     # You can uncomment this line to have this script remove the data it
@@ -80,17 +84,33 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'reference_data/maps?name=rest_api_samples_current_admin_shift&element_type=ALN', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/maps/rest_api_samples_current_admin_shift?key=7.34.87.23&value=sven', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/maps/rest_api_samples_current_admin_shift?key=7.34.85.10&value=sven', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/maps/rest_api_samples_current_admin_shift?key=7.34.123.8&value=jill', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/maps/rest_api_samples_current_admin_shift?key=7.34.10.5&value=alice', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/maps?name=rest_api_samples_current_admin_shift&' +
+        'element_type=ALN', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/maps/rest_api_samples_current_admin_shift?' +
+        'key=7.34.87.23&value=sven', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/maps/rest_api_samples_current_admin_shift?' +
+        'key=7.34.85.10&value=sven', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/maps/rest_api_samples_current_admin_shift?' +
+        'key=7.34.123.8&value=jill', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/maps/rest_api_samples_current_admin_shift?' +
+        'key=7.34.10.5&value=alice', 'POST')
 
 
 # These functions represent queries made to our HR system to find our which
 # administrator is assigned to each server this shift.
 def get_second_shift_schedule_from_hr():
-    return {'7.34.87.23': 'bob', '7.34.85.10': 'karen', '7.34.123.8': 'karen', '7.34.10.5': 'kevin'}
+    return {'7.34.87.23': 'bob', '7.34.85.10': 'karen', '7.34.123.8': 'karen',
+            '7.34.10.5': 'kevin'}
 
 
 def get_third_shift_schedule_from_hr():
@@ -102,13 +122,17 @@ def update_reference_map(new_shift, current_shift, client):
     # Delete entries from the map if there is no one supervising this server
     # this shift.
     for server_ip in current_shift.keys():
-        if  (server_ip not in new_shift.keys()):
-            client.call_api('reference_data/maps/rest_api_samples_current_admin_shift/' + server_ip + '?value=' + current_shift[server_ip]['value'], 'DELETE')
+        if (server_ip not in new_shift.keys()):
+            client.call_api(
+                'reference_data/maps/rest_api_samples_current_admin_shift/' +
+                server_ip + '?value=' + current_shift[server_ip]['value'],
+                'DELETE')
 
     # Update the usenames to reflect the administrators on duty this shift.
     for server_ip in new_shift.keys():
-        client.call_api('reference_data/maps/rest_api_samples_current_admin_shift?key=' + server_ip + '&value=' + new_shift[server_ip], 'POST')
-
+        client.call_api(
+            'reference_data/maps/rest_api_samples_current_admin_shift?key=' +
+            server_ip + '&value=' + new_shift[server_ip], 'POST')
 
 
 if __name__ == "__main__":

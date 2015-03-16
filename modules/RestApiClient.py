@@ -12,6 +12,7 @@ import ssl
 import sys
 import base64
 
+
 # This is a simple HTTP client that can be used to access the REST API
 class RestApiClient:
 
@@ -28,10 +29,12 @@ class RestApiClient:
             self.headers['Version'] = version
         if self.config.has_config_value('auth_token'):
             self.headers['SEC'] = self.config.get_config_value('auth_token')
-        elif self.config.has_config_value('username') and self.config.has_config_value('password'):
+        elif (self.config.has_config_value('username') and
+              self.config.has_config_value('password')):
             username = self.config.get_config_value('username')
             password = self.config.get_config_value('password')
-            self.headers['Authorization'] = b"Basic " + base64.b64encode((username + ':' + password).encode('ascii'))
+            self.headers['Authorization'] = b"Basic " + base64.b64encode(
+                (username + ':' + password).encode('ascii'))
         else:
             raise Exception('No valid credentials found in configuration.')
 
@@ -74,7 +77,8 @@ class RestApiClient:
                 # this call fails the certificate will fail to validate.
                 context.set_default_verify_paths()
 
-        install_opener(build_opener(HTTPSHandler(context=context, check_hostname=check_hostname)))
+        install_opener(build_opener(
+            HTTPSHandler(context=context, check_hostname=check_hostname)))
 
     # This method is used to set up an HTTP request and send it to the server
     def call_api(self, endpoint, method, headers=None, params=[], data=None):
@@ -83,14 +87,15 @@ class RestApiClient:
 
         # If the caller specified customer headers merge them with the default
         # headers.
-        actual_headers = self.headers.copy();
+        actual_headers = self.headers.copy()
         if headers is not None:
             for header_key in headers:
                 actual_headers[header_key] = headers[header_key]
 
         # Send the request and receive the response
         request = Request(
-            'https://' + self.server_ip + self.base_uri + path, headers=actual_headers)
+            'https://' + self.server_ip + self.base_uri + path,
+            headers=actual_headers)
         request.get_method = lambda: method
 
         try:
@@ -100,7 +105,8 @@ class RestApiClient:
             # an object which contains information similar to a request object
             return e
         except URLError as e:
-            if isinstance(e.reason, ssl.SSLError) and e.reason.reason == "CERTIFICATE_VERIFY_FAILED":
+            if (isinstance(e.reason, ssl.SSLError) and
+                    e.reason.reason == "CERTIFICATE_VERIFY_FAILED"):
                 print("Certificate verification failed.")
                 sys.exit(3)
             else:
@@ -116,7 +122,7 @@ class RestApiClient:
             for kv in params:
                 if kv[1]:
                     path += kv[0]+'='+kv[1]+'&'
-            
+
         else:
             for k, v in params.items():
                 if params[k]:
@@ -124,7 +130,6 @@ class RestApiClient:
 
         # removes last '&' or hanging '?' if no params.
         return path[:len(path)-1]
-
 
     # Simple getters that can be used to inspect the state of this client.
     def get_headers(self):
