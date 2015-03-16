@@ -83,7 +83,7 @@ information.
 
 After entering configuration details for the sample you will be prompted asking
 if you would like to save the configuration to disk. If you choose to store the
-configuration it will be stored in plain text unencripted in a file called
+configuration it will be stored in plain text unencrypted in a file called
 `config.ini`. IBM recommends that you do not store sensitive credentials in
 this file. If you choose not to save the configuration details in the file you
 will be prompted to enter the configuration details each time you run a sample.
