@@ -70,15 +70,15 @@ class Config:
     def write_config_file(self):
         """
         Prompt the user asking if they would like to save the settings,
-        including credentials, unencripted. If they respond yes then save the
+        including credentials, unencrypted. If they respond yes then save the
         settings to the config file. The Config instance will still work even
         if the settings are not saved to a file.
         """
 
         choice = _choice("ATTENTION:  It is recommended that you do not " +
-                         "leave secure credentials saved unencripted.\n" +
+                         "leave secure credentials saved unencrypted.\n" +
                          "Store authorization token or password " +
-                         "unencripted: (yes/no)? ",
+                         "unencrypted: (yes/no)? ",
                          valid_values=("yes", "no"))
         if choice == "yes":
             with open(self.config_file, 'w') as config_file_handle:
