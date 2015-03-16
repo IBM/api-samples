@@ -20,7 +20,6 @@ def main():
     # This is the AQL expression to send for the search.
     query_expression = "SELECT sourceIP from events"
 
-
     # Use the query parameters above to call a method. This will call
     # POST /searches on the Ariel API. (look at arielapiclient for more
     # detail).  A response object is returned. It contains
@@ -30,11 +29,12 @@ def main():
     response = api_client.create_search(query_expression, '2')
 
     # Each response contains an HTTP response code.
-    # Response codes in the 200 range indicate that your request succeeded.
-    # Response codes in the 400 range indicate that your request failed due to incorrect input.
-    # Response codes in the 500 range indicate that there was an error on the server side.
+    #  - Response codes in the 200 range indicate that your request succeeded.
+    #  - Response codes in the 400 range indicate that your request failed due
+    #    to incorrect input.
+    #  - Response codes in the 500 range indicate that there was an error on
+    #    the server side.
     print(response.code)
-
 
     # The search is asynchronous, so the response will not be the results of
     # the search.
@@ -64,8 +64,8 @@ def main():
             print(response_json['status'])
             error = True
 
-    # After the search is complete, call the GET /searches/{search_id} to obtain
-    # the result of the search.
+    # After the search is complete, call the GET /searches/{search_id} to
+    # obtain the result of the search.
     # Depending on whether the "application/json" or "application/csv"
     # method is given, return search results will be in JSON form or CSV form.
     response = api_client.get_search_results(

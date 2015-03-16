@@ -36,18 +36,20 @@ def main():
     setup_data(client)
 
     # Here we have a look at the data in this map of sets.
-    response = client.call_api('reference_data/map_of_sets/rest_api_samples_login_events', 'GET')
+    response = client.call_api(
+        'reference_data/map_of_sets/rest_api_samples_login_events', 'GET')
     SampleUtilities.pretty_print_response(response)
 
     # Retrieve the map of sets and load it into a JSON object.
-    response = client.call_api('reference_data/map_of_sets/rest_api_samples_login_events', 'GET')
+    response = client.call_api(
+        'reference_data/map_of_sets/rest_api_samples_login_events', 'GET')
     response_body = json.loads(response.read().decode('utf-8'))
 
     # Capture the data portion of the map of sets.
     data = response_body['data']
 
-    # Also get the current time so that the CIO's dashboard can plot the results
-    # over time.
+    # Also get the current time so that the CIO's dashboard can plot the
+    # results over time.
     current_time = time.strftime('%Y-%m-%d %H:%M:%S')
 
     # We now empty the reference map of sets so that new data can start to
@@ -55,7 +57,9 @@ def main():
     # lot of data to process. Note that by using the purgeOnly parameter we are
     # only emptying the collection, not deleting it.
     print("Purging the collection so that new data can be collected.")
-    response = client.call_api('reference_data/map_of_sets/rest_api_samples_login_events?purge_only=true', 'DELETE')
+    response = client.call_api(
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'purge_only=true', 'DELETE')
     SampleUtilities.pretty_print_response(response)
 
     # Go through the data, find the information we are interested in, and send
@@ -71,21 +75,45 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets?name=rest_api_samples_login_events&element_type=ALN', 'POST')
-
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=3.4.5.6&value=bob', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=3.4.5.6&value=frank', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=3.4.5.6&value=jane', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=2.12.42.7&value=kim', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=2.12.42.7&value=serge', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=2.12.42.7&value=sue', 'POST')
-    SampleUtilities.data_setup(client, 'reference_data/map_of_sets/rest_api_samples_login_events?key=2.12.42.7&value=rick', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets?name=rest_api_samples_login_events&' +
+        'element_type=ALN', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=3.4.5.6&value=bob', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=3.4.5.6&value=frank', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=3.4.5.6&value=jane', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=2.12.42.7&value=kim', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=2.12.42.7&value=serge', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=2.12.42.7&value=sue', 'POST')
+    SampleUtilities.data_setup(
+        client,
+        'reference_data/map_of_sets/rest_api_samples_login_events?' +
+        'key=2.12.42.7&value=rick', 'POST')
 
 
 # This function simulates sending the information we gather to the the CIO's
 # digital dashboard.
 def send_data_to_dashboard(time, ip_address, number_of_logins):
-    print('At ' + time + '  ' + str(number_of_logins) + ' users had logged in to ' + ip_address + ' since we last checked.')
+    print('At ' + time + '  ' + str(number_of_logins) +
+          ' users had logged in to ' + ip_address + ' since we last checked.')
 
 
 if __name__ == "__main__":

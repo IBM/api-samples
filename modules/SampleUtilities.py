@@ -15,11 +15,11 @@ def pretty_print_response(response):
 def pretty_print_request(client, path, method, headers=None):
     ip = client.get_server_ip()
     base_uri = client.get_base_uri()
-    
+
     header_copy = client.get_headers().copy()
     if headers is not None:
         header_copy.update(headers)
-    
+
     url = 'https://' + ip + base_uri + path
     print('Sending a ' + method + ' request to:')
     print(url)

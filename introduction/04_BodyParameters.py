@@ -24,8 +24,8 @@ def main():
 
     # Some endpoints accept body parameters. An example of this is the
     # /reference_data/sets/bulk_load endpoint.
-    # Body parameters may appear with path parameters, as in this case, but will
-    # never appear with query parameters.
+    # Body parameters may appear with path parameters, as in this case, but
+    # will never appear with query parameters.
 
     # You must make sure that you set the content type correctly to a type
     # accepted by the endpoint.
@@ -35,14 +35,19 @@ def main():
     body = b'["abc", "def", "123"]'
 
     # Send the request.
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets/bulk_load/rest_api_samples_testset', 'POST', headers=headers)
-    response = client.call_api('reference_data/sets/bulk_load/rest_api_samples_testset', 'POST', headers=headers, data=body)
+    SampleUtilities.pretty_print_request(
+        client, 'reference_data/sets/bulk_load/rest_api_samples_testset',
+        'POST', headers=headers)
+    response = client.call_api(
+        'reference_data/sets/bulk_load/rest_api_samples_testset', 'POST',
+        headers=headers, data=body)
     SampleUtilities.pretty_print_response(response)
 
     # The response from the previous command only shows information about the
-    # set, not the contents of the set. We can view the contents of the set with
-    # this command:
-    response = client.call_api('reference_data/sets/rest_api_samples_testset', 'GET')
+    # set, not the contents of the set. We can view the contents of the set
+    # with this command:
+    response = client.call_api('reference_data/sets/rest_api_samples_testset',
+                               'GET')
     SampleUtilities.pretty_print_response(response)
 
     # You can uncomment this line to have this script remove the data it
@@ -52,8 +57,9 @@ def main():
 
 # This helper function sets up data used in this sample.
 def setup_data(client):
-    SampleUtilities.data_setup(client, 'reference_data/sets?name=rest_api_samples_testset&element_type=ALN', 'POST')
-
+    SampleUtilities.data_setup(
+        client, 'reference_data/sets?name=rest_api_samples_testset' +
+        '&element_type=ALN', 'POST')
 
 if __name__ == "__main__":
     main()

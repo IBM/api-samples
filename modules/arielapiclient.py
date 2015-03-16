@@ -10,10 +10,9 @@ class APIClient(RestApiClient):
     # These methods are used to call Ariel's API methods through http requests.
     # Each method makes use of the http methods below to perform the requests.
 
-    # This class will encode any data or query parameters which will then be sent
-    # to the call_api() method of its inherited class.
+    # This class will encode any data or query parameters which will then be
+    # sent to the call_api() method of its inherited class.
     def __init__(self, config_section='DEFAULT', config=None):
-
 
         # This version of the ariel APIClient is designed to function with
         # version 3.0 of the ariel API.
@@ -41,7 +40,8 @@ class APIClient(RestApiClient):
         # sends a GET request to https://<server_ip>/rest/api/ariel/searches
         return self.call_api(endpoint, 'GET', self.headers)
 
-    def create_search(self, query_expression, query_language_version=None, search_id=None, start_time=None, end_time=None):
+    def create_search(self, query_expression, query_language_version=None,
+                      search_id=None, start_time=None, end_time=None):
 
         endpoint = self.endpoint_start + "searches"
         # sends a POST request to https://<server_ip>/rest/api/ariel/searches
@@ -74,9 +74,10 @@ class APIClient(RestApiClient):
 
         headers = self.headers.copy()
         headers[b'Accept'] = response_type
-        
-        if ( (range_start is not None) and (range_end is not None) ):
-            headers[b'Range'] = 'items=' + str(range_start) + '-' + str(range_end)
+
+        if ((range_start is not None) and (range_end is not None)):
+            headers[b'Range'] = ('items=' +
+                                 str(range_start) + '-' + str(range_end))
 
         # sends a GET request to
         # https://<server_ip>/rest/api/ariel/searches/<search_id>

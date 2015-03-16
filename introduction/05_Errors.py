@@ -35,8 +35,11 @@ def main():
     # In this example we are trying to access the contents of a reference data
     # set that does not exist.
     try:
-        SampleUtilities.pretty_print_request(client, 'reference_data/sets/rest_api_samples_does_not_exist', 'GET')
-        response = client.call_api('reference_data/sets/rest_api_samples_does_not_exist', 'GET')
+        SampleUtilities.pretty_print_request(
+            client, 'reference_data/sets/rest_api_samples_does_not_exist',
+            'GET')
+        response = client.call_api(
+            'reference_data/sets/rest_api_samples_does_not_exist', 'GET')
     except urllib.error.HTTPError as e:
         response = e
 
@@ -44,8 +47,10 @@ def main():
 
     # In this example we are passing a query parameter using the wrong name.
     try:
-        SampleUtilities.pretty_print_request(client, 'reference_data/sets?wrong_name=fake', 'POST')
-        response = client.call_api('reference_data/sets?wrong_name=fake', 'POST')
+        SampleUtilities.pretty_print_request(
+            client, 'reference_data/sets?wrong_name=fake', 'POST')
+        response = client.call_api('reference_data/sets?wrong_name=fake',
+                                   'POST')
     except urllib.error.HTTPError as e:
         response = e
 
