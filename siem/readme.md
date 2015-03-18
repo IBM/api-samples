@@ -20,7 +20,6 @@ Access to the Offense API endpoints requires a user or authorized token with a
 role that contains both the following privileges:
 
  * Offenses
- * `siem` API
 
 
 The scripts in this directory include:
