@@ -88,7 +88,7 @@ def main():
             context.check_hostname = False
         check_hostname = False
 
-        # Load the certificate file that was specificed by the user.
+        # Load the certificate file that was specified by the user.
         context.load_verify_locations(cafile=certificate_file)
     else:
         # The optional certificate file was not provided. Load the default
