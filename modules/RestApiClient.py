@@ -8,6 +8,8 @@ from urllib.request import install_opener
 from urllib.request import build_opener
 from urllib.request import HTTPSHandler
 
+import SampleUtilities
+
 import ssl
 import sys
 import base64
@@ -81,7 +83,8 @@ class RestApiClient:
             HTTPSHandler(context=context, check_hostname=check_hostname)))
 
     # This method is used to set up an HTTP request and send it to the server
-    def call_api(self, endpoint, method, headers=None, params=[], data=None):
+    def call_api(self, endpoint, method, headers=None, params=[], data=None,
+                 print_request=False):
 
         path = self.parse_path(endpoint, params)
 
@@ -97,6 +100,11 @@ class RestApiClient:
             'https://' + self.server_ip + self.base_uri + path,
             headers=actual_headers)
         request.get_method = lambda: method
+
+        # Print the request if print_request is True.
+        if print_request:
+            SampleUtilities.pretty_print_request(self, path, method,
+                                                 headers=actual_headers)
 
         try:
             # returns response object for opening url.
