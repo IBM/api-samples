@@ -2,6 +2,7 @@ from config import Config
 
 from urllib.error import HTTPError
 from urllib.error import URLError
+from urllib.parse import quote
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import install_opener
@@ -129,12 +130,12 @@ class RestApiClient:
 
             for kv in params:
                 if kv[1]:
-                    path += kv[0]+'='+kv[1]+'&'
+                    path += kv[0]+'='+quote(kv[1])+'&'
 
         else:
             for k, v in params.items():
                 if params[k]:
-                    path += k+'='+v+'&'
+                    path += k+'='+quote(v)+'&'
 
         # removes last '&' or hanging '?' if no params.
         return path[:len(path)-1]

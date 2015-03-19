@@ -24,7 +24,6 @@
 import json
 import os
 import sys
-import urllib.parse
 sys.path.append(os.path.realpath('../modules'))
 
 from RestApiClient import RestApiClient
@@ -333,7 +332,7 @@ def generate_filter_from_array(field_name, array):
 
     filter = filter + ")"
 
-    return urllib.parse.quote(filter)
+    return filter
 
 if __name__ == "__main__":
     main()

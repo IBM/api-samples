@@ -21,7 +21,6 @@
 import json
 import os
 import sys
-import urllib.parse
 import ipaddress
 sys.path.append(os.path.realpath('../modules'))
 
@@ -124,7 +123,7 @@ def generate_filter_from_array(field_name, array):
 
     filter = filter + ")"
 
-    return urllib.parse.quote(filter)
+    return filter
 
 
 def get_source_addresses_for_ip(api_client, ip):
