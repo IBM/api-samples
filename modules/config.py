@@ -133,7 +133,13 @@ class Config:
         fail_message = None
         try:
             api_client = RestApiClient.RestApiClient(config=self)
-            response = api_client.call_api('/help/capabilities', 'GET')
+
+            # Only request the /help categories to limit the size of the
+            # response.
+            params = {'categories': "['/help']"}
+            response = api_client.call_api('/help/capabilities', 'GET',
+                                           params=params)
+            response.read()
             if response.code == 401 or response.code == 403:
                 fail_message = "Authorization failed."
             elif response.code < 200 or response.code > 299:
