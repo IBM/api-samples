@@ -108,8 +108,18 @@ class RestApiClient:
                                                  headers=actual_headers)
 
         try:
+            response = urlopen(request, data)
+
+            response_info = response.info()
+            if 'Deprecated' in response_info:
+
+                # This version of the API is Deprecated. Print a warning to
+                # stderr.
+                print("WARNING: " + response_info['Deprecated'],
+                      file=sys.stderr)
+
             # returns response object for opening url.
-            return urlopen(request, data)
+            return response
         except HTTPError as e:
             # an object which contains information similar to a request object
             return e

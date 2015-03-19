@@ -53,3 +53,8 @@ of a list by specifying the start and end values of the range you want. the
 you are interested in. Only those fields will be returned in the response.
 This sample uses the `reference_data/sets` endpoints as an example, but these
 parameters can be applied to many other endpoints.
+
+### 07_DeprecatedHeader.py
+This sample demonstrates the Deprecated response header. The Deprecated
+response header is returned any time a deprecated version of the API is
+called.
