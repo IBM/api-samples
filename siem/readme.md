@@ -20,7 +20,6 @@ Access to the Offense API endpoints requires a user or authorized token with a
 role that contains both the following privileges:
 
  * Offenses
- * `siem` API
 
 
 The scripts in this directory include:
@@ -125,3 +124,30 @@ The scenario demonstrates the following actions:
 - Using data returned by API calls
 - Assigning offenses using rules assigned in a separate file
 - Managing offenses by assigning them to separate users and using their creation date to enforce a timetable for dealing with them.
+
+### 08_GetOffenseAddresses.py
+Here we will be showing an example of how to get all source addresses and
+local destination addresses for an offense. For this scenario to work there
+must already be offenses on the system the sample is being run against.
+
+The scenario demonstrates the following actions:
+ - Using GET siem/offenses with filters and fields parameters
+ - Using the output from siem/offenses to build filter criteria to be used
+   with the GET siem/source_addresses and GET
+   siem/local_destination_addresses endpoints.
+ - Using the GET siem/source_addresses and GET
+   siem/local_destination_addresses endpoints with the generated filter
+   criteria to get all source addresses and local destination addresses for
+   an offense.
+
+### 09_GetOffensesForIp.py
+Here we will be showing an example of how to get all offenses associated with
+an IP address. For this scenario to work there must already be offenses on
+the system the sample is being run against.
+
+The scenario demonstrates the following actions:
+ - Using the GET siem/source_addresses and GET
+   siem/local_destination_addresses endpoints with a filter parameter to get
+   addresses associated with an IP address.
+ - Building a filter criteria to be used with the GET siem/offenses endpoint
+   to get offenses associated with the IP address.

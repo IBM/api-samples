@@ -8,7 +8,6 @@ import json
 from RestApiClient import RestApiClient
 from optparse import OptionParser
 import re
-import urllib.parse as urlparse
 
 
 # This is to modify the behaviour of the OptParser to make it check arguments
@@ -219,7 +218,7 @@ def make_request(args):
         # Else it sends all params as query parameters.
         else:
             for key, value in params.items():
-                params[key] = urlparse.quote(value)
+                params[key] = value
             return api_client.call_api(endpoint, args.method, params=params,
                                        headers=headers)
 

@@ -30,8 +30,8 @@ def pretty_print_request(client, path, method, headers=None):
 
 # this function sets up data to be used by a sample. If the data already exists
 # it prefers to use the existing data.
-def data_setup(client, path, method):
-    response = client.call_api(path, method)
+def data_setup(client, path, method, params=[]):
+    response = client.call_api(path, method, params=params)
     if (response.code == 409):
         print("Data already exists, using existing data")
     elif(response.code >= 400):

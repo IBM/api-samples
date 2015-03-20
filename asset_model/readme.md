@@ -12,7 +12,6 @@ endpoints through the api itself at the `/api/help/capabilities` endpoint.
 Access to the Assets API endpoints requires a user or authorized token with a
 role that contains both the following privileges:
  - Assets
- - Assets API
 
 
 The scripts in this directory include:
