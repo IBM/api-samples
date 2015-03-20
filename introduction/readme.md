@@ -56,5 +56,4 @@ parameters can be applied to many other endpoints.
 
 ### 07_DeprecatedHeader.py
 This sample demonstrates the Deprecated response header. The Deprecated
-response header is returned any time a deprecated version of the API is
-called.
+response header is returned for each request to a deprecated API endpoint.

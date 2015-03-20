@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # This sample demonstrates the Deprecated response header. The Deprecated
-# response header is returned any time a deprecated version of the API is
-# called.
+# response header is returned for each request to a deprecated API endpoint.
 
 from urllib.error import HTTPError
 from urllib.error import URLError
