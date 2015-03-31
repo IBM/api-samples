@@ -60,13 +60,30 @@ def main():
 
     # Python version 3.4.2 and before by default do not perform certificate
     # validation. Here we will set up an SSLContext that performs certificate
-    #validation. ssl.PROTOCOL_SSLv23 is misleading. PROTOCOL_SSLv23 will use
+    # validation. ssl.PROTOCOL_SSLv23 is misleading. PROTOCOL_SSLv23 will use
     # the highest version of SSL or TLS that both the client and server
     # supports.
     context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+
     # SSL version 2 and SSL version 3 are insecure. The insecure versions are
     # disabled.
-    context.options = ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
+    try:
+        context.options = ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
+    except ValueError as e:
+        # Disabling SSLv2 and SSLv3 is not supported on versions of OpenSSL
+        # prior to 0.9.8m.
+        print('WARNING: Unable to disable SSLv2 and SSLv3, caused by '
+              'exception: "' + str(e) + '"')
+        while True:
+            response = input(
+                "Would you like to continue anyway (yes/no)? ").strip().lower()
+            if response == "no":
+                sys.exit(1)
+            elif response == "yes":
+                break
+            else:
+                print(response + " is not a valid response.")
+
     # Require certificate verification.
     context.verify_mode = ssl.CERT_REQUIRED
     # By default we are going to enable hostname verification.
