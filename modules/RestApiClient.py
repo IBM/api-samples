@@ -42,7 +42,30 @@ class RestApiClient:
         # PROTOCOL_SSLv23 is misleading.  PROTOCOL_SSLv23 will use the highest
         # version of SSL or TLS that both the client and server supports.
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-        context.options = ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
+
+        # SSL version 2 and SSL version 3 are insecure. The insecure versions
+        # are disabled.
+        try:
+            context.options = ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
+        except ValueError as e:
+            # Disabling SSLv2 and SSLv3 is not supported on versions of OpenSSL
+            # prior to 0.9.8m.
+            if not (self.config.has_config_value('ssl_2_3_ok') and
+                    self.config.get_config_value('ssl_2_3_ok') == 'true'):
+                print('WARNING: Unable to disable SSLv2 and SSLv3. Caused '
+                      'by exception "' + str(e) + '"')
+                while True:
+                    response = input(
+                        "Would you like to continue anyway (yes/no)? "
+                        ).strip().lower()
+                    if response == "no":
+                        sys.exit(1)
+                    elif response == "yes":
+                        self.config.set_config_value('ssl_2_3_ok', 'true')
+                        break
+                    else:
+                        print(response + " is not a valid response.")
+
         context.verify_mode = ssl.CERT_REQUIRED
         if sys.version_info >= (3, 4):
             context.check_hostname = True
