@@ -265,6 +265,8 @@ def get_offense_summaries(api_client, start_offense, end_offense):
         - status
         - offense_type
         - offense_source
+        - source_address_ids
+        - local_destination_address_ids
 
     Passes a Range header with the provided start_offense and end_offense to
     limit the amount of offenses returned. Returns the list of offense
@@ -272,7 +274,8 @@ def get_offense_summaries(api_client, start_offense, end_offense):
     """
 
     endpoint = 'siem/offenses'
-    params = {'fields': 'id,description,status,offense_type,offense_source'}
+    params = {'fields': 'id,description,status,offense_type,offense_source,'
+                        'source_address_ids,local_destination_address_ids'}
     headers = {'Range': 'items=' + str(start_offense) + '-' + str(end_offense)}
 
     response = api_client.call_api(endpoint, 'GET', params=params,
