@@ -18,7 +18,7 @@ class APIClient(RestApiClient):
         # version 3.0 of the ariel API.
         self.endpoint_start = 'ariel/'
         super(APIClient, self).__init__(config_section=config_section,
-                                        version='3.0', config=config)
+                                        version='4.0', config=config)
 
     def get_databases(self):
 
@@ -40,21 +40,12 @@ class APIClient(RestApiClient):
         # sends a GET request to https://<server_ip>/rest/api/ariel/searches
         return self.call_api(endpoint, 'GET', self.headers)
 
-    def create_search(self, query_expression, query_language_version=None,
-                      search_id=None, start_time=None, end_time=None):
+    def create_search(self, query_expression):
 
         endpoint = self.endpoint_start + "searches"
         # sends a POST request to https://<server_ip>/rest/api/ariel/searches
 
         data = {'query_expression': query_expression}
-        if query_language_version:
-            data['query_language_version'] = query_language_version
-        if search_id:
-            data['search_id'] = search_id
-        if start_time:
-            data['start_time'] = start_time
-        if end_time:
-            data['end_time'] = end_time
 
         data = urllib.parse.urlencode(data)
         data = data.encode('utf-8')
