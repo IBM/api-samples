@@ -9,8 +9,6 @@ DELETE request. By linking together calls to these endpoints you can
 implement you own custom business processes or integrate QRadar data
 with external systems.
 
-Endpoints released as **"Experimental"** may change in future versions of the API.
-
 The QRadar REST API contains endpoints not covered by these samples.
 Future releases of this sample package will be expanded to include
 examples of more API endpoints.
