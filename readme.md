@@ -43,7 +43,7 @@ For the changes to the API's and the impacts those would have on the samples See
 ## Requirements
 
 - Python 3.3 or above
-- QRadar system 7.2.4 or higher
+- QRadar system 7.2.5 or higher
 
 
 ## Instructions
