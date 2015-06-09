@@ -16,7 +16,6 @@
 import json
 import os
 import sys
-import urllib.parse
 sys.path.append(os.path.realpath('../modules'))
 
 from RestApiClient import RestApiClient
@@ -55,18 +54,15 @@ def main():
         else:
             print(confirmation + 'is not a valid answer.')
 
-    # Have the user input the text. quote it to retain special characters like
-    # spaces.
-    text = urllib.parse.quote(
-        input('Please enter the text you want to put in the closing reason.\n')
-        )
+    # Have the user input the text.
+    text = input(
+        'Please enter the text you want to put in the closing reason.\n')
 
     # Put through the request to add a closing reason with the text the user
     # entered as the reason
-    SampleUtilities.pretty_print_request(
-        client, 'siem/offense_closing_reasons?reason=' + text, 'POST')
-    response = client.call_api('siem/offense_closing_reasons?reason=' + text,
-                               'POST')
+    params = {'reason': text}
+    response = client.call_api('siem/offense_closing_reasons', 'POST',
+                               params=params, print_request=True)
 
     SampleUtilities.pretty_print_response(response)
 

@@ -19,7 +19,6 @@ import json
 import os
 import sys
 import time
-import urllib.parse
 
 sys.path.append(os.path.realpath('../modules'))
 
@@ -39,10 +38,9 @@ def main():
 
     # Suppose we are only interested in the names and the size of each set. We
     # can restrict the data we get back with a 'fields' parameter.
-    fields = 'fields=' + urllib.parse.quote('name,number_of_elements')
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
-                                                 fields, 'GET')
-    response = client.call_api('reference_data/sets?' + fields, 'GET')
+    params = {'fields': 'name,number_of_elements'}
+    response = client.call_api('reference_data/sets', 'GET', params=params,
+                               print_request=True)
     SampleUtilities.pretty_print_response(response)
 
     # If this set contained a large amount of data, we might want to process it
@@ -88,23 +86,20 @@ def main():
     # interested in. We can use the filter parameter to do this.
     # Some sets were added during the setup of this sample script. Lets find
     # them.
-    filter_string = 'filter=' + urllib.parse.quote(
-        'name between rest_api_samples and rest_api_samplet')
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
-                                         filter_string, 'GET')
-    response = client.call_api('reference_data/sets?' + filter_string, 'GET')
+    params = {'filter': 'name between rest_api_samples and rest_api_samplet'}
+    response = client.call_api('reference_data/sets', 'GET', params=params,
+                               print_request=True)
     SampleUtilities.pretty_print_response(response)
 
     # Only some of these sets contain data.
-    filter_string = 'filter=' + urllib.parse.quote(
-        'name between rest_api_samples and rest_api_samplet and ' +
-        'number_of_elements>0')
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
-                                         filter_string, 'GET')
-    response = client.call_api('reference_data/sets?' + filter_string, 'GET')
+    params = {'filter': 'name between rest_api_samples and rest_api_samplet '
+                        'and number_of_elements > 0'}
+    response = client.call_api('reference_data/sets', 'GET', params=params,
+                               print_request=True)
     SampleUtilities.pretty_print_response(response)
 
-    response = client.call_api('reference_data/sets?' + filter_string, 'GET')
+    response = client.call_api('reference_data/sets', 'GET', params=params,
+                               print_request=True)
     parsed_response = json.loads(response.read().decode('utf-8'))
 
     for ref_data_set in parsed_response:
@@ -120,18 +115,13 @@ def main():
 
     # You can combine fields, filters, and the range parameter to have precise
     # control over the data you get back from the API.
-    filter_string = 'filter=' + urllib.parse.quote(
-        'name between rest_api_samples and rest_api_samplet')
-    range_header = {'Range': 'items=0-1'}
-    fields = 'fields=' + urllib.parse.quote('name')
-
     # Here we are asking for only the names of the top two reference sets that
     # were added by this sample script.
-    SampleUtilities.pretty_print_request(client, 'reference_data/sets?' +
-                                         filter_string + '&' + fields, 'GET',
-                                         headers=range_header)
-    response = client.call_api('reference_data/sets?' + filter_string + '&' +
-                               fields, 'GET', headers=range_header)
+    params = {'filter': 'name between rest_api_samples and rest_api_samplet',
+              'fields': 'name'}
+    headers = {'Range': 'items=0-1'}
+    response = client.call_api('reference_data/sets', 'GET', params=params,
+                               headers=headers, print_request=True)
     SampleUtilities.pretty_print_response(response)
 
     # You can uncomment this line to have this script remove the data it

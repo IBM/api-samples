@@ -26,7 +26,7 @@ def main():
     # successful or not successful search information.
     # The search_id corresponding to this search is contained in
     # the JSON object.
-    response = api_client.create_search(query_expression, '2')
+    response = api_client.create_search(query_expression)
 
     # Each response contains an HTTP response code.
     #  - Response codes in the 200 range indicate that your request succeeded.

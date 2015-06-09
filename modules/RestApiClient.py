@@ -2,11 +2,14 @@ from config import Config
 
 from urllib.error import HTTPError
 from urllib.error import URLError
+from urllib.parse import quote
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.request import install_opener
 from urllib.request import build_opener
 from urllib.request import HTTPSHandler
+
+import SampleUtilities
 
 import ssl
 import sys
@@ -104,7 +107,8 @@ class RestApiClient:
             HTTPSHandler(context=context, check_hostname=check_hostname)))
 
     # This method is used to set up an HTTP request and send it to the server
-    def call_api(self, endpoint, method, headers=None, params=[], data=None):
+    def call_api(self, endpoint, method, headers=None, params=[], data=None,
+                 print_request=False):
 
         path = self.parse_path(endpoint, params)
 
@@ -121,9 +125,24 @@ class RestApiClient:
             headers=actual_headers)
         request.get_method = lambda: method
 
+        # Print the request if print_request is True.
+        if print_request:
+            SampleUtilities.pretty_print_request(self, path, method,
+                                                 headers=actual_headers)
+
         try:
+            response = urlopen(request, data)
+
+            response_info = response.info()
+            if 'Deprecated' in response_info:
+
+                # This version of the API is Deprecated. Print a warning to
+                # stderr.
+                print("WARNING: " + response_info['Deprecated'],
+                      file=sys.stderr)
+
             # returns response object for opening url.
-            return urlopen(request, data)
+            return response
         except HTTPError as e:
             # an object which contains information similar to a request object
             return e
@@ -144,12 +163,12 @@ class RestApiClient:
 
             for kv in params:
                 if kv[1]:
-                    path += kv[0]+'='+kv[1]+'&'
+                    path += kv[0]+'='+quote(kv[1])+'&'
 
         else:
             for k, v in params.items():
                 if params[k]:
-                    path += k+'='+v+'&'
+                    path += k+'='+quote(v)+'&'
 
         # removes last '&' or hanging '?' if no params.
         return path[:len(path)-1]

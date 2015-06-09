@@ -21,7 +21,6 @@
 import json
 import os
 import sys
-import urllib.parse
 sys.path.append(os.path.realpath('../modules'))
 
 from RestApiClient import RestApiClient
@@ -102,17 +101,13 @@ def main():
         else:
             print(confirmation + ' is not a valid answer.')
 
-    # Take in the text for the note. Since the note could be multiple words,
-    # and the API calls through a url, we are using urllib.parse.quote to
-    # preserve the spaces and special characters in the note.
-    text = urllib.parse.quote(input('Please enter the content of the note.\n'))
+    # Take in the text for the note.
+    text = input('Please enter the content of the note.\n')
 
     # Send in the request for the new note to be put on the offense.
-    SampleUtilities.pretty_print_request(
-        client, 'siem/offenses/' + offense_ID + '/notes?note_text=' + text,
-        'POST')
-    response = client.call_api('siem/offenses/' + offense_ID +
-                               '/notes?note_text=' + text, 'POST')
+    params = {'note_text': text}
+    response = client.call_api('siem/offenses/' + offense_ID + '/notes',
+                               'POST', params=params, print_request=True)
 
     # Display to the user the new note received from POST to confirm that it
     # has been created properly.

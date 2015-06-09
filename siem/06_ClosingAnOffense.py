@@ -30,7 +30,6 @@
 import json
 import os
 import sys
-import urllib.parse
 sys.path.append(os.path.realpath('../modules'))
 
 from RestApiClient import RestApiClient
@@ -162,7 +161,6 @@ def main():
                     break
             note_text = input(
                 'Please enter a note to close the offense with:\n')
-        note_text = urllib.parse.quote(note_text)
 
     # Ensure that the user really wants to close the offense
     while True:
@@ -183,12 +181,9 @@ def main():
 
     # First let's create the note (if the user wants to)
     if (make_note == 'YES'):
-        SampleUtilities.pretty_print_request(
-            client, 'siem/offenses/' + offense_ID + '/notes?note_text=' +
-            note_text, 'POST')
-        response = client.call_api(
-            'siem/offenses/' + offense_ID + '/notes?note_text=' + note_text,
-            'POST')
+        params = {'note_text': note_text}
+        response = client.call_api('siem/offenses/' + offense_ID + '/notes',
+                                   'POST', params=params, print_request=True)
 
         SampleUtilities.pretty_print_response(response)
 

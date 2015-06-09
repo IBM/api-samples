@@ -32,7 +32,6 @@ import json
 import os
 import sys
 import time
-import urllib.parse
 sys.path.append(os.path.realpath('../modules'))
 
 import Cleanup
@@ -111,7 +110,7 @@ def main():
 def setup_data(client):
     current_time = int(time.time() * 1000)
 
-    key_name_types = urllib.parse.quote(
+    key_name_types = (
         "[{\"element_type\": \"IP\", " +
         "\"key_name\": \"Authorization_Server_IP_Secure\"}, " +
         "{\"element_type\": \"PORT\", " +
@@ -119,87 +118,96 @@ def setup_data(client):
         "{\"element_type\": \"DATE\", \"key_name\": \"Last_Secure_Login\"}, " +
         "{\"element_type\": \"IP\", " +
         "\"key_name\": \"Authorization_Server_IP_General\"}]")
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables?name=rest_api_samples_server_access&' +
-        'element_type=ALN&key_name_types=' + key_name_types, 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=calvin&inner_key=Authorization_Server_IP_Secure&' +
-        'value=6.3.9.12', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=calvin&inner_key=Authorization_Server_PORT_Secure&' +
-        'value=443', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=calvin&inner_key=Authorization_Server_IP_General&' +
-        'value=7.12.15.12', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=calvin&inner_key=Last_Secure_Login&value=' +
-        str(current_time), 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=socrates&inner_key=Authorization_Server_IP_General&' +
-        'value=7.12.14.85', 'POST')
-    time.sleep(1)
 
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=mill&inner_key=Authorization_Server_IP_Secure&' +
-        'value=6.3.9.12', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=mill&inner_key=Authorization_Server_PORT_Secure&value=443',
-        'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=mill&inner_key=Last_Secure_Login&value=' +
-        str(current_time), 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=mill&inner_key=Authorization_Server_IP_General&' +
-        'value=7.13.22.85', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=hobbes&inner_key=Authorization_Server_IP_Secure&' +
-        'value=6.3.9.12', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=hobbes&inner_key=Authorization_Server_PORT_Secure&value=22',
-        'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=hobbes&inner_key=Last_Secure_Login&value=' +
-        str(current_time), 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=hobbes&inner_key=Authorization_Server_IP_General&' +
-        'value=7.12.19.125', 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=aquinas&inner_key=Last_Secure_Login&value=' +
-        str(current_time - 1000000), 'POST')
-    SampleUtilities.data_setup(
-        client,
-        'reference_data/tables/rest_api_samples_server_access?' +
-        'outer_key=aquinas&inner_key=Authorization_Server_IP_General&' +
-        'value=7.12.15.12', 'POST')
+    # Create the reference set.
+    params = {'name': 'rest_api_samples_server_access',
+              'key_name_types': key_name_types,
+              'element_type': 'ALN'}
+    SampleUtilities.data_setup(client, 'reference_data/tables', 'POST',
+                               params=params)
+
+    # For each parameter set defined in the for loop, add the data to the
+    # rest_api_samples_server_access reference set using the POST
+    # reference_data/tables/{name} endpoint.
+    for params in [
+            {
+                'outer_key': 'calvin',
+                'inner_key': 'Authorization_Server_IP_Secure',
+                'value': '6.3.9.12'
+            },
+            {
+                'outer_key': 'calvin',
+                'inner_key': 'Authorization_Server_PORT_Secure',
+                'value': '443'
+            },
+            {
+                'outer_key': 'calvin',
+                'inner_key': 'Authorization_Server_IP_General',
+                'value': '7.12.15.12'
+            },
+            {
+                'outer_key': 'calvin',
+                'inner_key': 'Last_Secure_Login',
+                'value': str(current_time)
+            },
+            {
+                'outer_key': 'socrates',
+                'inner_key': 'Authorization_Server_IP_General',
+                'value': '7.12.14.85'
+            },
+            {
+                'outer_key': 'mill',
+                'inner_key': 'Authorization_Server_IP_Secure',
+                'value': '6.3.9.12'
+            },
+            {
+                'outer_key': 'mill',
+                'inner_key': 'Authorization_Server_PORT_Secure',
+                'value': '443'
+            },
+            {
+                'outer_key': 'mill',
+                'inner_key': 'Last_Secure_Login',
+                'value': str(current_time)
+            },
+            {
+                'outer_key': 'mill',
+                'inner_key': 'Authorization_Server_IP_General',
+                'value': '7.13.22.85'
+            },
+            {
+                'outer_key': 'hobbes',
+                'inner_key': 'Authorization_Server_IP_Secure',
+                'value': '6.3.9.12'
+            },
+            {
+                'outer_key': 'hobbes',
+                'inner_key': 'Authorization_Server_PORT_Secure',
+                'value': '22'
+            },
+            {
+                'outer_key': 'hobbes',
+                'inner_key': 'Last_Secure_Login',
+                'value': str(current_time)
+            },
+            {
+                'outer_key': 'hobbes',
+                'inner_key': 'Authorization_Server_IP_General',
+                'value': '7.12.19.125'
+            },
+            {
+                'outer_key': 'aquinas',
+                'inner_key': 'Last_Secure_Login',
+                'value': str(current_time - 1000000)
+            },
+            {
+                'outer_key': 'aquinas',
+                'inner_key': 'Authorization_Server_IP_General',
+                'value': '7.12.15.12'
+            }]:
+        SampleUtilities.data_setup(
+            client, 'reference_data/tables/rest_api_samples_server_access',
+            'POST', params=params)
 
 
 # This function represents work done by an external system to determine which

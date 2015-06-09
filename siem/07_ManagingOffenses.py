@@ -32,7 +32,6 @@
 import json
 import os
 import sys
-import urllib.parse
 import datetime
 sys.path.append(os.path.realpath('../modules'))
 
@@ -82,13 +81,11 @@ def main():
     # Now that we have our rules set out for how to deal with offenses, we need
     # to GET the offenses. The only offenses we need to assign to people are
     # those that aren't CLOSED and aren't already assigned to someone.
-    search = urllib.parse.quote('siem/offenses?filter=status!=CLOSED'
-                                '&fields=id,description,'
-                                'magnitude,destination_networks,assigned_to')
-
-    # Call the API to GET the offenses
-    SampleUtilities.pretty_print_request(client, search, 'GET')
-    response = client.call_api(search, 'GET')
+    params = {'filter': 'status != CLOSED',
+              'fields': 'id,description,magnitude,destination_networks,'
+                        'assigned_to'}
+    response = client.call_api('siem/offenses', 'GET', params=params,
+                               print_request=True)
 
     # Ensure the call didn't fail for some reason.
     if (response.code != 200):
@@ -149,10 +146,10 @@ def main():
                     # destination_network, we can send in a POST call to update
                     # the offense's assigned_to variable, and by doing that
                     # assign the offense to the correct user.
-                    update_request = urllib.parse.quote(
-                        'siem/offenses/' + str(offense['id']) +
-                        '?assigned_to=' + assignment_data[index]['name'])
-                    response = client.call_api(update_request, 'POST')
+                    params = {'assigned_to': assignment_data[index]['name']}
+                    response = client.call_api(
+                        'siem/offenses/' + str(offense['id']), 'POST',
+                        params=params)
 
                     # Check the response code
                     if (response.code == 200):
@@ -182,11 +179,11 @@ def main():
     # that.
 
     # Send in the GET request
-    search = urllib.parse.quote(
-        'siem/offenses?filter=status!=CLOSED and assigned_to is not null&'
-        'fields=id,description,start_time,destination_networks,assigned_to')
-    SampleUtilities.pretty_print_request(client, search, 'GET')
-    response = client.call_api(search, 'GET')
+    params = {'filter': 'status != CLOSED and assigned_to is not null',
+              'fields': 'id,description,start_time,destination_networks,'
+                        'assigned_to'}
+    response = client.call_api('siem/offenses', 'GET', params=params,
+                               print_request=True)
 
     # Check the response code for errors
     if (response.code != 200):
@@ -256,7 +253,7 @@ def main():
                     if elapsed_time > int(
                             assignment_data[index]['days_to_resolve']):
                         print('Notify ' + assignment_names[index] + ', ' +
-                              ' offense ' + str(offense['id']) +
+                              'offense ' + str(offense['id']) +
                               ' must be closed immediately.')
                         # Trigger the flag to say this offense is late
                         late = True

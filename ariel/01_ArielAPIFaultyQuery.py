@@ -23,7 +23,7 @@ def main():
     # call POST /searches on the Ariel API. (See the ArielAPIClient for more
     # detail).
     # This method returns a response object created by urllib.request library.
-    response = api_client.create_search(query_expression, '2')
+    response = api_client.create_search(query_expression)
 
     # Each response contains an HTTP response code.
     #  - Response codes in the 200 range indicate that your request succeeded.

@@ -9,8 +9,6 @@ DELETE request. By linking together calls to these endpoints you can
 implement you own custom business processes or integrate QRadar data
 with external systems.
 
-Endpoints released as **"Experimental"** may change in future versions of the API.
-
 The QRadar REST API contains endpoints not covered by these samples.
 Future releases of this sample package will be expanded to include
 examples of more API endpoints.
@@ -26,7 +24,8 @@ https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-
 
 
 ## What's new
-For the changes to the API's and the impacts those would have on the samples See the Chapter 1 of [QRadar API Reference Guide](qradar_api_guide.pdf).
+For the changes to the API's and the impacts those would have on the samples see
+[What's new for developers in RESTful APIs in QRadar V7.2.5](http://www-01.ibm.com/support/knowledgecenter/SS42VS_7.2.5/com.ibm.qradar.doc_7.2.5/c_rest_api_whats_new_725.html).
 
 
 
@@ -45,7 +44,7 @@ For the changes to the API's and the impacts those would have on the samples See
 ## Requirements
 
 - Python 3.3 or above
-- QRadar system 7.2.4 or higher
+- QRadar system 7.2.5 or higher
 
 
 ## Instructions
