@@ -24,15 +24,16 @@ import json
 import os
 import sys
 import time
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
     # Create our client and set up some sample data.
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='3.0')
     setup_data(client)
 
     # Here we have a look at the data in this map of sets.

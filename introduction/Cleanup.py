@@ -6,12 +6,13 @@ import argparse
 import os
 import sys
 
+import importlib
 sys.path.append(os.path.realpath('../modules'))
-from RestApiClient import RestApiClient
+client_module = importlib.import_module('RestApiClient')
 
 
 def main():
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='3.0')
     cleanup_introduction_data(client)
     cleanup_06_common_parameters(client)
 
@@ -52,7 +53,7 @@ if __name__ == "__main__":
         choices=['02_QueryParameters.py', '03_PathParameters.py',
                  '04_BodyParameters.py', '06_CommonParameters', 'all'])
 
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='3.0')
     args = parser.parse_args()
     if (args.script == '02_QueryParameters.py'):
         cleanup_introduction_data(client)

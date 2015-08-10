@@ -12,9 +12,10 @@ import sys
 import os
 import Cleanup
 
+import importlib
 sys.path.append(os.path.realpath('../modules'))
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
     # object has been abstracted to the 'RestApiClient' class.
     # For more information on how these operations are done see the sample
     # '01_Authentication.py'.
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='3.0')
 
     # Many API endpoints accept parameters.
     # One type of parameter is a query parameter.
