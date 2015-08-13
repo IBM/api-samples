@@ -14,10 +14,11 @@ import base64
 import os
 import ssl
 import sys
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
-from config import Config
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
+config_module = importlib.import_module('config')
 
 
 def main():
@@ -25,7 +26,7 @@ def main():
     The entry point for the sample.
     """
 
-    config = Config()
+    config = config_module.Config()
 
     # Specify Version 1.0 in the request headers. Version 1.0 is a deprecated
     # version of the API.

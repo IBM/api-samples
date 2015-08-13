@@ -16,15 +16,16 @@
 import json
 import os
 import sys
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
     # First we have to create our client
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='3.0')
 
     # This example gives a demonstration of how to create a new closing reason
     # for your offenses.

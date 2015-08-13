@@ -14,15 +14,17 @@
 
 import sys
 import os
-sys.path.append(os.path.realpath('../modules'))
 import json
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
     # Create our client.
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='3.0')
 
     # Using the /asset_model/assets endpoint with a GET request.
     SampleUtilities.pretty_print_request(client, 'asset_model/assets', 'GET')
