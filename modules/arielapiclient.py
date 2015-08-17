@@ -18,7 +18,7 @@ class APIClient(RestApiClient):
         # version 3.0 of the ariel API.
         self.endpoint_start = 'ariel/'
         super(APIClient, self).__init__(config_section=config_section,
-                                        version='4.0', config=config)
+                                        version='5.0', config=config)
 
     def get_databases(self):
 
