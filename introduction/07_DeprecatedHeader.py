@@ -28,10 +28,10 @@ def main():
 
     config = config_module.Config()
 
-    # Specify Version 1.0 in the request headers. Version 1.0 is a deprecated
+    # Specify Version 3.0 in the request headers. Version 3.0 is a deprecated
     # version of the API.
     headers = {'Accept': 'application/json',
-               'Version': '1.0'}
+               'Version': '3.0'}
     if config.has_config_value('auth_token'):
         headers['SEC'] = config.get_config_value('auth_token')
     elif (config.has_config_value('username') and

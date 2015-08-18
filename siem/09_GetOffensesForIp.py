@@ -34,7 +34,7 @@ def main():
     """
 
     # First we have to create our client.
-    api_client = client_module.RestApiClient(version='3.1')
+    api_client = client_module.RestApiClient(version='5.0')
 
     # Prompt the user for an IP address.
     ip = prompt_for_ip()

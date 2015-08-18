@@ -24,7 +24,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def main():
     # Create our client.
-    client = client_module.RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
 
     # Using the /asset_model/assets endpoint with a GET request.
     SampleUtilities.pretty_print_request(client, 'asset_model/assets', 'GET')

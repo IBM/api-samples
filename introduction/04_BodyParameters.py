@@ -20,7 +20,8 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 def main():
 
     # Create our client and set up some sample data.
-    client = client_module.RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
+
     setup_data(client)
 
     # Some endpoints accept body parameters. An example of this is the

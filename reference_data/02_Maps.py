@@ -37,7 +37,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def main():
     # Create our client and set up some sample data.
-    client = client_module.RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
     setup_data(client)
 
     # First lets see who is on duty now.
