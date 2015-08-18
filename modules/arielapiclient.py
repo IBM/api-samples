@@ -15,7 +15,7 @@ class APIClient(RestApiClient):
     def __init__(self, config_section='DEFAULT', config=None):
 
         # This version of the ariel APIClient is designed to function with
-        # version 3.0 of the ariel API.
+        # version 5.0 of the ariel API.
         self.endpoint_start = 'ariel/'
         super(APIClient, self).__init__(config_section=config_section,
                                         version='5.0', config=config)
