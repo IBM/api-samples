@@ -64,6 +64,11 @@ def main():
         offense_ids = (
             offense_ids | set(local_destination_address['offense_ids']))
 
+    # If the set of offense IDs is empty, exit
+    if len(offense_ids) == 0:
+        print("The set of offense IDs is empty. Cannot continue.")
+        sys.exit(1)
+
     # Generate the filter we will use to return only the offenses associated
     # with the IP address.
     offense_id_filter = generate_filter_from_array('id', offense_ids)
