@@ -3,7 +3,7 @@
 This package contains sample Python code that demonstrates how to use the
 QRadar REST API. The API is accessed by sending specially crafted HTTP
 requests to specific URLs on the QRadar console. These URLs, known as
-**“endpoints”**, each perform a specific function. Some endpoints perform
+**"endpoints"**, each perform a specific function. Some endpoints perform
 different functions depending on whether you send a GET, POST, or
 DELETE request. By linking together calls to these endpoints you can
 implement you own custom business processes or integrate QRadar data
@@ -23,19 +23,20 @@ You can also join the community on our forums at:
 https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-4d73-94e8-c096abe263ca
 
 
-## What's new
+## What's New
 For the changes to the API's and the impacts those would have on the samples see
 [What's new for developers in RESTful APIs in QRadar V7.2.5](http://www-01.ibm.com/support/knowledgecenter/SS42VS_7.2.5/com.ibm.qradar.doc_7.2.5/c_rest_api_whats_new_725.html).
 
 
+## Package Contents
 
-## Package contents
-
- - An introduction package that shows how to use the API at a low level
+ - An introduction package that shows how to use the API at a low level.
  - A reference data package that demonstrates endpoints in the
-    `/reference_data category`.
+    `/reference_data` category.
  - An Ariel package that demonstrates endpoints in the `/ariel` category.
  - An Offense package that demonstrates endpoints in the `/siem/offenses` category.
+ - A Domain Management package that demonstrates endpoints in the
+   `/config/domain_management/domains` category.
  - An API CLI client that can be used to access the API from the
     command line.
  - A package containing shared modules.
@@ -54,7 +55,7 @@ the folder structure does not change.
 
 To run a sample script from the command line navigate to the directory the
 script is in and run `python <script_name.py>` replacing python with the 
-name of your python 3 binary if it is different on your system. You can also
+name of your Python 3 binary if it is different on your system. You can also
 run these samples from your chosen Python development environment as you
 would run any other Python script. You may need to run one sample from the
 command line or set up you IDE's console to be interactive so that the
@@ -138,8 +139,11 @@ not included in this custom section will be loaded from the default section.
 You can also create you own dictionary of setting from some other source
 and pass it directly to the RestApiClient.
 
-These samples are provided for reference purposes on an "as is" basis, and are without warranties of any kind.
+These samples are provided for reference purposes on an "as is" basis, and are
+without warranties of any kind.
 
-It is strongly advised that these samples are not run against production systems.
+It is strongly advised that these samples are not run against production
+systems.
 
-Any issues discovered using the samples should not be directed to QRadar support, but be reported on the Github issues tracker.
+Any issues discovered using the samples should not be directed to QRadar
+support, but be reported on the Github issues tracker.
