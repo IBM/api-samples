@@ -1,6 +1,6 @@
 ﻿# QRadar API Samples
 
-This package contains sample python code that demonstrates how to use the
+This package contains sample Python code that demonstrates how to use the
 QRadar REST API. The API is accessed by sending specially crafted HTTP
 requests to specific URLs on the QRadar console. These URLs, known as
 **“endpoints”**, each perform a specific function. Some endpoints perform
@@ -55,8 +55,8 @@ the folder structure does not change.
 To run a sample script from the command line navigate to the directory the
 script is in and run `python <script_name.py>` replacing python with the 
 name of your python 3 binary if it is different on your system. You can also
-run these samples from your chosen python development environment as you
-would run any other python script. You may need to run one sample from the
+run these samples from your chosen Python development environment as you
+would run any other Python script. You may need to run one sample from the
 command line or set up you IDE's console to be interactive so that the
 configuration file can be created.
 
