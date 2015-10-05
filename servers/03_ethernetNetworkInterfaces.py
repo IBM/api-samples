@@ -54,13 +54,13 @@ def main():
     # update the settings
     # Have the user input the new settings.
     role = input(
-        'Please enter the role (regular, monitor or disabled) ' + 
-            'of the network interface.\n')
+        'Please enter the role (regular, monitor or disabled) ' +
+        'of the network interface.\n')
     ipversion = input('Please enter the version (ipv4 or ipv6) '
                       + 'of the new ip.\n')
     ip = input('Please enter the new ip.\n')
     mask = input('Please enter the new netmask.\n')
-    
+
     ifaceObj = {"role": role, "ipversion": ipversion,
                 "ip": ip, "mask": mask,
                 "is_auto_ip": False}

@@ -62,13 +62,14 @@ def main():
         print(json.dumps(response_body, indent=4))
 
         print('Add a new firewall rule and save back to the server.')
-            # Have the user input the server Id.
+        # Have the user input the server Id.
         ip = input(
-          'Please enter the ip of the host from where to access the server.\n')
+            'Please enter the ip of the host from where to '
+            + 'access the server.\n')
         port = input(
-          'Please enter the port on the server you want to access.\n')
+            'Please enter the port on the server you want to access.\n')
         protocol = input(
-          'Please enter the protocol (TCP, UDP, ANY) used for the access.\n')
+            'Please enter the protocol (TCP, UDP, ANY) used for the access.\n')
         response_body.append({
             "is_any_source_ip": True,
             "port_range": None,
