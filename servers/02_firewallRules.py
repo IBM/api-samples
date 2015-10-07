@@ -64,8 +64,8 @@ def main():
         print('Add a new firewall rule and save back to the server.')
         # Have the user input the server Id.
         ip = input(
-            'Please enter the ip of the host from where to '
-            + 'access the server.\n')
+            'Please enter the ip of the host from where to ' +
+            'access the server.\n')
         port = input(
             'Please enter the port on the server you want to access.\n')
         protocol = input(
