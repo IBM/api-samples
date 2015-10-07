@@ -46,7 +46,7 @@ def setup_domain():
     """Sets up a domain with event collector ID = -1000 and returns this new
     domain.
 
-    The domain name is a randomly generated UUID. The event collect ID is
+    The domain name is a randomly generated UUID. The event collector ID is
     chosen to be not among existing IDs.
 
     If the data for the event collector ID already exists, re-use the domain
