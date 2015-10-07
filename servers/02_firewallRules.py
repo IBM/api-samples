@@ -61,7 +61,13 @@ def main():
         response_body = json.loads(response.read().decode('utf-8'))
         print(json.dumps(response_body, indent=4))
 
-        print('Add a new firewall rule and save back to the server.')
+        proceed = input(
+            'Continue running this sample will guide you to add a new ' +
+            'firewall rule to the server. Are your sure to continue (Y/N)? ')
+
+        if (proceed != 'Y'):
+            sys.exit(1)
+
         # Have the user input the server Id.
         ip = input(
             'Please enter the ip of the host from where to ' +

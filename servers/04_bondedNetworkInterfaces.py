@@ -45,12 +45,19 @@ def main():
     # get the current settings
     response_body = json.loads(response.read().decode('utf-8'))
     if (len(response_body) == 0):
-        print('The network interface ' + iface + " does not exists.")
+        print('The bonded network interface ' + iface + " does not exists.")
         sys.exit(1)
     print('Current settings:')
     print(json.dumps(response_body, indent=4))
 
     # update the settings
+    proceed = input(
+        'Continue running this sample will guide you to change the  ' +
+        'settings of the bonded network interface. ' +
+        'Are your sure to continue (Y/N)? ')
+
+    if (proceed != 'Y'):
+        sys.exit(1)
     # Have the user input the new settings.
     role = input(
         'Please enter the role (regular, monitor or disabled) ' +

@@ -52,6 +52,13 @@ def main():
     print(json.dumps(response_body, indent=4))
 
     # update the settings
+    proceed = input(
+        'Continue running this sample will guide you to change the  ' +
+        'settings of the network interface. ' +
+        'Are your sure to continue (Y/N)? ')
+
+    if (proceed != 'Y'):
+        sys.exit(1)
     # Have the user input the new settings.
     role = input(
         'Please enter the role (regular, monitor or disabled) ' +
