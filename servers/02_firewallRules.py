@@ -71,7 +71,7 @@ def main():
         protocol = input(
             'Please enter the protocol (TCP, UDP, ANY) used for the access.\n')
         response_body.append({
-            "is_any_source_ip": True,
+            "is_any_source_ip": False,
             "port_range": None,
             "port_type": "SINGLE",
             "protocol": protocol,
