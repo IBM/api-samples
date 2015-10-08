@@ -36,9 +36,10 @@ def main():
     # parameter of every tenant.
 
     # Send in the request
-    SampleUtilities.pretty_print_request(client,
-                                         'config/access/tenant_management/tenants',
-                                         'GET')
+    SampleUtilities.pretty_print_request(
+          client,
+          'config/access/tenant_management/tenants',
+          'GET')
     response = client.call_api('config/access/tenant_management/tenants',
                                'GET')
 

@@ -43,15 +43,15 @@ def main():
     body = {'name': 'Tenant_API',
             'event_rate_limit': 500,
             'flow_rate_limit': 1000,
-            'description': 'This is a test!'
-           }
+            'description': 'This is a test!'}
 
     json_body = json.dumps(body).encode('utf8')
     # Send in the request
-    SampleUtilities.pretty_print_request(client,
-                                         'config/access/tenant_management/tenants',
-                                         'POST',
-                                         headers=headers)
+    SampleUtilities.pretty_print_request(
+          client,
+          'config/access/tenant_management/tenants',
+          'POST',
+          headers=headers)
 
     response = client.call_api('config/access/tenant_management/tenants',
                                'POST',
@@ -71,28 +71,29 @@ def main():
     print('The new tenant id: ' + tenant_id)
 
     # In this example we'll be using the POST endpoint of
-    #config/access/tenant_management/tenants
+    # config/access/tenant_management/tenants
     # This will allow us to update the new tenant
     # changing "Tenant-API" name to "Tenant-API-new".
     # Create the tenant parameter.
     body = {'name': 'Tenant_API_new',
             'event_rate_limit': 501,
             'flow_rate_limit': 1001,
-            'description': 'This is a test!'
-           }
+            'description': 'This is a test!'}
 
     json_body = json.dumps(body).encode('utf8')
 
     # Send in the request
-    SampleUtilities.pretty_print_request(client,
-                                         'config/access/tenant_management/tenants/' + tenant_id,
-                                         'POST',
-                                         headers=headers)
+    SampleUtilities.pretty_print_request(
+          client,
+          'config/access/tenant_management/tenants/' + tenant_id,
+          'POST',
+          headers=headers)
 
-    response = client.call_api('config/access/tenant_management/tenants/' + tenant_id,
-                               'POST',
-                               headers=headers,
-                               data=json_body)
+    response = client.call_api(
+                  'config/access/tenant_management/tenants/' + tenant_id,
+                  'POST',
+                  headers=headers,
+                  data=json_body)
 
     # Check if the success code was returned to ensure the call to the API was
     # successful.
@@ -105,12 +106,14 @@ def main():
     SampleUtilities.pretty_print_response(response)
 
     # In this example we'll be using the DELETE endpoint of
-    #config/access/tenant_management/tenants
+    # config/access/tenant_management/tenants
     # This will allow us to soft delete the new tenant - Tenant-API.
     # Send in the request
     SampleUtilities.pretty_print_request(
-        client, 'config/access/tenant_management/tenants/' + tenant_id,
-        'DELETE')
+          client,
+          'config/access/tenant_management/tenants/' + tenant_id,
+          'DELETE')
+
     response = client.call_api(
         'config/access/tenant_management/tenants/' + tenant_id, 'DELETE')
 
