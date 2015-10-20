@@ -37,6 +37,8 @@ For the changes to the API's and the impacts those would have on the samples see
  - An Offense package that demonstrates endpoints in the `/siem/offenses` category.
  - A Domain Management package that demonstrates endpoints in the
    `/config/domain_management/domains` category.
+ - A Custom Actions package that demonstrates endpoints in the 
+   '/analytics/custom_actions' category.
  - An API CLI client that can be used to access the API from the
     command line.
  - A package containing shared modules.
