@@ -18,14 +18,15 @@ import sys
 import os
 import json
 
+import importlib
 sys.path.append(os.path.realpath('../modules'))
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
     # Create our client.
-    restClient = RestApiClient(version='5.0')
+    restClient = client_module.RestApiClient(version='5.0')
     # Endpoints used in this sample
     actions_endpoint = 'analytics/custom_actions/actions'
     scripts_endpoint = 'analytics/custom_actions/scripts'
