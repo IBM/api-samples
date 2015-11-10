@@ -3,4 +3,3 @@ import sys
 
 print("Executing example script")
 print("Found parameters " + str(sys.argv))
-
