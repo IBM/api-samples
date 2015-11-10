@@ -77,18 +77,18 @@ are query, or body parameters.
 
 ## Calls with body parameters
 
-Body parameters are entered in the command line the same way as query 
-parameters, `--<param_name>="<param_value>"`, except you must specify the 
-content type of the body you are sending with the `--content_type TYPE` 
-argument. For example, to bulkload data to an existing set of element type 
-ALN named `exampleset`:
+Body parameters are entered in the command line the same way as query
+parameters, `--<param_name>="<param_value>"`, except you must specify the
+content type of the body you are sending with the `--content_type TYPE` or
+`--request_format TYPE` argument. For example, to bulkload data to an existing
+set of element type ALN named `exampleset`:
 
     python apiclient.py --api /referencedata/sets/bulkLoad/exampleset
         --method POST --content_type="application/json"
         --params data="['value1','value2','value3']"
 
-The `--request_format` argument needs to be specified or the body will be sent 
-as a query parameter, and the API call will fail.
+The `--request_format` or `--content_type` argument needs to be specified or
+the body will be sent as a query parameter, and the API call will fail.
 
 ## Miscellaneous command line arguments
 
