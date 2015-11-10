@@ -60,7 +60,7 @@ def get_parser():
                            'application/json, application/xml, ' +
                            'application/csv, or text/table. Defaults to json.',
                       action='store', default='application/json')
-    parser.add_option('--request_format',
+    parser.add_option('--request_format', '--content_type',
                       help='Content-type of body parameter. Required only ' +
                            'for endpoints that have \'body\' parameters.')
     parser.add_option('-v', '--version',
