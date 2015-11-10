@@ -49,7 +49,7 @@ def get_parser():
     parser.add_option('-a', '--api', help='Path of the API to call. Required', action='store')
     parser.add_option('-m', '--method', help='HTTP method to call the API using, either GET, POST, DELETE', action='store', choices=['GET', 'POST', 'DELETE'])
     parser.add_option('--response_format', help='Content-type of response, either application/json, application/xml, application/csv, or text/table. Defaults to json.', action='store', default='application/json')
-    parser.add_option('--request_format', help='Content-type of body parameter. Required only for endpoints that have \'body\' parameters.')
+    parser.add_option('--request_format', '--content_type', help='Content-type of body parameter. Required only for endpoints that have \'body\' parameters.')
     parser.add_option('-v','--version', help='The version of the endpoint you would like to use. Default is most recent version', action='store')
     parser.add_option('--add_headers', help='For any headers you would like to pass. This is not required to use any endpoint. Must be in format "<name1>=<value1>+<name2>=<value2>"') 
     parser.add_option('-p','--params', help='For any parameters you would like to pass. Individual parameters are separated by spaces.\nExample: --params <name1>="<value1>" <name2>="<value2>"', action='callback', callback=get_params, dest="params")

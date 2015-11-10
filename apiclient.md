@@ -97,6 +97,7 @@ as a query parameter, and the API call will fail.
 ## Miscellaneous command line arguments
 
     --response_format RESPONSE_FORMAT
+    --content_type RESPONSE_FORMAT
 
         This sets the 'Accept' header of the request object, determining the 
         Content-type of the response object. The default is 'application/json'. 
@@ -104,8 +105,8 @@ as a query parameter, and the API call will fail.
         error 406 with the message:
             "MIME pattern 'application/json' does not match any content types 
             returned by this endpoint. This endpoint supports <content-type>" 
-        This means you must set your --response_format argument to one of the 
-        supported types.
+        This means you must set your --response_format or --content_type
+        argument to one of the supported types.
 
     --version VERSION
 
