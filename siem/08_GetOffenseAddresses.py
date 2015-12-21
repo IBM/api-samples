@@ -24,9 +24,10 @@
 import json
 import os
 import sys
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
 
 
 def main():
@@ -35,7 +36,7 @@ def main():
     """
 
     # First we have to create our client.
-    api_client = RestApiClient(version='3.1')
+    api_client = client_module.RestApiClient(version='5.0')
 
     # Prompt the user for an offense.
     offense = prompt_for_offense(api_client)

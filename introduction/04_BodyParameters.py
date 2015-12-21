@@ -11,15 +11,17 @@ import sys
 import os
 import Cleanup
 
+import importlib
 sys.path.append(os.path.realpath('../modules'))
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
 
     # Create our client and set up some sample data.
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
+
     setup_data(client)
 
     # Some endpoints accept body parameters. An example of this is the

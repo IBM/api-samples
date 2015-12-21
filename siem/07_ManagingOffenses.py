@@ -33,15 +33,16 @@ import json
 import os
 import sys
 import datetime
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
     # First we have to create our client
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
 
     # In this half of the sample, we will show one way to use a csv file and
     # turn it into a dictionary. Then using that dictionary, and information on
@@ -264,8 +265,10 @@ def main():
             if (not late and match):
                 print('Please close offense ' + str(offense['id']) +
                       ' within ' + str(int(assignment_data[index]
-                                           ['days_to_resolve']) - elapsed_time)
-                      + ' days!')
+                                           ['days_to_resolve']) -
+                                       elapsed_time) +
+                      ' days!')
+
 
 if __name__ == "__main__":
     main()

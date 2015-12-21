@@ -13,14 +13,15 @@ import os
 import sys
 import urllib
 
+import importlib
 sys.path.append(os.path.realpath('../modules'))
-from RestApiClient import RestApiClient
-import SampleUtilities as SampleUtilities
+client_module = importlib.import_module('RestApiClient')
+SampleUtilities = importlib.import_module('SampleUtilities')
 
 
 def main():
     # Create our client.
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
 
     # While using the REST API an error may occur. Information about
     # the error is returned to you in the HTTP response that you receive.

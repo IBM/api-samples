@@ -22,9 +22,10 @@ import json
 import os
 import sys
 import ipaddress
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
 
 
 def main():
@@ -33,7 +34,7 @@ def main():
     """
 
     # First we have to create our client.
-    api_client = RestApiClient(version='3.1')
+    api_client = client_module.RestApiClient(version='5.0')
 
     # Prompt the user for an IP address.
     ip = prompt_for_ip()
@@ -62,6 +63,11 @@ def main():
     for local_destination_address in local_destination_addresses:
         offense_ids = (
             offense_ids | set(local_destination_address['offense_ids']))
+
+    # If the set of offense IDs is empty, exit
+    if len(offense_ids) == 0:
+        print("The set of offense IDs is empty. Cannot continue.")
+        sys.exit(1)
 
     # Generate the filter we will use to return only the offenses associated
     # with the IP address.

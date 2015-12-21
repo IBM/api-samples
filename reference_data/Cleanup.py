@@ -5,13 +5,14 @@
 import argparse
 import os
 import sys
-sys.path.append(os.path.realpath('../modules'))
 
-from RestApiClient import RestApiClient
+import importlib
+sys.path.append(os.path.realpath('../modules'))
+client_module = importlib.import_module('RestApiClient')
 
 
 def main():
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
     cleanup_01_sets(client)
     cleanup_02_maps(client)
     cleanup_03_map_of_sets(client)
@@ -66,7 +67,7 @@ if __name__ == "__main__":
         choices=['01_Sets.py', '02_Maps.py', '03_MapOfSets.py', '04_Tables.py',
                  'all'])
 
-    client = RestApiClient(version='3.0')
+    client = client_module.RestApiClient(version='5.0')
     args = parser.parse_args()
     if (args.script == '01_Sets.py'):
         cleanup_01_sets(client)

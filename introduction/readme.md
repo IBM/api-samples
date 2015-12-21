@@ -57,3 +57,7 @@ parameters can be applied to many other endpoints.
 ### 07_DeprecatedHeader.py
 This sample demonstrates the Deprecated response header. The Deprecated
 response header is returned for each request to a deprecated API endpoint.
+
+### 08_RemovedVersion.py
+This sample demonstrates the Removed response message. The Removed
+response message is returned for each request to a removed API endpoint.

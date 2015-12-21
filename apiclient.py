@@ -3,11 +3,13 @@
 
 import sys
 import os
-sys.path.append(os.path.realpath('modules'))
 import json
-from RestApiClient import RestApiClient
 from optparse import OptionParser
 import re
+
+import importlib
+sys.path.append(os.path.realpath('modules'))
+client_module = importlib.import_module('RestApiClient')
 
 
 # This is to modify the behaviour of the OptParser to make it check arguments
@@ -90,7 +92,7 @@ def get_parser():
 
 def print_api():
 
-    api_client = RestApiClient()
+    api_client = client_module.RestApiClient()
 
     response = api_client.call_api('help/capabilities', 'GET')
     response_json = json.loads(response.read().decode('utf-8'))
@@ -163,7 +165,7 @@ def make_request(args):
 
     # Create an API for the version specified by the user. If args.version is
     # None the latest version will be used.
-    api_client = RestApiClient(version=args.version)
+    api_client = client_module.RestApiClient(version=args.version)
 
     # Make a copy of the headers so we are able to set some custom headers.
     headers = api_client.get_headers()
