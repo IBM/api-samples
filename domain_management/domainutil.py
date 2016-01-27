@@ -6,7 +6,7 @@ import sys
 import uuid
 from importlib import import_module
 
-sys.path.append(os.path.realpath('../../modules'))
+sys.path.append(os.path.realpath('../modules'))
 
 _RestApiClient = import_module('RestApiClient')
 _SampleUtilities = import_module('SampleUtilities')
