@@ -20,7 +20,7 @@ def inputSettings():
     while (ifaces is None or len(ifaces) == 0):
         ifaces = input(
             'Please enter the names (separated by comma) of the ethernet ' +
-            'interfaces to be bonded.\n')     
+            'interfaces to be bonded.\n')
 
     slaves = ifaces.split(sep=",")
     slavesArray = []
@@ -29,13 +29,13 @@ def inputSettings():
 
     # Have the user input the settings.
     role = input(
-        'Please enter the role (regular, monitor or disabled) ' + 
+        'Please enter the role (regular, monitor or disabled) ' +
         'of the bonded network interface.\n')
     ipversion = None
     ip = None
     mask = None
     isAutoIP = "N"
-    ipversion = input('Please enter the version (ipv4 or ipv6) ' + 
+    ipversion = input('Please enter the version (ipv4 or ipv6) ' +
                       'of the IP.\n')
     if (role == "regular"):
 
@@ -66,16 +66,16 @@ def main():
 
     # Have the user input the server Id.
     server_Id = input(
-        'Please enter the Id of the server. The Id needs to be an integer. ' + 
-        'The server should have some ethernet interfaces that are used for ' + 
-        'the management interface or the HA crossover interface to proceed ' + 
+        'Please enter the Id of the server. The Id needs to be an integer. ' +
+        'The server should have some ethernet interfaces that are used for ' +
+        'the management interface or the HA crossover interface to proceed ' +
         'this example. \n')
 
     # Get the existing ethernet interfaces that are available to be boned on
     # the server. We use filter to get the interfaces with role in regular,
     # monitor or disabled as they can be used for bonding.
-    print('Getting the available ethernet network interfaces to be bonded on ' 
-          + 'the server.')
+    print('Getting the available ethernet network interfaces to be bonded ' +
+          'on the server.')
     params = {'fields': 'device_name',
               'filter': '(role=regular) or (role=monitor) or (role=disabled)'}
     endpoint = 'system/servers/' + \
@@ -84,7 +84,7 @@ def main():
     response = client.call_api(endpoint, 'GET', params=params)
     response_body = json.loads(response.read().decode('utf-8'))
     if len(response_body) == 0:
-        print('There is no ethernet network interfaces that can be used to ' + 
+        print('There is no ethernet network interfaces that can be used to ' +
               'create bonded network interface on the server. Exit. ')
         sys.exit(1)
     print('Available ethernet interfaces to be bonded:')
@@ -118,8 +118,8 @@ def main():
 
     # update the settings
     proceed = input(
-        'Continue running this sample will guide you to change the  ' + 
-        'settings of the bonded network interface. ' + 
+        'Continue running this sample will guide you to change the  ' +
+        'settings of the bonded network interface. ' +
         'Are your sure to continue (Y/N)? ')
 
     if (proceed != 'Y'):
@@ -146,9 +146,9 @@ def main():
 
     # unbond the bonded interface
     proceed = input(
-        'Continue running this sample will guide you to unbond the  ' + 
-        'newly created bonded network interface and recover its slave ' + 
-        'interfaces to ethernet interfaces. ' + 
+        'Continue running this sample will guide you to unbond the  ' +
+        'newly created bonded network interface and recover its slave ' +
+        'interfaces to ethernet interfaces. ' +
         'Are your sure to continue (Y/N)? ')
 
     if (proceed != 'Y'):
