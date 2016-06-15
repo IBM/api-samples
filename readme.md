@@ -47,10 +47,18 @@ For the changes to the API's and the impacts those would have on the samples see
 ## Requirements
 
 - Python 3.3 or above
-- QRadar system 7.2.5 or higher
+- QRadar system 7.2.7 or higher
 
 
 ## Instructions
+
+The API samples should not be run directly on a QRadar appliance. The API
+samples are intended to run on an outside system to poll data from QRadar.
+QRadar does not run Python 3.3 and the requirements for Python 3.3 is intended
+for the outside host that is running the code samples. QRadar cannot be
+upgraded to Python 3.3 as this will cause system-wide issues. Adminsitrators
+should never be installing any RPMs on their QRadar Console, unless the files
+come from IBM Fix Central.
 
 For the sample code to work without modifications, it is necessary that
 the folder structure does not change.
