@@ -10,7 +10,7 @@ sys.path.append(os.path.realpath('../modules'))
 
 _RestApiClient = import_module('RestApiClient')
 _SampleUtilities = import_module('SampleUtilities')
-_client = _RestApiClient.RestApiClient(version='5.0')
+_client = _RestApiClient.RestApiClient(version='6.0')
 
 
 # Pretty-prints response.

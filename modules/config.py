@@ -87,8 +87,8 @@ class Config:
     def _create_new_config(self):
         """
         Prompt the user for configuration values. Test if the configuration is
-        valid by calling the /help/capabilities endpoint. If the configuration
-        is valid call write_config_value(). If the configuration is not valid
+        valid by calling the /help/versions endpoint. If the configuration is
+        valid call write_config_value(). If the configuration is not valid
         sys.exit(2) is called.
         """
 
@@ -125,7 +125,7 @@ class Config:
 
     def _verify_config(self):
         """
-        Verify the configuration is valid by calling the /help/capabilities
+        Verify the configuration is valid by calling the /help/versions
         endpoint. If the request fails print a message indicating the cause of
         the failure and then call sys.exit(2).
         """
@@ -137,7 +137,7 @@ class Config:
             # Only request the /help categories to limit the size of the
             # response.
             params = {'categories': "['/help']"}
-            response = api_client.call_api('/help/capabilities', 'GET',
+            response = api_client.call_api('/help/versions', 'GET',
                                            params=params)
             response.read()
             if response.code == 401 or response.code == 403:

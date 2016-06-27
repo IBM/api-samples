@@ -28,10 +28,10 @@ def main():
 
     config = config_module.Config()
 
-    # Specify Version 3.0 in the request headers. Version 3.0 is a deprecated
+    # Specify Version 4.0 in the request headers. Version 4.0 is a deprecated
     # version of the API.
     headers = {'Accept': 'application/json',
-               'Version': '3.0'}
+               'Version': '4.0'}
     if config.has_config_value('auth_token'):
         headers['SEC'] = config.get_config_value('auth_token')
     elif (config.has_config_value('username') and
@@ -46,7 +46,7 @@ def main():
     create_secure_ssl_context(config)
 
     url = ('https://' + config.get_config_value('server_ip') +
-           '/api/referencedata/sets')
+           '/api/reference_data/sets')
 
     # Call the API with a deprecated version.
     response = None

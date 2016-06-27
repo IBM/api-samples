@@ -13,7 +13,7 @@ Scripts in this directory demonstrate how to use the `siem` endpoints of the API
 For a list of the endpoints that you can use along with the parameters they
 accept you can view the REST API interactive help page at
 `https://<hostname>/api_doc`.  You can also retrieve a list of available
-endpoints through the api itself at the /api/help/capabilities endpoint.
+endpoints through the api itself at the /api/help/endpoints endpoint.
 
 
 Access to the Offense API endpoints requires a user or authorized token with a

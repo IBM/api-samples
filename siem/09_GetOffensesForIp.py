@@ -16,7 +16,7 @@
 # To view a list of the endpoints with the parameters they accept, you can view
 # the REST API interactive help page on your deployment at
 # https://<hostname>/api_doc.  You can also retrieve a list of available
-# endpoints with the REST API itself at the /api/help/capabilities endpoint.
+# endpoints with the REST API itself at the /api/help/endpoints endpoint.
 
 import json
 import os
@@ -34,7 +34,7 @@ def main():
     """
 
     # First we have to create our client.
-    api_client = client_module.RestApiClient(version='5.0')
+    api_client = client_module.RestApiClient(version='6.0')
 
     # Prompt the user for an IP address.
     ip = prompt_for_ip()

@@ -17,7 +17,7 @@ For a list of the endpoints that you can use along with the parameters
 they accept you can view the REST API interactive help page on your QRadar
 installation at `https://<hostname>/api_doc`
 You can retrieve a list of available endpoints from the API itself at
-the `/help/capabilities` endpoint.
+the `/help/endpoints` endpoint.
 
 You can also join the community on our forums at:
 https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-4d73-94e8-c096abe263ca
