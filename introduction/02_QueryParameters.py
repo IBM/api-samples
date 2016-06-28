@@ -6,7 +6,7 @@
 # they accept you can view the REST API interactive help page on your
 # deployment at https://<hostname>/api_doc
 # You can also retrieve a list of available endpoints through the API itself
-# at the /api/help/capabilities endpoint.
+# at the /api/help/endpoints endpoint.
 
 import sys
 import os
@@ -24,7 +24,7 @@ def main():
     # object has been abstracted to the 'RestApiClient' class.
     # For more information on how these operations are done see the sample
     # '01_Authentication.py'.
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # Many API endpoints accept parameters.
     # One type of parameter is a query parameter.

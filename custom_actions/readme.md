@@ -6,7 +6,7 @@ For a list of the endpoints that you can use along with the parameters they
 accept you can view the REST API interactive help page at
 `https://<hostname>/api_doc`
 You can also retrieve a list of available
-endpoints through the api itself at the `/api/help/capabilities` endpoint.
+endpoints through the api itself at the `/api/help/versions` endpoint.
 
 Access to the Custom Actions API endpoints is restricted to admin users.
 

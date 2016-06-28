@@ -143,9 +143,8 @@ def print_api():
 
 def print_help(parser):
     print(parser.format_help().strip())
-    print("\n\nExample query: python apiclient.py --api /help/capabilities " +
-          "--method GET --params httpMethods=\"['GET']\" " +
-          "categories=\"['/help']\"\n\n")
+    print("\n\nExample query: python apiclient.py --api /help/versions " +
+          "--method GET --params filter=\"version=6.0\"")
 
 
 def parse_params(args):

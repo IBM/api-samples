@@ -17,7 +17,7 @@ For a list of the endpoints that you can use along with the parameters
 they accept you can view the REST API interactive help page on your QRadar
 installation at `https://<hostname>/api_doc`
 You can retrieve a list of available endpoints from the API itself at
-the `/help/capabilities` endpoint.
+the `/help/endpoints` endpoint.
 
 You can also join the community on our forums at:
 https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-4d73-94e8-c096abe263ca
@@ -25,7 +25,7 @@ https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-
 
 ## What's New
 For the changes to the API's and the impacts those would have on the samples see
-[What's new for developers in RESTful APIs in QRadar V7.2.5](http://www-01.ibm.com/support/knowledgecenter/SS42VS_7.2.5/com.ibm.qradar.doc_7.2.5/c_rest_api_whats_new_725.html).
+[What's new for developers in RESTful APIs in QRadar V7.2.7](http://www.ibm.com/support/knowledgecenter/en/SS42VS_7.2.7/com.ibm.qradar.doc/c_rest_api_whatsnew_detail.html).
 
 
 ## Package Contents
@@ -47,10 +47,18 @@ For the changes to the API's and the impacts those would have on the samples see
 ## Requirements
 
 - Python 3.3 or above
-- QRadar system 7.2.5 or higher
+- QRadar system 7.2.7 or higher
 
 
 ## Instructions
+
+The API samples should not be run directly on a QRadar appliance. The API
+samples are intended to run on an outside system to poll data from QRadar.
+QRadar does not run Python 3.3 and the requirements for Python 3.3 is intended
+for the outside host that is running the code samples. QRadar cannot be
+upgraded to Python 3.3 as this will cause system-wide issues. Adminsitrators
+should never be installing any RPMs on their QRadar Console, unless the files
+come from IBM Fix Central.
 
 For the sample code to work without modifications, it is necessary that
 the folder structure does not change.

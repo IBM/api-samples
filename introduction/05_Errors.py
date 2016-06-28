@@ -7,7 +7,7 @@
 # they might return you can view the REST API interactive help page on your
 # deployment at https://<hostname>/api_doc
 # You can also retrieve a list of available endpoints through the API itself
-# at the /api/help/capabilities endpoint.
+# at the /api/help/endpoints endpoint.
 
 import os
 import sys
@@ -21,7 +21,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def main():
     # Create our client.
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # While using the REST API an error may occur. Information about
     # the error is returned to you in the HTTP response that you receive.

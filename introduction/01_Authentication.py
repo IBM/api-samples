@@ -9,7 +9,7 @@
 # they accept you can view the REST API interactive help page on your
 # deployment at https://<hostname>/api_doc
 # You can also retrieve a list of available endpoints through the API itself
-# at the /api/help/capabilities endpoint.
+# at the /api/help/versions endpoint.
 
 import base64
 import configparser
@@ -47,11 +47,11 @@ def main():
     # You must pass your credentials in the https request headers.
     # You may also specify the version of the API you want to use and the
     # format of the response you will receive. For the purpose of these
-    # samples, version 5.0 of the API will be used and responses will be in
+    # samples, version 6.0 of the API will be used and responses will be in
     # JSON. Note that if you pass a version number that does not exist, the API
     # will select the highest matching version lower than the one you requested
     # and use that version instead.
-    headers = {'Version': '5.0', 'Accept': 'application/json',
+    headers = {'Version': '6.0', 'Accept': 'application/json',
                'Authorization': encoded_credentials}
     print(headers)
     # You can also use a security token for authentication.
@@ -127,7 +127,7 @@ def main():
                                     check_hostname=check_hostname)))
 
     # REST API requests are made by sending an HTTPS request to specific URLs.
-    url = 'https://' + host + '/api/help/capabilities'
+    url = 'https://' + host + '/api/help/versions'
     print(url)
     # There are several base URL aliases that can be used to access the api.
     # As of this release '/api' is the preferred alias.

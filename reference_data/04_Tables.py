@@ -25,7 +25,7 @@
 # they accept you can view the REST API interactive help page on your
 # deployment at https://<hostname>/api_doc
 # You can also retrieve a list of available endpoints through the API itself
-# at the /api/help/capabilities endpoint.
+# at the /api/help/endpoints endpoint.
 
 
 import json
@@ -42,7 +42,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def main():
     # Create our client and set up some sample data.
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
     setup_data(client)
 
     # First lets have a look at the data in the system.
