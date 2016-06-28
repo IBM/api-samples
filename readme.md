@@ -25,7 +25,7 @@ https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-
 
 ## What's New
 For the changes to the API's and the impacts those would have on the samples see
-[What's new for developers in RESTful APIs in QRadar V7.2.5](http://www-01.ibm.com/support/knowledgecenter/SS42VS_7.2.5/com.ibm.qradar.doc_7.2.5/c_rest_api_whats_new_725.html).
+[What's new for developers in RESTful APIs in QRadar V7.2.7](http://www.ibm.com/support/knowledgecenter/en/SS42VS_7.2.7/com.ibm.qradar.doc/c_rest_api_whatsnew_detail.html).
 
 
 ## Package Contents
