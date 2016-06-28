@@ -2,8 +2,9 @@
 # This sample demonstrates how to use the siem endpoint in the
 # REST API.
 
-# For this scenario to work, there must already be custom offense types on the system where the
-# sample is being run.  The scenario demonstrates the following
+# For this scenario to work, there must already be custom offense
+# types on the system where the sample is being run.
+# The scenario demonstrates the following
 # actions:
 #  - How to get all offense types
 #  - How to get custom offense types
@@ -28,9 +29,9 @@ def main():
 
     # -------------------------------------------------------------------------
     # Basic 'GET'
-    # In this example we'll be using the GET endpoint of siem/offense_types without
-    # any parameters. This will print absolutely everything it can find, every
-    # parameter of every offense_type.
+    # In this example we'll be using the GET endpoint of siem/offense_types
+    # without any parameters. This will print absolutely everything
+    # it can find, every parameter of every offense_type.
 
     # Send in the request
     SampleUtilities.pretty_print_request(client,
@@ -76,18 +77,18 @@ def main():
 
     # -------------------------------------------------------------------------
     # Using the filter parameter with 'GET'
-    # Sometimes you'll want to narrow down your search to just a few offense types.
-    # You can use the filter parameter to carefully select what is returned
-    # after the call by the value of the fields.
-    # Here we're only looking for custom offense types, as shown by the value of
-    # 'custom' equal to 'true'
+    # Sometimes you'll want to narrow down your search to just a few
+    # offense types. You can use the filter parameter to carefully
+    # select what is returned after the call by the value of the fields.
+    # Here we're only looking for custom offense types, as shown by
+    # the value of 'custom' equal to 'true'.
 
     # Send in the request
     SampleUtilities.pretty_print_request(
         client, 'siem/offense_types?fields=' + fields + '&filter=custom=TRUE',
         'GET')
     response = client.call_api(
-        'siem/offense_types?fields=' + fields + '&filter=custom=true', 'GET')
+        'siem/offense_types?fields=' + fields + '&filter=custom=TRUE', 'GET')
 
     # Always check the response code
     if (response.code != 200):
@@ -100,15 +101,17 @@ def main():
 
     # -------------------------------------------------------------------------
     # Paging the 'GET' data using 'Range'
-    # If you have a lot of offense types, then you may want to browse through them
-    # just a few at a time. In that case, you can use the Range header to
+    # If you have a lot of offense types, then you may want to browse through
+    # them just a few at a time. In that case, you can use the Range header to
     # limit the number of offense types shown in a single call.
 
     # In this example only custom offense types are retrieved.
 
-    # Call the endpoint so that we can find how many custom offense types there are.
+    # Call the endpoint so that we can find how many
+    # custom offense types there are.
     response = client.call_api('siem/offense_types?filter=custom=TRUE', 'GET')
-    num_of_custom_offense_types = len(json.loads(response.read().decode('utf-8')))
+    num_of_custom_offense_types = len(json.loads(response.read().
+                                                 decode('utf-8')))
 
     # Copy the headers into our own variable
     range_header = client.get_headers().copy()
@@ -118,21 +121,24 @@ def main():
     # and choose how many offense types you want to display at a time.
     offense_types_per_page = 5
 
-    # Looping here in order to repeatedly show 5 offense types at a time until we've
-    # seen all of the custom offense types or exit character q is pressed
+    # Looping here in order to repeatedly show 5 offense types at a time
+    # until we've seen all of the custom offense types or exit
+    # character q is pressed
     input_string = ""
     while True:
-
         # Change the value for Range in the header in the format item=x-y
         range_header['Range'] = ('items=' + str(page_position) + '-' +
-                                 str(page_position + offense_types_per_page - 1))
+                                 str(page_position +
+                                     offense_types_per_page - 1))
 
         # Send in the request
         SampleUtilities.pretty_print_request(
-            client, 'siem/offense_types?fields=' + fields + '&filter=custom=TRUE',
+            client,
+            'siem/offense_types?fields=' + fields + '&filter=custom=TRUE',
             'GET', headers=range_header)
         response = client.call_api(
-            'siem/offense_types?fields=' + fields + '&filter=custom=TRUE', 'GET',
+            'siem/offense_types?fields=' + fields + '&filter=custom=TRUE',
+            'GET',
             headers=range_header)
 
         # As usual, check the response code
@@ -145,13 +151,15 @@ def main():
         SampleUtilities.pretty_print_response(response)
 
         # Check to see if all the offense types have been displayed
-        if (page_position + offense_types_per_page >= num_of_custom_offense_types):
+        if (page_position + offense_types_per_page >=
+                num_of_custom_offense_types):
             print('All offense types have been printed to the screen.')
             break
         else:
             # Wait for the user to display the next set or quit
             input_string = input(
-                'Push enter to bring up the next ' + str(offense_types_per_page) +
+                'Push enter to bring up the next ' +
+                str(offense_types_per_page) +
                 ' offenses, or q to quit. ')
             # If the user entered the character 'q', quit.
             if (input_string == 'q'):
