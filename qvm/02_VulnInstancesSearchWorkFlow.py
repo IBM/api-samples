@@ -19,7 +19,7 @@ from re import search
 # To view a list of the endpoints with the parameters they accept, you can view
 # the REST API interactive help page on your deployment at
 # https://<hostname>/api_doc.  You can also retrieve a list of available
-# endpoints with the REST API itself at the /api/help/capabilities endpoint.
+# endpoints with the REST API itself at the /api/help/endpoints endpoint.
 
 import sys
 import os
