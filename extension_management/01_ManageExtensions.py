@@ -18,7 +18,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def upload_extension():
     # Create our client
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # Add Content-Type to request header
     request_header = {}
@@ -54,7 +54,7 @@ def upload_extension():
 
 def install_extension(extension_id):
     # Create our client
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # query parameters
     # action_type: The desired action to take on
@@ -87,7 +87,7 @@ def install_extension(extension_id):
 
 def check_install_status(status_id):
     # Create our client
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # construct api url with path parameter.
     url = 'config/extension_management/extensions_task_status/'+str(status_id)
@@ -108,7 +108,7 @@ def check_install_status(status_id):
 
 def delete_installed_extension(extension_id):
     # Create our client
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # construct api url with path parameter.
     url = 'config/extension_management/extensions/' + str(extension_id)

@@ -12,7 +12,7 @@ client_module = importlib.import_module('RestApiClient')
 
 
 def main():
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
     cleanup_introduction_data(client)
     cleanup_06_common_parameters(client)
 
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         choices=['02_QueryParameters.py', '03_PathParameters.py',
                  '04_BodyParameters.py', '06_CommonParameters', 'all'])
 
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
     args = parser.parse_args()
     if (args.script == '02_QueryParameters.py'):
         cleanup_introduction_data(client)

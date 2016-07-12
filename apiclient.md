@@ -24,7 +24,7 @@ needed to make calls against that endpoint.
 The most basic call you can make is a GET request to an endpoint that 
 requires no parameters:
 
-        python apiclient.py --api /help/capabilities --method GET
+        python apiclient.py --api /help/versions --method GET
 
 Arguments for basic calls: 
 
@@ -61,18 +61,13 @@ the url.
 
 ## Calls with query parameters
 
-If you have any query parameters, they must be entered with the syntax 
-`--params <param_name>="<param_value>"`. For example, to get all 
-API endpoints of `/help` that make use of httpMethod GET, 
-you can call `/help/capabilities` and supply the query parameters 
-`httpMethods` and `categories`. Since httpMethods asks for a JSON object, 
-we can create one inside double quotes using single quotes, squares 
-brackets, and commas.
+If you have any query parameters, they must be entered with the syntax
+`--params <param_name>="<param_value>"`. For example, to use the filter
+parameter with the `/help/versions` endpoint:
 
-    python apiclient.py --api /help/capabilities --method GET
-        --params httpMethods="['GET']" categories="['/help']"
+    python apiclient.py --api /help/versions --method GET --params filter="version=6.0"
 
-Once again check the output of `--print_api` to determine which parameters 
+Once again check the output of `--print_api` to determine which parameters
 are query, or body parameters.
 
 ## Calls with body parameters

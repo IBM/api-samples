@@ -11,7 +11,7 @@
 # To view a list of the endpoints with the parameters they accept, you can view
 # the REST API interactive help page on your deployment at
 # https://<hostname>/api_doc.  You can also retrieve a list of available
-# endpoints with the REST API itself at the /api/help/capabilities endpoint.
+# endpoints with the REST API itself at the /api/help/endpoints endpoint.
 
 import sys
 import os
@@ -25,7 +25,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def main():
     # Create our client.
-    restClient = client_module.RestApiClient(version='5.0')
+    restClient = client_module.RestApiClient(version='6.0')
     # Endpoint used in this endpoint.
     actions_endpoint = 'analytics/custom_actions/actions'
     # Using the analytics/custom_actions/actions endpoint with GET request.

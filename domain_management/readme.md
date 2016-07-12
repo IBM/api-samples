@@ -17,7 +17,7 @@ they accept you can view the REST API interactive help page at
 `https://<hostname>/api_doc`.
 
 You can also retrieve a list of available endpoints through the API itself
-at the `/api/help/capabilities` endpoint.
+at the `/api/help/versions` endpoint.
 
 The scripts in this directory include:
 

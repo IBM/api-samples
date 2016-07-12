@@ -27,7 +27,7 @@
 # To view a list of the endpoints with the parameters they accept, you can view
 # the REST API interactive help page on your deployment at
 # https://<hostname>/api_doc.  You can also retrieve a list of available
-# endpoints with the REST API itself at the /api/help/capabilities endpoint.
+# endpoints with the REST API itself at the /api/help/endpoints endpoint.
 
 import json
 import os
@@ -42,7 +42,7 @@ SampleUtilities = importlib.import_module('SampleUtilities')
 
 def main():
     # First we have to create our client
-    client = client_module.RestApiClient(version='5.0')
+    client = client_module.RestApiClient(version='6.0')
 
     # In this half of the sample, we will show one way to use a csv file and
     # turn it into a dictionary. Then using that dictionary, and information on
