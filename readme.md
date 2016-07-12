@@ -111,6 +111,10 @@ Use one of the following methods to obtain the certificate file:
 When you manually obtain and specify the certificate file it is your
 responsibility to verify the certificate authenticity.
 
+If you are using a CA with untrusted root or intermediate certificates,
+the file specified by certificate_file must contain the full chain. For
+more information, see the [Python documentation](https://docs.python.org/3/library/ssl.html#ssl.SSLContext.load_verify_locations).
+
 ## Makeup of the config.ini file
 
 ```
