@@ -152,7 +152,7 @@ The scenario demonstrates the following actions:
  - Building a filter criteria to be used with the GET siem/offenses endpoint
    to get offenses associated with the IP address.
    
-### 01_GetOffenseTypes.py
+### 10_GetOffenseTypes.py
 In this sample, you see how offense types are retrieved with the `siem` API, and how to use
 the `filter` parameters and the `Range` header to make the data retrieved concise
 and easy to read.  
