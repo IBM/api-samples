@@ -159,7 +159,7 @@ def main():
             # If the search is queued or taking too long to process then we
             # should exit
             if (task_progress_time == TASK_TIMEOUT):
-                print (
+                print(
                     'Failed to run vulnerability instance search using ' +
                     'task id: %s due to timeout at %s secs.  Task status is %s'
                     % (task_id, TASK_TIMEOUT, response_body['status']))
@@ -170,7 +170,7 @@ def main():
             error = True
 
     if (error):
-        print (
+        print(
             'Failed to retrieve current status of a vulnerability instance ' +
             'search using task id: ' + task_id)
         sys.exit(1)
@@ -190,10 +190,10 @@ def main():
     # for the first 10 items.
     for i in range(0, 3):
 
-        print (
+        print(
             '===============================================================' +
             '========================================\n')
-        print (
+        print(
             'Page %s.  Trying to get back 10 rows of ' % str(i + 1) +
             'vulnerability instances')
         range_header = {
@@ -240,12 +240,12 @@ def main():
             asset_id_str_list = ",".join(str(x) for x in asset_id_set)
             vuln_id_str_list = ",".join(str(x) for x in vuln_id_set)
 
-            print ('\nSet of asset ids: ' + asset_id_str_list)
-            print ('Set of vulnerability ids: ' + vuln_id_str_list + '\n')
+            print('\nSet of asset ids: ' + asset_id_str_list)
+            print('Set of vulnerability ids: ' + vuln_id_str_list + '\n')
 
             # get the number of assets
             num_of_assets = len(asset_id_set)
-            print ('Getting ' + str(num_of_assets) + ' rows of assets\n')
+            print('Getting ' + str(num_of_assets) + ' rows of assets\n')
 
             # If we have assets then get more asset info
             if (num_of_assets > 0):
@@ -286,7 +286,7 @@ def main():
 
             # get the number of vulnerabilities
             num_of_vulns = len(vuln_id_set)
-            print (
+            print(
                 'Getting ' + str(num_of_vulns) + ' rows of vulnerabilities\n')
 
             # If we have vulnerabilities then get more vulnerability info
