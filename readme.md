@@ -25,7 +25,7 @@ https://www.ibm.com/developerworks/community/forums/html/forum?id=b02461a3-9a70-
 
 ## What's New
 For the changes to the API's and the impacts those would have on the samples see
-[What's new for developers in RESTful APIs in QRadar V7.2.7](http://www.ibm.com/support/knowledgecenter/en/SS42VS_7.2.7/com.ibm.qradar.doc/c_rest_api_whatsnew_detail.html).
+[What's new for developers in RESTful APIs in QRadar V7.2.8](http://www.ibm.com/support/knowledgecenter/en/SS42VS_7.2.8/com.ibm.qradar.doc/c_rest_api_whatsnew_detail.html).
 
 
 ## Package Contents
@@ -47,7 +47,7 @@ For the changes to the API's and the impacts those would have on the samples see
 ## Requirements
 
 - Python 3.3 or above
-- QRadar system 7.2.7 or higher
+- QRadar system 7.2.8 or higher
 
 
 ## Instructions
