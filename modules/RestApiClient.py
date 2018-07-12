@@ -108,7 +108,7 @@ class RestApiClient:
 
     # This method is used to set up an HTTP request and send it to the server
     def call_api(self, endpoint, method, headers=None, params=[], data=None,
-                 print_request=False):
+                 print_request=False, timeout=10):
 
         path = self.parse_path(endpoint, params)
 
@@ -131,7 +131,7 @@ class RestApiClient:
                                                  headers=actual_headers)
 
         try:
-            response = urlopen(request, data)
+            response = urlopen(request, data, timeout=timeout)
 
             response_info = response.info()
             if 'Deprecated' in response_info:
