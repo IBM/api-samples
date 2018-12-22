@@ -90,7 +90,7 @@ class RestApiClient:
 
              if str( certificate_file ).lower() == "false":
                  context.verify_mode = ssl.CERT_NONE
-             else:
+             else: 
                 # Instead of loading the default certificates load only the
                 # certificates specified by the user.
                 context.load_verify_locations(cafile=certificate_file)
