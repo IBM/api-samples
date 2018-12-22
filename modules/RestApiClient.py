@@ -88,9 +88,12 @@ class RestApiClient:
                 context.check_hostname = False
             check_hostname = False
 
-            # Instead of loading the default certificates load only the
-            # certificates specified by the user.
-            context.load_verify_locations(cafile=certificate_file)
+             if str( certificate_file ).lower() == "false":
+                 context.verify_mode = ssl.CERT_NONE
+             else:
+                # Instead of loading the default certificates load only the
+                # certificates specified by the user.
+                context.load_verify_locations(cafile=certificate_file)
         else:
             if sys.version_info >= (3, 4):
                 # Python 3.4 and above has the improved load_default_certs()
