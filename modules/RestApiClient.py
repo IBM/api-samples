@@ -88,9 +88,12 @@ class RestApiClient:
                 context.check_hostname = False
             check_hostname = False
 
-            # Instead of loading the default certificates load only the
-            # certificates specified by the user.
-            context.load_verify_locations(cafile=certificate_file)
+            if str( certificate_file ).lower() == "false":
+                context.verify_mode = ssl.CERT_NONE
+            else:
+                # Instead of loading the default certificates load only the
+                # certificates specified by the user.
+                context.load_verify_locations(cafile=certificate_file)
         else:
             if sys.version_info >= (3, 4):
                 # Python 3.4 and above has the improved load_default_certs()
@@ -108,7 +111,7 @@ class RestApiClient:
 
     # This method is used to set up an HTTP request and send it to the server
     def call_api(self, endpoint, method, headers=None, params=[], data=None,
-                 print_request=False):
+                 print_request=False, timeout=10):
 
         path = self.parse_path(endpoint, params)
 
@@ -131,7 +134,7 @@ class RestApiClient:
                                                  headers=actual_headers)
 
         try:
-            response = urlopen(request, data)
+            response = urlopen(request, data, timeout=timeout)
 
             response_info = response.info()
             if 'Deprecated' in response_info:
